@@ -1,17 +1,29 @@
 import { kv } from '@vercel/kv'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { Configuration, OpenAIApi } from 'openai-edge'
 
 import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
+import OpenAI from 'openai'
+import { ChatCompletionCreateParamsBase } from 'openai/resources/chat/completions'
 
 export const runtime = 'edge'
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY
-})
+const resource = process.env.AZURE_RESOURCE_GROUP
+const modelType = process.env.AZURE_MODEL_TYPE
+const modelName = process.env
+  .AZURE_MODEL_NAME as ChatCompletionCreateParamsBase['model']
 
-const openai = new OpenAIApi(configuration)
+const apiKey = process.env.AZURE_OPENAI_API_KEY
+if (!apiKey) {
+  throw new Error('AZURE_OPENAI_API_KEY is missing from the environment.')
+}
+
+const openai = new OpenAI({
+  apiKey,
+  baseURL: `https://${resource}.openai.azure.com/openai/deployments/${modelType}`,
+  defaultQuery: { 'api-version': '2023-06-01-preview' },
+  defaultHeaders: { 'api-key': apiKey }
+})
 
 export async function POST(req: Request) {
   const json = await req.json()
@@ -24,18 +36,14 @@ export async function POST(req: Request) {
     })
   }
 
-  if (previewToken) {
-    configuration.apiKey = previewToken
-  }
-
-  const res = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+  const res = await openai.chat.completions.create({
+    model: modelName,
     messages,
     temperature: 0.7,
     stream: true
   })
 
-  const stream = OpenAIStream(res, {
+  const stream = OpenAIStream(res['response'], {
     async onCompletion(completion) {
       const title = json.messages[0].content.substring(0, 100)
       const id = json.id ?? nanoid()
