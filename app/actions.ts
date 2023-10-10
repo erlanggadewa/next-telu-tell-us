@@ -1,8 +1,8 @@
 'use server'
 
+import { kv } from '@vercel/kv'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { kv } from '@vercel/kv'
 
 import { auth } from '@/auth'
 import { type Chat } from '@/lib/types'
@@ -75,7 +75,7 @@ export async function clearChats() {
 
   const chats: string[] = await kv.zrange(`user:chat:${session.user.id}`, 0, -1)
   if (!chats.length) {
-  return redirect('/')
+    return redirect('/')
   }
   const pipeline = kv.pipeline()
 
