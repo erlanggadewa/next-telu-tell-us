@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@azure/logger':
+    specifier: ^1.0.4
+    version: 1.0.4
   '@azure/openai':
     specifier: 1.0.0-beta.6
     version: 1.0.0-beta.6
