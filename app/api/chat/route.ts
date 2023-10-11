@@ -31,7 +31,7 @@ const openai = new OpenAIClient(`https://${openAIResource}.openai.azure.com/`, n
 
 export async function POST(req: Request) {
     const json = await req.json()
-    const {messages, previewToken} = json
+    const {messages, previewToken, cognitif} = json
     const userId = (await auth())?.user.id
 
     if (!userId) {
@@ -39,8 +39,14 @@ export async function POST(req: Request) {
             status: 401
         })
     }
-
-    const res = openai.listChatCompletions(deployName, messages, {
+    let response
+    if (!cognitif) response = openai.listChatCompletions(deployName, messages, {
+        model: modelName,
+        temperature: 0.7,
+        stream: true,
+        maxTokens: 128
+    })
+    else response = openai.listChatCompletions(deployName, messages, {
         model: modelName,
         temperature: 0.7,
         stream: true,
@@ -56,8 +62,9 @@ export async function POST(req: Request) {
             }]
         }
     })
+
     // @ts-ignore
-    const stream = OpenAIStream(res, {
+    const stream = OpenAIStream(response, {
         async onCompletion(completion) {
             const title = json.messages[0].content.substring(0, 100)
             const id = json.id ?? nanoid()
