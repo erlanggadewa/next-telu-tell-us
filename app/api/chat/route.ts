@@ -40,13 +40,7 @@ export async function POST(req: Request) {
         })
     }
     let response
-    if (!cognitif) response = openai.listChatCompletions(deployName, messages, {
-        model: modelName,
-        temperature: 0.7,
-        stream: true,
-        maxTokens: 128
-    })
-    else response = openai.listChatCompletions(deployName, messages, {
+    if (cognitif) response = openai.listChatCompletions(deployName, messages, {
         model: modelName,
         temperature: 0.7,
         stream: true,
@@ -61,6 +55,12 @@ export async function POST(req: Request) {
                 }
             }]
         }
+    })
+    else response = openai.listChatCompletions(deployName, messages, {
+        model: modelName,
+        temperature: 0.7,
+        stream: true,
+        maxTokens: 128
     })
 
     // @ts-ignore
