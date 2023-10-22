@@ -7,14 +7,16 @@ import { fontMono, fontSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
-import { Header } from '@/components/header'
+import {ReactNode} from "react";
+import {headers} from "next/headers";
+import {Header} from "@/components/header";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Next.js AI Chatbot',
-    template: `%s - Next.js AI Chatbot`
+    default: 'Tell Us Chatbot',
+    template: `%s - Tell Us Chatbot`
   },
-  description: 'An AI-powered chatbot template built with Next.js and Vercel.',
+  description: 'Tell Us Chatbot',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' }
@@ -26,11 +28,9 @@ export const metadata: Metadata = {
   }
 }
 
-interface RootLayoutProps {
-  children: React.ReactNode
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: {children: ReactNode}) {
+  const headersList = headers();
+  const pathname = headersList.get("x-invoke-path") || "";
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -44,8 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Toaster />
         <Providers attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
-            {/* @ts-ignore */}
-            <Header />
+            {pathname != '/sign-in' ? <Header/> : <></>}
             <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
           </div>
           <TailwindIndicator />
