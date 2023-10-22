@@ -48,7 +48,7 @@ export class ChatApproach {
     // STEP 1: Generate an optimized keyword search query based on the chat history and the last question
     // -----------------------------------------------------------------------
     const messages = this.getMessageHistory(
-      history.splice(0, history.length - 1),
+      [history[history.length - 1]],
       userQuery
     )
 
@@ -106,10 +106,6 @@ export class ChatApproach {
       history,
       query,
       content
-    )
-    console.log(
-      '🚀 ~ file: chat-read-retrieve-read.ts:110 ~ ChatApproach ~ baseRun ~ msgForGenerateAnswer:',
-      msgForGenerateAnswer
     )
 
     const finalMsg = await this.openAiChat.completions.create({
