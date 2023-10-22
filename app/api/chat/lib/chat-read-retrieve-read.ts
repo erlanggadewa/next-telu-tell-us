@@ -1,13 +1,13 @@
 import OpenAI from 'openai'
-import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
-import { appConfig } from '../../config'
-import { OpenAiService } from './openai-service'
-import { SearchCognitiveService } from './search'
-import { ChatApproachContext, HistoryMessage, Message } from './types'
+import {ChatCompletionMessageParam} from 'openai/resources/chat/completions'
+import {appConfig} from '../../config'
+import {OpenAiService} from './openai-service'
+import {SearchCognitiveService} from './search'
+import {ChatApproachContext, HistoryMessage, Message} from './types'
 
 const SYSTEM_MESSAGE_CHAT_CONVERSATION = `Assistant helps the Consto Real Estate company customers with support questions regarding terms of service, privacy policy, and questions about support requests. Be brief in your answers.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
-For tabular information return it as an html table. Do not return markdown format. If the question is not in English, answer in the language used in the question.
+For tabular information return it as an html table. Do not return markdown format. If the question is not in English or Indonesia, answer in the language used in the question.
 Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brackets to reference the source, e.g. [info1.txt]. Don't combine sources, list each source separately, e.g. [info1.txt][info2.pdf].
 {follow_up_questions_prompt}
 {injected_prompt}
@@ -26,13 +26,6 @@ Do not include any special characters like '+'.
 If the question is not in English, translate the question to English before generating the search query.
 If you cannot generate a search query, return just the number 0.
 `
-
-const QUERY_PROMPT_FEW_SHOTS: Message[] = [
-  { role: 'user', content: 'What happens if a payment error occurs?' },
-  { role: 'assistant', content: 'Show support for payment errors' },
-  { role: 'user', content: 'can I get refunded if cannot travel?' },
-  { role: 'assistant', content: 'Refund policy' }
-]
 
 export class ChatApproach {
   openAiChat: OpenAI.Chat
@@ -108,28 +101,24 @@ export class ChatApproach {
       content
     )
 
-    const finalMsg = await this.openAiChat.completions.create({
+    return this.openAiChat.completions.create({
       model: appConfig.azureOpenAiChatGptModel,
       messages: msgForGenerateAnswer,
       temperature: Number(context?.temperature ?? 0.7),
       n: 1,
-      stream: true
-    })
-    return finalMsg
+      stream: true,
+    });
   }
 
   protected getMessageHistory(
     history: HistoryMessage[],
     userQuery: string
   ): ChatCompletionMessageParam[] {
-    const msgHistory: ChatCompletionMessageParam[] = [
-      { role: 'system', content: QUERY_PROMPT_TEMPLATE },
-      ...QUERY_PROMPT_FEW_SHOTS,
+    return [
+      {role: 'system', content: QUERY_PROMPT_TEMPLATE},
       ...history,
-      { role: 'user', content: userQuery }
+      {role: 'user', content: userQuery}
     ]
-
-    return msgHistory
   }
   protected getMessageHistoryGenerateAnswer(
     systemMessage: string,
@@ -137,13 +126,10 @@ export class ChatApproach {
     query: string,
     content: string
   ): ChatCompletionMessageParam[] {
-    const msgHistory: ChatCompletionMessageParam[] = [
-      { role: 'system', content: systemMessage },
-      ...QUERY_PROMPT_FEW_SHOTS,
+    return [
+      {role: 'system', content: systemMessage},
       ...history,
-      { role: 'user', content: `${query}\n\nSources:\n${content}}` }
+      {role: 'user', content: `${query}\n\nSources:\n${content}}`}
     ]
-
-    return msgHistory
   }
 }
