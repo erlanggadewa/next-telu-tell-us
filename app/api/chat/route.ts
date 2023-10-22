@@ -28,31 +28,6 @@ export async function POST(req: Request) {
   const chatApproach = new ChatApproach()
   const finalMsg = await chatApproach.baseRun(messages, approach)
 
-  // console.log('🚀 ~ file: route.ts:32 ~ POST ~ x:', x)
-
-  // let response = openai.listChatCompletions(
-  //   appConfig.azureOpenAiChatGptDeployment,
-  //   finalMsg,
-  //   {
-  //     model: appConfig.azureOpenAiChatGptModel,
-  //     temperature: 0.7,
-  //     stream: true,
-  //     // maxTokens: 128,
-  //     azureExtensionOptions: {
-  //       extensions: [
-  //         {
-  //           type: 'AzureCognitiveSearch',
-  //           parameters: {
-  //             endpoint: `https://${appConfig.azureSearchService}.search.windows.net`,
-  //             key: appConfig.azureCognitiveKey,
-  //             indexName: appConfig.azureSearchIndex
-  //           }
-  //         }
-  //       ]
-  //     }
-  //   }
-  // )
-
   // @ts-ignore
   const stream = OpenAIStream(finalMsg, {
     async onCompletion(completion) {

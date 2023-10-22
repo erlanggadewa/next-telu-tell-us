@@ -65,8 +65,6 @@ export class SearchCognitiveService {
       top
     })
 
-    console.log(searchResults)
-
     const results: string[] = []
     if (useSemanticCaption) {
       for await (const result of searchResults.results) {
