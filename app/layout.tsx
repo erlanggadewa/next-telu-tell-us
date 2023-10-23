@@ -10,13 +10,14 @@ import { Providers } from '@/components/providers'
 import {ReactNode} from "react";
 import {headers} from "next/headers";
 import {Header} from "@/components/header";
+import {appConfig} from "@/app/config";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Tell Us Chatbot',
-    template: `%s - Tell Us Chatbot`
+    default: appConfig.appName,
+    template: `%s - ${appConfig.appName}`
   },
-  description: 'Tell Us Chatbot',
+  description: appConfig.appName,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' }
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: {children: ReactNode}) {
   const headersList = headers();
   const pathname = headersList.get("x-invoke-path") || "";
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <head />
       <body
         className={cn(
@@ -42,10 +43,10 @@ export default function RootLayout({ children }: {children: ReactNode}) {
         )}
       >
         <Toaster />
-        <Providers attribute="class" defaultTheme="system" enableSystem>
+        <Providers attribute="class" defaultTheme="light" enableSystem>
           <div className="flex flex-col min-h-screen">
             {pathname != '/sign-in' ? <Header/> : <></>}
-            <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
+            <main className="flex flex-col flex-1">{children}</main>
           </div>
           <TailwindIndicator />
         </Providers>
