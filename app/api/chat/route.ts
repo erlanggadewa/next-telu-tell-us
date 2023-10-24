@@ -1,7 +1,10 @@
 import { auth } from '@/auth'
-import {nanoid, OpenAIStream, StreamingTextResponse} from 'ai'
+import {
+  OpenAIStream,
+  StreamingTextResponse,
+  experimental_StreamData
+} from 'ai'
 import { ChatApproach } from './lib/chat-read-retrieve-read'
-import {kv} from "@vercel/kv";
 
 export const runtime = 'edge'
 
@@ -17,38 +20,50 @@ export async function POST(req: Request) {
   }
 
   const chatApproach = new ChatApproach()
-  const finalMsg = await chatApproach.baseRun(messages, {
-    suggest_followup_questions: true,
-    retrieval_mode: 'text'
-  })
+  const { finalMsg, results: dataPoitns } = await chatApproach.baseRun(
+    messages,
+    {
+      suggest_followup_questions: true,
+      retrieval_mode: 'text'
+    }
+  )
 
+  // Instantiate the StreamData. It works with all API providers.
+  const data = new experimental_StreamData()
+  data.append(dataPoitns)
   const stream = OpenAIStream(finalMsg, {
-    async onCompletion(completion) {
-    //     const title = json.messages[0].content.substring(0, 100)
-    //     const id = json.id ?? nanoid()
-    //     const createdAt = Date.now()
-    //     const path = `/chat/${id}`
-    //     const payload = {
-    //       id,
-    //       title,
-    //       userId,
-    //       createdAt,
-    //       path,
-    //       messages: [
-    //         ...messages,
-    //         {
-    //           content: completion,
-    //           role: 'assistant'
-    //         }
-    //       ]
-    //     }
-    //     await kv.hmset(`chat:${id}`, payload)
-    //     await kv.zadd(`user:chat:${userId}`, {
-    //       score: createdAt,
-    //       member: `chat:${id}`
-    //     })
+    // IMPORTANT! until this is stable, you must explicitly opt in to supporting streamData.
+    experimental_streamData: true,
+    onFinal(completion) {
+      // IMPORTANT! you must close StreamData manually or the response will never finish.
+      data.close()
+    },
+    onCompletion: completion => {
+      //     const title = json.messages[0].content.substring(0, 100)
+      //     const id = json.id ?? nanoid()
+      //     const createdAt = Date.now()
+      //     const path = `/chat/${id}`
+      //     const payload = {
+      //       id,
+      //       title,
+      //       userId,
+      //       createdAt,
+      //       path,
+      //       messages: [
+      //         ...messages,
+      //         {
+      //           content: completion,
+      //           role: 'assistant'
+      //         }
+      //       ]
+      //     }
+      //     await kv.hmset(`chat:${id}`, payload)
+      //     await kv.zadd(`user:chat:${userId}`, {
+      //       score: createdAt,
+      //       member: `chat:${id}`
+      //     })
     }
   })
 
-  return new StreamingTextResponse(stream)
+  return new StreamingTextResponse(stream, {}, data)
 }
