@@ -1,20 +1,20 @@
-import OpenAI from 'openai'
+import { appConfig } from '@/app/config'
+import { OpenAI } from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
-import { appConfig } from '../../config'
 import { OpenAiService } from './openai-service'
 import { SearchCognitiveService } from './search'
-import { ChatApproachContext, HistoryMessage, Message } from './types'
+import { ChatApproachContext, HistoryMessage } from './types'
 
-const SYSTEM_MESSAGE_CHAT_CONVERSATION = `Assistant helps the Consto Real Estate company customers with support questions regarding terms of service, privacy policy, and questions about support requests. Be brief in your answers.
+const SYSTEM_MESSAGE_CHAT_CONVERSATION = `Assistant helps the student at Telkom University with support questions regarding terms of service, privacy policy, and questions about support requests. Be brief in your answers.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
-For tabular information return it as an html table. Do not return markdown format. If the question is not in English, answer in the language used in the question.
-Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brackets to reference the source, e.g. [info1.txt]. Don't combine sources, list each source separately, e.g. [info1.txt][info2.pdf].
+For tabular information return it as an markdown table. Do return markdown format. You should answer in the language used in the question.
+Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brackets to reference the source, e.g. [info1.txt]. DO NOT COMBINE SOURCES, list each source separately, e.g. [info1.pdf][info2.pdf].
 {follow_up_questions_prompt}
 {injected_prompt}
 `
 
 const FOLLOW_UP_QUESTIONS_PROMPT_CONTENT = `Generate three very brief follow-up questions that the user would likely ask next about rentals.
-Use double angle brackets to reference the questions, e.g. <<Am I allowed to invite friends for a party?>>.
+Use double angle brackets to reference the questions, e.g. <<Am I allowed to invite friends for a party?>> or <<1. Am I allowed to invite friends for a party?>>.
 Try not to repeat questions that have already been asked.
 Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'`
 
@@ -26,13 +26,6 @@ Do not include any special characters like '+'.
 If the question is not in English, translate the question to English before generating the search query.
 If you cannot generate a search query, return just the number 0.
 `
-
-const QUERY_PROMPT_FEW_SHOTS: Message[] = [
-  { role: 'user', content: 'What happens if a payment error occurs?' },
-  { role: 'assistant', content: 'Show support for payment errors' },
-  { role: 'user', content: 'can I get refunded if cannot travel?' },
-  { role: 'assistant', content: 'Refund policy' }
-]
 
 export class ChatApproach {
   openAiChat: OpenAI.Chat
@@ -115,21 +108,18 @@ export class ChatApproach {
       n: 1,
       stream: true
     })
-    return finalMsg
+    return { finalMsg, results }
   }
 
   protected getMessageHistory(
     history: HistoryMessage[],
     userQuery: string
   ): ChatCompletionMessageParam[] {
-    const msgHistory: ChatCompletionMessageParam[] = [
+    return [
       { role: 'system', content: QUERY_PROMPT_TEMPLATE },
-      ...QUERY_PROMPT_FEW_SHOTS,
       ...history,
       { role: 'user', content: userQuery }
     ]
-
-    return msgHistory
   }
   protected getMessageHistoryGenerateAnswer(
     systemMessage: string,
@@ -137,13 +127,10 @@ export class ChatApproach {
     query: string,
     content: string
   ): ChatCompletionMessageParam[] {
-    const msgHistory: ChatCompletionMessageParam[] = [
+    return [
       { role: 'system', content: systemMessage },
-      ...QUERY_PROMPT_FEW_SHOTS,
       ...history,
       { role: 'user', content: `${query}\n\nSources:\n${content}}` }
     ]
-
-    return msgHistory
   }
 }

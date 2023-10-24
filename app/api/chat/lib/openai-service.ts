@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { appConfig } from '../../config'
+import { appConfig } from '../../../config'
 
 export class OpenAiService {
   chatClient: OpenAI

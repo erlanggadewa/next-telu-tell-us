@@ -1,5 +1,5 @@
 import { SearchClient } from '@azure/search-documents'
-import { appConfig } from '../../config'
+import { appConfig } from '../../../config'
 import { parseBoolean, removeNewlines } from '../util/string'
 import { AzureService } from './azure-service'
 import { OpenAiService } from './openai-service'
@@ -46,7 +46,7 @@ export class SearchCognitiveService {
     // If retrieval mode includes vectors, compute an embedding for the query
     let queryVector
     if (hasVectors) {
-      const openAiEmbeddings = await this.openai.getEmbeddings()
+      const openAiEmbeddings = this.openai.getEmbeddings()
 
       const result = await openAiEmbeddings.create({
         model: this.embeddingModel,
