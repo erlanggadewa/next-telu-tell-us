@@ -14,6 +14,7 @@ import TellUsIcon from '@/assets/svg/system.svg'
 import {parseAnswer} from "@/components/text-parser";
 import {useMemo, useState} from "react";
 import {Button} from "@/components/ui/button";
+import {PluggableList} from "react-markdown/lib/react-markdown";
 
 export interface ChatMessageProps {
     message: Message
@@ -52,7 +53,7 @@ export function ChatMessage({message, noAction, ...props}: ChatMessageProps) {
                         className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                         remarkPlugins={[remarkGfm, remarkMath]}
                         skipHtml={true}
-                        rehypePlugins={[rehypeRaw]}
+                        rehypePlugins={[rehypeRaw] as PluggableList}
                         components={{
                             p: ({children}) => {
                                 return <p className="mb-2 last:mb-0">{children}</p>
