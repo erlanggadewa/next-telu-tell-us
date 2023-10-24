@@ -12,7 +12,8 @@ import Image from "next/image";
 
 import TellUsIcon from '@/assets/svg/system.svg'
 import {parseAnswer} from "@/components/text-parser";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
+import {Button} from "@/components/ui/button";
 
 export interface ChatMessageProps {
     message: Message
@@ -20,7 +21,8 @@ export interface ChatMessageProps {
 }
 
 export function ChatMessage({message, noAction, ...props}: ChatMessageProps) {
-    const parsedAnswer = useMemo(() => parseAnswer(message.content, ()=> {}), [message]);
+    const {result, citations, followupQuestions} = useMemo(() => parseAnswer(message.content, () => {
+    }), [message]);
     return (
         <div
             className={cn('group relative mb-4 flex items-start max-w-xl',
@@ -87,8 +89,25 @@ export function ChatMessage({message, noAction, ...props}: ChatMessageProps) {
                             }
                         }}
                     >
-                        {parsedAnswer.result}
+                        {result}
                     </MemoizedReactMarkdown>
+                    {citations.length > 0 && (
+                        <>
+                            <span>Citations:</span>
+                            {citations.map((x, i) =>
+                                <Button key={i} full className="h-fit my-1">{`${++i}. ${x}`}</Button>
+                            )}
+                        </>
+                    )}
+
+                    {followupQuestions.length > 0 && (
+                        <>
+                            <span>Follow-up questions:</span>
+                            {followupQuestions.map((x, i) =>
+                                <Button key={i} full className="h-fit my-1">{x}</Button>
+                            )}
+                        </>
+                    )}
                 </div>
                 {!noAction && message.role !== 'user' && <ChatMessageActions message={message}/>}
             </div>
