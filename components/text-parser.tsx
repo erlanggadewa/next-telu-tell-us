@@ -1,3 +1,5 @@
+"use client"
+
 import {renderToStaticMarkup} from 'react-dom/server';
 import * as React from "react";
 // import { getCitationFilePath } from '../../api/index.js';
