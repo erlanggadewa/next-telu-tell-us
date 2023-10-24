@@ -1,20 +1,20 @@
-import {OpenAI} from 'openai'
-import {ChatCompletionMessageParam} from 'openai/resources/chat/completions'
-import {appConfig} from '@/app/config'
-import {OpenAiService} from './openai-service'
-import {SearchCognitiveService} from './search'
-import {ChatApproachContext, HistoryMessage, Message} from './types'
+import { appConfig } from '@/app/config'
+import { OpenAI } from 'openai'
+import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
+import { OpenAiService } from './openai-service'
+import { SearchCognitiveService } from './search'
+import { ChatApproachContext, HistoryMessage } from './types'
 
 const SYSTEM_MESSAGE_CHAT_CONVERSATION = `Assistant helps the student at Telkom University with support questions regarding terms of service, privacy policy, and questions about support requests. Be brief in your answers.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
-For tabular information return it as an markdown table. Do return markdown format. If the question is not in English or Indonesia, answer in the language used in the question.
+For tabular information return it as an markdown table. Do return markdown format. You should answer in the language used in the question.
 Each source has a name followed by colon and the actual information, always include the source name for each fact you use in the response. Use square brackets to reference the source, e.g. [info1.txt]. DO NOT COMBINE SOURCES, list each source separately, e.g. [info1.pdf][info2.pdf].
 {follow_up_questions_prompt}
 {injected_prompt}
 `
 
 const FOLLOW_UP_QUESTIONS_PROMPT_CONTENT = `Generate three very brief follow-up questions that the user would likely ask next about rentals.
-Use double angle brackets to reference the questions, e.g. <<Am I allowed to invite friends for a party?>>.
+Use double angle brackets to reference the questions, e.g. <<Am I allowed to invite friends for a party?>> or <<1. Am I allowed to invite friends for a party?>>.
 Try not to repeat questions that have already been asked.
 Only generate questions and do not generate any text before or after the questions, such as 'Next Questions'`
 
@@ -101,13 +101,14 @@ export class ChatApproach {
       content
     )
 
-    return this.openAiChat.completions.create({
+    const finalMsg = await this.openAiChat.completions.create({
       model: appConfig.azureOpenAiChatGptModel,
       messages: msgForGenerateAnswer,
       temperature: Number(context?.temperature ?? 0.7),
       n: 1,
-      stream: true,
-    });
+      stream: true
+    })
+    return { finalMsg, results }
   }
 
   protected getMessageHistory(
@@ -115,9 +116,9 @@ export class ChatApproach {
     userQuery: string
   ): ChatCompletionMessageParam[] {
     return [
-      {role: 'system', content: QUERY_PROMPT_TEMPLATE},
+      { role: 'system', content: QUERY_PROMPT_TEMPLATE },
       ...history,
-      {role: 'user', content: userQuery}
+      { role: 'user', content: userQuery }
     ]
   }
   protected getMessageHistoryGenerateAnswer(
@@ -127,9 +128,9 @@ export class ChatApproach {
     content: string
   ): ChatCompletionMessageParam[] {
     return [
-      {role: 'system', content: systemMessage},
+      { role: 'system', content: systemMessage },
       ...history,
-      {role: 'user', content: `${query}\n\nSources:\n${content}}`}
+      { role: 'user', content: `${query}\n\nSources:\n${content}}` }
     ]
   }
 }

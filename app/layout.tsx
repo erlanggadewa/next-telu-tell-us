@@ -2,15 +2,15 @@ import { Metadata } from 'next'
 
 import { Toaster } from 'react-hot-toast'
 
+import { appConfig } from '@/app/config'
 import '@/app/globals.css'
+import { Header } from '@/components/header'
+import { Providers } from '@/components/providers'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { fontMono, fontSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
-import { Providers } from '@/components/providers'
-import {ReactNode} from "react";
-import {headers} from "next/headers";
-import {Header} from "@/components/header";
-import {appConfig} from "@/app/config";
+import { headers } from 'next/headers'
+import { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: {
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({ children }: {children: ReactNode}) {
-  const headersList = headers();
-  const pathname = headersList.get("x-invoke-path") || "";
+export default function RootLayout({ children }: { children: ReactNode }) {
+  const headersList = headers()
+  const pathname = headersList.get('x-invoke-path') || ''
   return (
     <html lang="id" suppressHydrationWarning>
       <head />
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: {children: ReactNode}) {
         <Toaster />
         <Providers attribute="class" defaultTheme="light" enableSystem>
           <div className="flex flex-col min-h-screen">
-            {pathname != '/sign-in' ? <Header/> : <></>}
+            {pathname != '/sign-in' ? <Header /> : <></>}
             <main className="flex flex-col flex-1">{children}</main>
           </div>
           <TailwindIndicator />

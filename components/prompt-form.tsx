@@ -1,16 +1,15 @@
-import {UseChatHelpers} from 'ai/react'
+import { UseChatHelpers } from 'ai/react'
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
-import { Button, buttonVariants } from '@/components/ui/button'
-import { PaperPlaneIcon } from '@radix-ui/react-icons'
+import { Button } from '@/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
-import { cn } from '@/lib/utils'
+import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 
 export interface PromptProps
@@ -47,7 +46,7 @@ export function PromptForm({
       }}
       ref={formRef}
     >
-      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
+      <div className="relative flex flex-col w-full px-8 overflow-hidden max-h-60 grow bg-background sm:rounded-md sm:border sm:px-12">
         <Textarea
           ref={inputRef}
           tabIndex={0}
@@ -63,7 +62,7 @@ export function PromptForm({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                variant="red"
+                variant={'red'}
                 type="submit"
                 size="icon"
                 disabled={isLoading || input === ''}

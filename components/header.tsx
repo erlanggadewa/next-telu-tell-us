@@ -1,18 +1,15 @@
-import Link from 'next/link'
-import { auth } from '@/auth'
 import { clearChats } from '@/app/actions'
-import { Button } from '@/components/ui/button'
-import { Sidebar } from '@/components/sidebar'
-import { SidebarList } from '@/components/sidebar-list'
-import {
-  IconNextChat,
-  IconSeparator,
-} from '@/components/ui/icons'
-import { SidebarFooter } from '@/components/sidebar-footer'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { auth } from '@/auth'
 import { ClearHistory } from '@/components/clear-history'
+import { Sidebar } from '@/components/sidebar'
+import { SidebarFooter } from '@/components/sidebar-footer'
+import { SidebarList } from '@/components/sidebar-list'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { Button } from '@/components/ui/button'
+import { IconNextChat, IconSeparator } from '@/components/ui/icons'
 import { UserMenu } from '@/components/user-menu'
-import {Suspense} from 'react'
+import Link from 'next/link'
+import { Suspense } from 'react'
 
 export async function Header() {
   const session = await auth()
