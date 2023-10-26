@@ -1,4 +1,4 @@
-import { appConfig } from '@/app/config'
+import { appConfig } from '@/config'
 import { OpenAI } from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions'
 import { OpenAiService } from './openai-service'

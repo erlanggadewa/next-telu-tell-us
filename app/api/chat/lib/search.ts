@@ -1,5 +1,5 @@
 import { SearchClient } from '@azure/search-documents'
-import { appConfig } from '../../../config'
+import { appConfig } from '@/config'
 import { parseBoolean, removeNewlines } from '../util/string'
 import { AzureService } from './azure-service'
 import { OpenAiService } from './openai-service'

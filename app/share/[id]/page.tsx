@@ -28,10 +28,7 @@ export async function generateMetadata({
 export default async function SharePage({ params }: SharePageProps) {
   const chat = await getSharedChat(params.id)
 
-  if (!chat || !chat?.sharePath) {
-    notFound()
-  }
-
+  if (!chat || !chat?.sharePath) notFound()
   return (
     <>
       <div className="flex-1 space-y-6">

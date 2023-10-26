@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 
 import { Toaster } from 'react-hot-toast'
 
-import { appConfig } from '@/app/config'
+import { appConfig } from '@/config'
 import '@/app/globals.css'
 import { Header } from '@/components/header'
 import { Providers } from '@/components/providers'
