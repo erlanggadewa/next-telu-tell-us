@@ -1,5 +1,5 @@
 import { AzureKeyCredential, SearchClient } from '@azure/search-documents'
-import { appConfig } from '../../../config'
+import { appConfig } from '@/config'
 
 export class AzureService {
   search: SearchClient<any>

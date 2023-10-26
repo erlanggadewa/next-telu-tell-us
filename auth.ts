@@ -1,5 +1,4 @@
 import NextAuth, { type DefaultSession } from 'next-auth'
-// import GitHub from 'next-auth/providers/github'
 import GitHubProvider from 'next-auth/providers/github'
 
 declare module 'next-auth' {
@@ -14,7 +13,6 @@ declare module 'next-auth' {
 export const {
   handlers: { GET, POST },
   auth,
-  CSRF_experimental // will be removed in future
 } = NextAuth({
   providers: [
     GitHubProvider({
@@ -31,10 +29,10 @@ export const {
       return token
     },
     authorized({ auth }) {
-      return !!auth?.user // this ensures there is a logged in user for -every- request
+      return !!auth?.user
     }
   },
   pages: {
-    signIn: '/sign-in' // overrides the next-auth default signin page https://authjs.dev/guides/basics/pages
+    signIn: '/sign-in'
   }
 })
