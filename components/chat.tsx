@@ -1,6 +1,6 @@
 'use client'
 
-import {useChat, type Message} from 'ai/react'
+import {useChat, type Message, useCompletion} from 'ai/react'
 
 import {ChatList} from '@/components/chat-list'
 import {ChatMessage} from '@/components/chat-message'
@@ -11,6 +11,9 @@ import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
 import {WelcomeComponent} from "@/components/welcome";
 import {Separator} from "@/components/ui/separator";
+import {appConfig} from "@/config";
+
+const api = `${appConfig.apiUrl}/chat`
 
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
@@ -22,9 +25,13 @@ export function Chat({id, initialMessages, className}: ChatProps) {
         useChat({
             initialMessages,
             id,
+            api,
             body: {id},
+            headers: {
+                'Content-Type': 'application/json',
+            },
             onResponse: response => {
-                if (response.status === 401) toast.error(response.statusText)
+                if (response.status !== 200) toast.error(response.statusText)
             }
         })
     return (

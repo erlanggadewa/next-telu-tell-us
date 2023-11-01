@@ -15,6 +15,7 @@ export interface AppConfig {
   azureOpenAiKey: string
   azureCognitiveKey: string
   azureOpenAiApiVersion: string
+  apiUrl: string
 }
 
 export const appConfig: AppConfig = {
@@ -37,5 +38,6 @@ export const appConfig: AppConfig = {
   azureOpenAiKey: process.env.AZURE_OPENAI_API_KEY || '',
   azureCognitiveKey: process.env.AZURE_COGNITIF_API_KEY || '',
   azureOpenAiApiVersion: process.env.AZURE_OPENAI_API_VERSION || '2023-05-15',
-  appName: process.env.NEXT_PUBLIC_APP_NAME || ''
+  appName: process.env.NEXT_PUBLIC_APP_NAME || '',
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || '',
 }
