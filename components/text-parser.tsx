@@ -47,7 +47,7 @@ export function parseAnswer(
         <button
           className={ChatStyle.supContainer + ' my-0'}
           title={part}
-          // onClick={() => onCitationClicked(path)}
+          onClick={() => onCitationClicked(part)}
         >
           <sup>{citationIndex}</sup>
         </button>
