@@ -5,22 +5,11 @@ import {Separator} from "@/components/ui/separator";
 import Image from "next/image";
 import Mascot from "@/assets/svg/mascot.svg";
 
-const exampleMessages = [
-    {
-        heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
-        message: `Berikan 3 contoh tugas akhir bertema teknologi`
-    },
-    {
-        heading: 'Darimana sumber-sumber tugas akhir berasal',
-        message: 'Darimana sumber-sumber tugas akhir berasal'
-    },
-    {
-        heading: 'Rekomendasi tugas akhir tentang e-commerce',
-        message: `Rekomendasi tugas akhir tentang e-commerce`
-    }
-]
+interface WelcomeProps extends Pick<UseChatHelpers, 'setInput'> {
+    exampleMessages: { heading: string, message: string }[]
+}
 
-export function WelcomeComponent({setInput}: Pick<UseChatHelpers, 'setInput'>) {
+export function WelcomeComponent({setInput, exampleMessages}: WelcomeProps) {
     return (
         <div className="text-center">
             <Image className="mx-auto" src={Mascot} alt="Maskot"/>

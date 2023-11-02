@@ -3,7 +3,6 @@ import { appConfig } from '@/config'
 
 export class OpenAiService {
   chatClient: OpenAI
-  embeddingsClient: OpenAI
 
   constructor() {
     const openAiUrl = `https://${appConfig.azureOpenAiService}.openai.azure.com/`
@@ -17,16 +16,5 @@ export class OpenAiService {
       ...commonOptions,
       baseURL: `${openAiUrl}/openai/deployments/${appConfig.azureOpenAiChatGptDeployment}`
     })
-
-    this.embeddingsClient = new OpenAI({
-      ...commonOptions,
-      baseURL: `${openAiUrl}/openai/deployments/${appConfig.azureOpenAiEmbeddingDeployment}`
-    })
-  }
-  getChat() {
-    return this.chatClient.chat
-  }
-  getEmbeddings() {
-    return this.embeddingsClient.embeddings
   }
 }

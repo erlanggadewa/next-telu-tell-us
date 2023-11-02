@@ -45,8 +45,7 @@ export async function POST(req: Request) {
   const appendData = new experimental_StreamData()
   appendData.append({ dataPoints, citationIds })
 
-  // @ts-ignore
-  const stream = OpenAIStream(finalMsg, {
+  const stream = OpenAIStream(finalMsg as any, {
     // IMPORTANT! until this is stable, you must explicitly opt in to supporting streamData.
     experimental_streamData: true,
     onFinal(completion) {

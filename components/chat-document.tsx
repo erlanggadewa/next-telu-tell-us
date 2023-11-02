@@ -20,20 +20,20 @@ export interface ChatProps extends ComponentProps<'div'> {
 
 const exampleMessages = [
     {
-        heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
-        message: `Berikan 3 contoh tugas akhir bertema teknologi`
+        heading: 'Berikan saya ringkasan dari dokumen ini',
+        message: `Berikan saya ringkasan dari dokumen ini`
     },
     {
-        heading: 'Darimana sumber-sumber tugas akhir berasal',
-        message: 'Darimana sumber-sumber tugas akhir berasal'
+        heading: 'Apa latar belakang dokumen ini?',
+        message: 'Apa latar belakang dokumen ini?'
     },
     {
-        heading: 'Rekomendasi tugas akhir tentang e-commerce',
-        message: `Rekomendasi tugas akhir tentang e-commerce`
+        heading: 'Jelaskan pendahuluan dokumen ini',
+        message: `Jelaskan pendahuluan dokumen ini`
     }
 ]
 
-export function Chat({id, initialMessages, className}: ChatProps) {
+export function ChatDocument({id, initialMessages, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
@@ -46,7 +46,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-                <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
+                <div className="max-w-3xl px-4 mx-auto">
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
@@ -67,7 +67,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                             id={id}
                             isLoading={isLoading}
                             setInput={setInput}
-                            type="chat"
+                            type="document"
                         />
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                     </>
@@ -75,16 +75,16 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                     ''
                 )}
             </div>
-            <ChatPanel
-                id={id}
-                isLoading={isLoading}
-                stop={stop}
-                append={append}
-                reload={reload}
-                messages={messages}
-                input={input}
-                setInput={setInput}
-            />
+            {/*<ChatPanel*/}
+            {/*    id={id}*/}
+            {/*    isLoading={isLoading}*/}
+            {/*    stop={stop}*/}
+            {/*    append={append}*/}
+            {/*    reload={reload}*/}
+            {/*    messages={messages}*/}
+            {/*    input={input}*/}
+            {/*    setInput={setInput}*/}
+            {/*/>*/}
         </>
     )
 }

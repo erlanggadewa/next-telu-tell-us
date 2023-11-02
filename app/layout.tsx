@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   const headersList = headers()
   const pathname = headersList.get('x-invoke-path') || ''
+  const excludeHeader = ['/sign-in']
   return (
     <html lang="id" suppressHydrationWarning>
       <head />
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Toaster />
         <Providers attribute="class" defaultTheme="light" enableSystem>
           <div className="flex flex-col min-h-screen">
-            {pathname != '/sign-in' ? <Header /> : <></>}
+            {!excludeHeader.includes(pathname) ? <Header /> : <></>}
             <main className="flex flex-col flex-1">{children}</main>
           </div>
           <TailwindIndicator />
