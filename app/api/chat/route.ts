@@ -1,12 +1,27 @@
 import { auth } from '@/auth'
+import { appConfig } from '@/config'
 import {
   OpenAIStream,
   StreamingTextResponse,
   experimental_StreamData
 } from 'ai'
-import { ChatApproach } from './lib/chat-read-retrieve-read'
+import axios from 'axios'
+import { ChatCompletionMessageParam } from 'openai/resources'
+import { OpenAiService } from './lib/openai-service'
 
-export const runtime = 'edge'
+const api = `${appConfig.apiUrl}/chat`
+
+interface ChatResponse {
+  dataPoints: string[]
+  citationIds: string[]
+  bodyGenerateMsg: {
+    model: string
+    messages: ChatCompletionMessageParam[]
+    temperature: number
+    n: number
+    stream: boolean
+  }
+}
 
 export async function POST(req: Request) {
   const json = await req.json()
@@ -19,51 +34,27 @@ export async function POST(req: Request) {
     })
   }
 
-  const chatApproach = new ChatApproach()
-  const { finalMsg, results: dataPoitns } = await chatApproach.baseRun(
-    messages,
-    {
-      suggest_followup_questions: true,
-      retrieval_mode: 'text'
-    }
+  const data: ChatResponse = (await axios.post(api, { messages })).data
+  const { bodyGenerateMsg, dataPoints, citationIds } = data
+
+  const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
+    bodyGenerateMsg
   )
 
   // Instantiate the StreamData. It works with all API providers.
-  const data = new experimental_StreamData()
-  data.append(dataPoitns)
+  const appendData = new experimental_StreamData()
+  appendData.append({ dataPoints, citationIds })
+
+  // @ts-ignore
   const stream = OpenAIStream(finalMsg, {
     // IMPORTANT! until this is stable, you must explicitly opt in to supporting streamData.
     experimental_streamData: true,
     onFinal(completion) {
       // IMPORTANT! you must close StreamData manually or the response will never finish.
-      data.close()
+      appendData.close()
     },
-    onCompletion: completion => {
-      //     const title = json.messages[0].content.substring(0, 100)
-      //     const id = json.id ?? nanoid()
-      //     const createdAt = Date.now()
-      //     const path = `/chat/${id}`
-      //     const payload = {
-      //       id,
-      //       title,
-      //       userId,
-      //       createdAt,
-      //       path,
-      //       messages: [
-      //         ...messages,
-      //         {
-      //           content: completion,
-      //           role: 'assistant'
-      //         }
-      //       ]
-      //     }
-      //     await kv.hmset(`chat:${id}`, payload)
-      //     await kv.zadd(`user:chat:${userId}`, {
-      //       score: createdAt,
-      //       member: `chat:${id}`
-      //     })
-    }
+    onCompletion: completion => {}
   })
 
-  return new StreamingTextResponse(stream, {}, data)
+  return new StreamingTextResponse(stream, {}, appendData)
 }
