@@ -100,7 +100,7 @@ export function ChatMessage({message, noAction, setInput, isLoading, ...props}: 
                         <div>
                             Citations:
                             {citations.map((x, i) => (
-                                <a href={`/document/${x}`} key={i} target="_blank">
+                                <a href={`/chat/document/${x}`} key={i} target="_blank">
                                     <Button
                                         variant="red"
                                         full
