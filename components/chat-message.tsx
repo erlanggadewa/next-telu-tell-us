@@ -16,6 +16,7 @@ import {Button} from '@/components/ui/button'
 import {useMemo} from 'react'
 import {PluggableList} from 'react-markdown/lib/react-markdown'
 import {UseChatHelpers} from "ai/react/dist";
+import {appConfig} from "@/config";
 
 export interface ChatMessageProps {
     message: Message
@@ -26,7 +27,7 @@ export interface ChatMessageProps {
 
 export function ChatMessage({message, noAction, setInput, isLoading, ...props}: ChatMessageProps) {
     const {result, citations, followupQuestions} = useMemo(
-        () => message.role !== 'user' ? parseAnswer(message.content, () => {
+        () => message.role !== 'user' ? parseAnswer(message.content, (path) => {
         }) : {result: message.content, citations: [], followupQuestions: []},
         [message]
     )
@@ -99,12 +100,13 @@ export function ChatMessage({message, noAction, setInput, isLoading, ...props}: 
                         <div>
                             Citations:
                             {citations.map((x, i) => (
-                                <Button
-                                    variant="red"
-                                    key={i}
-                                    full
-                                    className="my-1 h-fit hover:bg-red-700"
-                                >{`${++i}. ${x}`}</Button>
+                                <a href={`/document/${x}`} key={i} target="_blank">
+                                    <Button
+                                        variant="red"
+                                        full
+                                        className="my-1 h-fit hover:bg-red-700"
+                                    >{`${++i}. ${x}`}</Button>
+                                </a>
                             ))}
                         </div>
                     )}
