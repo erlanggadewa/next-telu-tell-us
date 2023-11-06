@@ -42,16 +42,12 @@ export async function POST(req: Request) {
     )
 
     const appendData = new experimental_StreamData()
-    appendData.append(dataPoints)
-    appendData.append(citationIds)
+    appendData.append({dataPoints, citationIds})
 
     const stream = OpenAIStream(finalMsg as any, {
         experimental_streamData: true,
-        onFinal(completion) {
-            appendData.close()
-        },
-        onCompletion: completion => {
-        }
+        onFinal: () => appendData.close()
+        ,
     })
 
     return new StreamingTextResponse(stream, {}, appendData)
