@@ -35,7 +35,7 @@ export function ChatMessage({message, noAction, setInput, isLoading, ...props}: 
         <div
             className={cn(
                 'group relative mb-4 flex items-start max-w-xl',
-                message.role === 'user' ? 'flex-row-reverse w-fit ml-auto' : 'md:-ml-12'
+                message.role === 'user' ? 'flex-row-reverse w-fit ml-auto' : 'md:-ml-0.5'
             )}
             {...props}
         >
