@@ -14,38 +14,39 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
+    citationId?: string
 }
 
 const exampleMessages = [
     {
-        heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
-        message: `Berikan 3 contoh tugas akhir bertema teknologi`
+        heading: 'Berikan saya ringkasan dari dokumen ini',
+        message: `Berikan saya ringkasan dari dokumen ini`
     },
     {
-        heading: 'Darimana sumber-sumber tugas akhir berasal',
-        message: 'Darimana sumber-sumber tugas akhir berasal'
+        heading: 'Apa latar belakang dokumen ini?',
+        message: 'Apa latar belakang dokumen ini?'
     },
     {
-        heading: 'Rekomendasi tugas akhir tentang e-commerce',
-        message: `Rekomendasi tugas akhir tentang e-commerce`
+        heading: 'Jelaskan pendahuluan dokumen ini',
+        message: `Jelaskan pendahuluan dokumen ini`
     }
 ]
 
-export function Chat({id, initialMessages, className}: ChatProps) {
+export function Chat({id, initialMessages, citationId, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
-            body: {id},
+            api: '/api/chat/document',
+            body: {id, citationId},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
             }
         })
-    const [dataPoints, citationIds] = data || []
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-                <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
+                <div className="max-w-3xl px-4 mx-auto">
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
@@ -61,14 +62,15 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 </div>
                 {messages.length ? (
                     <>
-                        <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+                        <div className="relative max-w-3xl px-4 mx-auto">
                             {messages.map((message, index) => (
                                 <div key={index}>
                                     <ChatMessage
                                         setInput={setInput}
                                         message={message}
                                         isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
-                                        citationIds={citationIds}
+                                        disableFollowupQuestions
+                                        disableClickCitation
                                     />
                                 </div>
                             ))}

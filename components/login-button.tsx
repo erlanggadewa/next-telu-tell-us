@@ -22,10 +22,9 @@ export function LoginButton({
   return (
     <Button
       variant="outline"
-      onClick={() => {
+      onClick={async () => {
         setIsLoading(true)
-        // next-auth signIn() function doesn't work yet at Edge Runtime due to usage of BroadcastChannel
-        signIn('github', { callbackUrl: `/` })
+        await signIn('github', { callbackUrl: `/` })
       }}
       disabled={isLoading}
       className={cn(className)}

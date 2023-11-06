@@ -3,13 +3,12 @@ import {appConfig} from '@/config'
 import {
     OpenAIStream,
     StreamingTextResponse,
-    experimental_StreamData
 } from 'ai'
 import axios from 'axios'
 import {ChatCompletionMessageParam} from 'openai/resources'
 import {OpenAiService} from '@/lib/openai-service'
 
-const api = `${appConfig.apiUrl}/chat`
+const api = `${appConfig.apiUrl}/chat/citation`
 
 interface ChatResponse {
     dataPoints: string[]
@@ -25,7 +24,7 @@ interface ChatResponse {
 
 export async function POST(req: Request) {
     const json = await req.json()
-    const {messages} = json
+    const {messages, citationId} = json
     const userId = (await auth())?.user.id
 
     if (!userId) {
@@ -34,25 +33,14 @@ export async function POST(req: Request) {
         })
     }
 
-    const data: ChatResponse = (await axios.post(api, {messages})).data
-    const {bodyGenerateMsg, dataPoints, citationIds} = data
+    const data: ChatResponse = (await axios.post(api, {messages, citationId})).data
+    const {bodyGenerateMsg} = data
 
     const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
         bodyGenerateMsg
     )
 
-    const appendData = new experimental_StreamData()
-    appendData.append(dataPoints)
-    appendData.append(citationIds)
+    const stream = OpenAIStream(finalMsg as any)
 
-    const stream = OpenAIStream(finalMsg as any, {
-        experimental_streamData: true,
-        onFinal(completion) {
-            appendData.close()
-        },
-        onCompletion: completion => {
-        }
-    })
-
-    return new StreamingTextResponse(stream, {}, appendData)
+    return new StreamingTextResponse(stream)
 }
