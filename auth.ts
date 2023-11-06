@@ -12,7 +12,7 @@ declare module 'next-auth' {
 
 export const {
   handlers: { GET, POST },
-  auth,
+  auth
 } = NextAuth({
   providers: [
     GitHubProvider({
