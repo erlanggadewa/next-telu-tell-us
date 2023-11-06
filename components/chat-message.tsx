@@ -20,22 +20,22 @@ import Link from "next/link";
 
 export interface ChatMessageProps {
     message: Message
-    noAction?: boolean
-    disableClickCitation?: boolean
-    disableFollowUpQuestion?: boolean
+    disableAction?: boolean
     isLoading?: boolean
-    setInput?: UseChatHelpers['setInput'],
+    setInput?: UseChatHelpers['setInput']
+    disableClickCitation?: boolean
+    disableFollowupQuestions?: boolean,
     citationIds?: string[]
 }
 
 export function ChatMessage({
                                 message,
-                                noAction,
+                                disableAction,
                                 setInput,
                                 isLoading,
                                 citationIds,
-                                disableClickCitation = false,
-                                disableFollowUpQuestion = false,
+                                disableClickCitation,
+                                disableFollowupQuestions,
                                 ...props
                             }: ChatMessageProps) {
     const {result, citations, followupQuestions} = useMemo(
@@ -118,11 +118,11 @@ export function ChatMessage({
                                         variant="red"
                                         full
                                         className="my-1 h-fit hover:bg-red-700"
-                                    >{`${++i}. ${x}`}</Button>
-                                    : <Link href={{
+                                    >{`${++i}. ${x}`}</Button> :
+                                    <Link href={{
                                         pathname: `/chat/document/${x}`,
                                         query: {
-                                            citationId: citationIds ? citationIds[i] : '',
+                                            citationId: citationIds?.[i]
                                         }
                                     }} key={i} target="_blank">
                                         <Button
@@ -135,7 +135,7 @@ export function ChatMessage({
                         </div>
                     )}
 
-                    {!disableFollowUpQuestion && followupQuestions.length > 0 && (
+                    {!disableFollowupQuestions && followupQuestions.length > 0 && (
                         <div>
                             Follow-up questions:
                             {followupQuestions.map((x, i) => (
@@ -149,7 +149,7 @@ export function ChatMessage({
                         </div>
                     )}
                 </div>
-                {!noAction && message.role !== 'user' && (
+                {!disableAction && message.role !== 'user' && (
                     <ChatMessageActions message={message}/>
                 )}
             </div>

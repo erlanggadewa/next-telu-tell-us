@@ -45,9 +45,7 @@ export default async function SharePage({params}: SharePageProps) {
                 <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
                     {chat.messages.map((message, index) => (
                         <div key={index}>
-                            <ChatMessage
-                                message={message}
-                            />
+                            <ChatMessage message={message}/>
                         </div>
                     ))}
                 </div>
