@@ -3,7 +3,7 @@
 import {useChat, type Message} from 'ai/react'
 
 import {ChatMessage} from '@/components/chat-message'
-import {ChatPanel} from './chat-panel'
+import {ChatPanel} from '@/components/chat-panel'
 import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
@@ -14,8 +14,7 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
-    api: string,
-    body: any
+    citationId?: string
 }
 
 const exampleMessages = [
@@ -33,13 +32,13 @@ const exampleMessages = [
     }
 ]
 
-export function Chat({id, initialMessages, api, body, className}: ChatProps) {
+export function Chat({id, initialMessages, citationId, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
-            api: api,
-            body: {id, ...body},
+            api: '/api/chat/document',
+            body: {id, citationId},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
             }
@@ -51,7 +50,7 @@ export function Chat({id, initialMessages, api, body, className}: ChatProps) {
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
-                        noAction
+                        disableAction
                         message={{
                             role: 'system',
                             content:
@@ -70,8 +69,8 @@ export function Chat({id, initialMessages, api, body, className}: ChatProps) {
                                         setInput={setInput}
                                         message={message}
                                         isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
-                                        disableClickCitation={true}
-                                        disableFollowUpQuestion={true}
+                                        disableFollowupQuestions
+                                        disableClickCitation
                                     />
                                 </div>
                             ))}

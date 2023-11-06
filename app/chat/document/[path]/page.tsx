@@ -4,7 +4,7 @@ import {Chat} from "./components/chat";
 
 export interface DocumentPageProps {
     params: {
-        path: string,
+        path: string
     },
     searchParams?: {
         citationId: string
@@ -14,13 +14,13 @@ export interface DocumentPageProps {
 const DocumentPage = ({params, searchParams}: DocumentPageProps) => {
     const id = uuid()
     return (
-        <div className="grid grid-cols-5 gap-4 relative">
+        <div className="grid grid-cols-5 gap-4">
             <div className="col-span-2">
-                <iframe title="tes" className="w-full h-screen sticky bottom-0"
+                <iframe title="tes" className="w-full h-screen"
                         src={`${appConfig.apiUrl}/blob-storage/${params.path}`}/>
             </div>
             <div className="col-span-3">
-                <Chat api="/api/chat/document" id={id} body={{citationId: searchParams?.citationId}}/>
+                <Chat id={id} citationId={searchParams?.citationId}/>
             </div>
         </div>
     );

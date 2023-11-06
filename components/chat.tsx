@@ -49,7 +49,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
-                        noAction
+                        disableAction
                         message={{
                             role: 'system',
                             content:

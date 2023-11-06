@@ -3,7 +3,6 @@ import {appConfig} from '@/config'
 import {
     OpenAIStream,
     StreamingTextResponse,
-    experimental_StreamData
 } from 'ai'
 import axios from 'axios'
 import {ChatCompletionMessageParam} from 'openai/resources'
@@ -34,29 +33,14 @@ export async function POST(req: Request) {
         })
     }
 
-    const context = {
-        suggest_followup_questions: false,
-        semantic_ranker: true,
-        temperature: 0.7,
-        retrieval_mode: "hybrid",
-        semantic_captions: false,
-        prompt_template: null,
-        prompt_template_prefix: null,
-        prompt_template_suffix: null
-    }
-    const data: ChatResponse = (await axios.post(api, {citationId, context, messages})).data
-    const {bodyGenerateMsg, dataPoints, citationIds} = data
+    const data: ChatResponse = (await axios.post(api, {messages, citationId})).data
+    const {bodyGenerateMsg} = data
 
     const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
         bodyGenerateMsg
     )
 
-    const stream = OpenAIStream(finalMsg as any, {
-        onFinal(completion) {
-        },
-        onCompletion: completion => {
-        }
-    })
+    const stream = OpenAIStream(finalMsg as any)
 
     return new StreamingTextResponse(stream)
 }
