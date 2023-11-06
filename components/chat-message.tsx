@@ -16,16 +16,28 @@ import {Button} from '@/components/ui/button'
 import {useMemo} from 'react'
 import {PluggableList} from 'react-markdown/lib/react-markdown'
 import {UseChatHelpers} from "ai/react/dist";
-import {appConfig} from "@/config";
+import Link from "next/link";
 
 export interface ChatMessageProps {
     message: Message
     noAction?: boolean
+    disableClickCitation?: boolean
+    disableFollowUpQuestion?: boolean
     isLoading?: boolean
-    setInput?: UseChatHelpers['setInput']
+    setInput?: UseChatHelpers['setInput'],
+    citationIds?: string[]
 }
 
-export function ChatMessage({message, noAction, setInput, isLoading, ...props}: ChatMessageProps) {
+export function ChatMessage({
+                                message,
+                                noAction,
+                                setInput,
+                                isLoading,
+                                citationIds,
+                                disableClickCitation = false,
+                                disableFollowUpQuestion = false,
+                                ...props
+                            }: ChatMessageProps) {
     const {result, citations, followupQuestions} = useMemo(
         () => message.role !== 'user' ? parseAnswer(message.content, (path) => {
         }) : {result: message.content, citations: [], followupQuestions: []},
@@ -100,18 +112,30 @@ export function ChatMessage({message, noAction, setInput, isLoading, ...props}: 
                         <div>
                             Citations:
                             {citations.map((x, i) => (
-                                <a href={`/chat/document/${x}`} key={i} target="_blank">
+                                disableClickCitation ?
                                     <Button
+                                        key={i}
                                         variant="red"
                                         full
                                         className="my-1 h-fit hover:bg-red-700"
                                     >{`${++i}. ${x}`}</Button>
-                                </a>
+                                    : <Link href={{
+                                        pathname: `/chat/document/${x}`,
+                                        query: {
+                                            citationId: citationIds ? citationIds[i] : '',
+                                        }
+                                    }} key={i} target="_blank">
+                                        <Button
+                                            variant="red"
+                                            full
+                                            className="my-1 h-fit hover:bg-red-700"
+                                        >{`${++i}. ${x}`}</Button>
+                                    </Link>
                             ))}
                         </div>
                     )}
 
-                    {followupQuestions.length > 0 && (
+                    {!disableFollowUpQuestion && followupQuestions.length > 0 && (
                         <div>
                             Follow-up questions:
                             {followupQuestions.map((x, i) => (

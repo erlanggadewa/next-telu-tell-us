@@ -7,7 +7,7 @@ import {
 } from 'ai'
 import axios from 'axios'
 import { ChatCompletionMessageParam } from 'openai/resources'
-import { OpenAiService } from './lib/openai-service'
+import { OpenAiService } from '@/lib/openai-service'
 
 const api = `${appConfig.apiUrl}/chat`
 
@@ -41,15 +41,13 @@ export async function POST(req: Request) {
     bodyGenerateMsg
   )
 
-  // Instantiate the StreamData. It works with all API providers.
   const appendData = new experimental_StreamData()
-  appendData.append({ dataPoints, citationIds })
+  appendData.append(dataPoints)
+  appendData.append(citationIds)
 
   const stream = OpenAIStream(finalMsg as any, {
-    // IMPORTANT! until this is stable, you must explicitly opt in to supporting streamData.
     experimental_streamData: true,
     onFinal(completion) {
-      // IMPORTANT! you must close StreamData manually or the response will never finish.
       appendData.close()
     },
     onCompletion: completion => {}

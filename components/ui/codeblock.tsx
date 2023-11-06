@@ -44,7 +44,7 @@ export const programmingLanguages: languageMap = {
   sql: '.sql',
   html: '.html',
   css: '.css'
-  // add more file extensions here, make sure the key is same as language prop in CodeBlock.tsx component
+  // add more file extensions here, make sure the key is same as language prop in CodeBlock.tsx components
 }
 
 export const generateRandomString = (length: number, lowercase = false) => {
