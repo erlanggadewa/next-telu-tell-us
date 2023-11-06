@@ -2,13 +2,11 @@
 
 import {useChat, type Message} from 'ai/react'
 
-import {ChatList} from '@/components/chat-list'
 import {ChatMessage} from '@/components/chat-message'
-import {ChatPanel} from '@/components/chat-panel'
+import {ChatPanel} from './chat-panel'
 import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
-import {appConfig} from '@/config'
 import {cn} from '@/lib/utils'
 import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
@@ -16,6 +14,8 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
+    api: string,
+    body: any
 }
 
 const exampleMessages = [
@@ -33,12 +33,13 @@ const exampleMessages = [
     }
 ]
 
-export function ChatDocument({id, initialMessages, className}: ChatProps) {
+export function Chat({id, initialMessages, api, body, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
-            body: {id},
+            api: api,
+            body: {id, ...body},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
             }
@@ -62,29 +63,35 @@ export function ChatDocument({id, initialMessages, className}: ChatProps) {
                 </div>
                 {messages.length ? (
                     <>
-                        <ChatList
-                            messages={messages}
-                            id={id}
-                            isLoading={isLoading}
-                            setInput={setInput}
-                            type="document"
-                        />
+                        <div className="relative max-w-3xl px-4 mx-auto">
+                            {messages.map((message, index) => (
+                                <div key={index}>
+                                    <ChatMessage
+                                        setInput={setInput}
+                                        message={message}
+                                        isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
+                                        disableClickCitation={true}
+                                        disableFollowUpQuestion={true}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                     </>
                 ) : (
                     ''
                 )}
             </div>
-            {/*<ChatPanel*/}
-            {/*    id={id}*/}
-            {/*    isLoading={isLoading}*/}
-            {/*    stop={stop}*/}
-            {/*    append={append}*/}
-            {/*    reload={reload}*/}
-            {/*    messages={messages}*/}
-            {/*    input={input}*/}
-            {/*    setInput={setInput}*/}
-            {/*/>*/}
+            <ChatPanel
+                id={id}
+                isLoading={isLoading}
+                stop={stop}
+                append={append}
+                reload={reload}
+                messages={messages}
+                input={input}
+                setInput={setInput}
+            />
         </>
     )
 }
