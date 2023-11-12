@@ -3,7 +3,7 @@
 import {useChat, type Message} from 'ai/react'
 
 import {ChatMessage} from '@/components/chat-message'
-import {ChatPanel} from '@/components/chat-panel'
+import {ChatPanel} from './chat-panel'
 import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
