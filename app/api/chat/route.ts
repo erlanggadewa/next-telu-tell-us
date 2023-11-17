@@ -13,9 +13,9 @@ import {auth} from "@/auth";
 const api = `${appConfig.apiUrl}/chat`
 
 export type CitationSource = {
-    citationSource: {
-        citationId: string
-    }[]
+    citationId: string
+    sourcePage: string
+    sourceFile: string
 }
 
 interface ChatResponse {

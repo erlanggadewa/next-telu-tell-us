@@ -7,12 +7,13 @@ import {
 import axios from 'axios'
 import {ChatCompletionMessageParam} from 'openai/resources'
 import {OpenAiService} from '@/lib/openai-service'
+import {CitationSource} from "@/app/api/chat/route";
 
 const api = `${appConfig.apiUrl}/chat/citation`
 
 interface ChatResponse {
     dataPoints: string[]
-    citationIds: string[]
+    citationSource: CitationSource[]
     bodyGenerateMsg: {
         model: string
         messages: ChatCompletionMessageParam[]
