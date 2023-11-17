@@ -17,6 +17,7 @@ import {useMemo} from 'react'
 import {PluggableList} from 'react-markdown/lib/react-markdown'
 import {UseChatHelpers} from "ai/react/dist";
 import Link from "next/link";
+import {CitationSource} from "@/app/api/chat/route";
 
 export interface ChatMessageProps {
     message: Message
@@ -25,7 +26,7 @@ export interface ChatMessageProps {
     setInput?: UseChatHelpers['setInput']
     disableClickCitation?: boolean
     disableFollowupQuestions?: boolean,
-    citationIds?: { citationId: string }[]
+    citationSources?: CitationSource[]
 }
 
 export function ChatMessage({
@@ -33,7 +34,7 @@ export function ChatMessage({
                                 disableAction,
                                 setInput,
                                 isLoading,
-                                citationIds,
+                                citationSources,
                                 disableClickCitation,
                                 disableFollowupQuestions,
                                 ...props
@@ -122,7 +123,7 @@ export function ChatMessage({
                                     <Link href={{
                                         pathname: `/chat/document/${x}`,
                                         query: {
-                                            citationId: citationIds?.[i].citationId
+                                            citationId: citationSources?.[i].citationId
                                         }
                                     }} key={i} target="_blank">
                                         <Button
