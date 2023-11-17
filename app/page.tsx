@@ -1,11 +1,8 @@
 import {v4 as uuid} from 'uuid'
-import { Chat } from '@/components/chat'
+import {Chat} from '@/components/chat'
 
+export default async function IndexPage() {
+    const id = uuid()
 
-export const runtime = 'edge'
-
-export default function IndexPage() {
-  const id = uuid()
-
-  return <Chat id={id} />
+    return <Chat id={id}/>
 }
