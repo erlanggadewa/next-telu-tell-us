@@ -25,7 +25,7 @@ export interface ChatMessageProps {
     setInput?: UseChatHelpers['setInput']
     disableClickCitation?: boolean
     disableFollowupQuestions?: boolean,
-    citationIds?: string[]
+    citationIds?: { citationId: string }[]
 }
 
 export function ChatMessage({
@@ -122,7 +122,7 @@ export function ChatMessage({
                                     <Link href={{
                                         pathname: `/chat/document/${x}`,
                                         query: {
-                                            citationId: citationIds?.[i]
+                                            citationId: citationIds?.[i].citationId
                                         }
                                     }} key={i} target="_blank">
                                         <Button

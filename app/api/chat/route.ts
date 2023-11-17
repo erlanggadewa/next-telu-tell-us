@@ -7,17 +7,20 @@ import {
   experimental_StreamData
 } from 'ai'
 import axios from 'axios'
+import { NextRequest } from 'next/server'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
 const api = `${appConfig.apiUrl}/chat`
 
-interface ChatResponse {
-  dataPoints: string[]
+export type CitationSource = {
   citationSource: {
     citationId: string
-    sourcePage: string
-    sourceFile: string
   }[]
+}
+
+interface ChatResponse {
+  dataPoints: string[]
+  citationSource: CitationSource[]
   bodyGenerateMsg: {
     model: string
     messages: ChatCompletionMessageParam[]
@@ -27,7 +30,7 @@ interface ChatResponse {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const json = await req.json()
   const { messages } = json
   const userId = (await auth())?.user.id

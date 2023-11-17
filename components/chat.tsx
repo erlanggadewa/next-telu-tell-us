@@ -10,6 +10,7 @@ import {WelcomeComponent} from '@/components/welcome'
 import {cn} from '@/lib/utils'
 import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
+import {CitationSource} from "@/app/api/chat/route";
 
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
@@ -41,6 +42,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 if (response.status !== 200) toast.error(response.statusText)
             }
         })
+    const citation = data as CitationSource[] || []
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -61,12 +63,11 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 {messages.length ? (
                     <>
                         <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
-                            {messages.map((message, index) =>
-                                <div key={index}>
+                            {messages.map((message, index) => <div key={index}>
                                     <ChatMessage
                                         setInput={setInput}
                                         message={message}
-                                        citationIds={message.role === 'assistant' ? data?.[Math.floor(index / 2)]?.citationIds : []}
+                                        citationIds={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
                                         isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
                                     />
                                 </div>
