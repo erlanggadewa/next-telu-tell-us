@@ -6,7 +6,6 @@ import {FooterText} from '@/components/footer'
 import {formatDate} from '@/lib/utils'
 import {ChatMessage} from "@/components/chat-message";
 
-export const runtime = 'edge'
 export const preferredRegion = 'home'
 
 interface SharePageProps {
