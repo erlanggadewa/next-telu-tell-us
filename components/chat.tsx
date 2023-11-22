@@ -32,6 +32,11 @@ const exampleMessages = [
     }
 ]
 
+type Citation = {
+    dataPoints: string[],
+    citationSource: CitationSource[]
+}
+
 export function Chat({id, initialMessages, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
@@ -42,7 +47,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 if (response.status !== 200) toast.error(response.statusText)
             }
         })
-    const citation = data as CitationSource[] || []
+    const citation: Citation[] = data as Citation[] || []
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -67,7 +72,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                                     <ChatMessage
                                         setInput={setInput}
                                         message={message}
-                                        citationIds={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
+                                        citationSources={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
                                         isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
                                     />
                                 </div>
