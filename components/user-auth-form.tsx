@@ -32,7 +32,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     return (
         <Form {...form}>
             {error && (
-                <p>{error}</p>
+                <p className="text-red-700">{error}</p>
             )}
             <form method="POST" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
