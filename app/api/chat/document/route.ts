@@ -1,3 +1,4 @@
+import { CitationSource } from '@/app/api/chat/route'
 import { auth } from '@/auth'
 import { appConfig } from '@/config'
 import { OpenAiService } from '@/lib/openai-service'
@@ -9,11 +10,7 @@ const api = `${appConfig.apiUrl}/chat/citation`
 
 interface ChatResponse {
   dataPoints: string[]
-  citationSource: {
-    citationId: string
-    sourcePage: string
-    sourceFile: string
-  }[]
+  citationSource: CitationSource[]
   bodyGenerateMsg: {
     model: string
     messages: ChatCompletionMessageParam[]
