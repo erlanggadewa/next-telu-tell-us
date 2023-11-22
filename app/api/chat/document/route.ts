@@ -24,24 +24,25 @@ interface ChatResponse {
 }
 
 export async function POST(req: Request) {
-    const json = await req.json()
-    const {messages, citationId} = json
-    const userId = (await auth())?.user.id
+  const json = await req.json()
+  const { messages, citationId } = json
+  const userId = (await auth())?.user.id
 
-    if (!userId) {
-        return new Response('Unauthorized', {
-            status: 401
-        })
-    }
+  if (!userId) {
+    return new Response('Unauthorized', {
+      status: 401
+    })
+  }
 
-    const data: ChatResponse = (await axios.post(api, {messages, citationId})).data
-    const {bodyGenerateMsg} = data
+  const data: ChatResponse = (await axios.post(api, { messages, citationId }))
+    .data
+  const { bodyGenerateMsg } = data
 
-    const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
-        bodyGenerateMsg
-    )
+  const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
+    bodyGenerateMsg
+  )
 
-    const stream = OpenAIStream(finalMsg as any)
+  const stream = OpenAIStream(finalMsg as any)
 
-    return new StreamingTextResponse(stream)
+  return new StreamingTextResponse(stream)
 }
