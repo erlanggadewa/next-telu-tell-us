@@ -23,11 +23,12 @@ export function WelcomeComponent({setInput, exampleMessages}: WelcomeProps) {
             <p className="leading-normal text-md font-semibold">
                 Contoh Pertanyaan:
             </p>
-            <div className="mt-4 flex flex-row items-center justify-center space-x-3">
+            <div className="mt-4 flex flex-col lg:flex-row items-center justify-center lg:space-x-3 lg:space-y-0 space-y-3">
                 {exampleMessages.map((message, index) => (
                     <Button
                         key={index}
                         variant="secondary"
+                        full
                         className="h-auto p-0 text-base bg-[#F6F6F6] px-4 py-3 border shadow max-w-md"
                         onClick={() => setInput(message.message)}
                     >
