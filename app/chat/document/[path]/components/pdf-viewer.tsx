@@ -61,11 +61,13 @@ const PdfViewer = ({
             {/*    </div>*/}
             {/*</div>*/}
             {/*<Separator/>*/}
-            <h1 className="mx-12 mt-4 font-bold text-center text-md">{path}</h1>
-            <p className="mt-2 mb-4 text-sm text-justify mx-14">
-                {summary}
-                <span className="font-semibold text-gray-500 text-md">({jumlahKata} kata)</span>
-            </p>
+            <div className="container">
+                <h1 className="mt-4 font-bold text-center text-md">{path}</h1>
+                <p className="mt-2 mb-4 text-sm text-justify">
+                    {summary}
+                    <span className="font-semibold text-gray-500 text-md">({jumlahKata} kata)</span>
+                </p>
+            </div>
         </div>
     )
 }

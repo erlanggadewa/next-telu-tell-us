@@ -22,14 +22,14 @@ const DocumentPage = async ({params, searchParams}: DocumentPageProps) => {
     const id = uuid()
     const summary = await getSummary(searchParams?.citationId)
     return (
-        <div className="grid grid-cols-5 gap-4">
-            <div className="col-span-2">
+        <div className="lg:grid lg:grid-cols-5 lg:gap-4">
+            <div className="lg:col-span-2">
                 <PdfViewer
                     path={decodeURI(params.path)}
                     summary={summary}
                 />
             </div>
-            <div className="h-full col-span-3">
+            <div className="h-full lg:col-span-3">
                 <Chat id={id} citationId={searchParams?.citationId}/>
             </div>
         </div>

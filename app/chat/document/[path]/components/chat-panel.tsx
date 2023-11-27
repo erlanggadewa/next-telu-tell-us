@@ -31,9 +31,9 @@ export function ChatPanel({
                               messages
                           }: ChatPanelProps) {
     return (
-        <div className="fixed inset-x-0 bottom-0 grid grid-cols-5 gap-4">
-            <div className="col-span-2"/>
-            <div className="bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50% col-span-3">
+        <div className="fixed inset-x-0 bottom-0 lg:grid lg:grid-cols-5 lg:gap-4">
+            <div className="lg:col-span-2"/>
+            <div className="bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50% lg:col-span-3">
                 <ButtonScrollToBottom/>
                 <div className="mx-auto sm:max-w-2xl sm:px-4">
                     <div className="flex h-10 items-center justify-center">
