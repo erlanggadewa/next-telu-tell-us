@@ -4,12 +4,10 @@ import {Toaster} from 'react-hot-toast'
 
 import {appConfig} from '@/config'
 import '@/app/globals.css'
-import {Header} from '@/components/header'
 import {Providers} from '@/components/providers'
 import {TailwindIndicator} from '@/components/tailwind-indicator'
 import {fontMono, fontSans} from '@/lib/fonts'
 import {cn} from '@/lib/utils'
-import {headers} from 'next/headers'
 import {ReactNode} from 'react'
 
 export const metadata: Metadata = {
@@ -30,9 +28,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({children}: { children: ReactNode }) {
-    const headersList = headers()
-    const pathname = headersList.get('x-invoke-path') || ''
-    const excludeHeader = ['/sign-in']
     return (
         <html lang="id" suppressHydrationWarning>
         <head/>
@@ -46,8 +41,7 @@ export default function RootLayout({children}: { children: ReactNode }) {
         <Toaster/>
         <Providers attribute="class" defaultTheme="light" enableSystem>
             <div className="flex flex-col min-h-screen">
-                {!excludeHeader.includes(pathname) ? <Header/> : <></>}
-                <main className="flex flex-col flex-1">{children}</main>
+                <main>{children}</main>
             </div>
             <TailwindIndicator/>
         </Providers>

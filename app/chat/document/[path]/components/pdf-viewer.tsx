@@ -1,9 +1,7 @@
 'use client'
 
 import {appConfig} from '@/config'
-import axios from 'axios'
-import {MutableRefObject, useEffect, useRef, useState} from 'react'
-import {bl} from "@upstash/redis/zmscore-10fd3773";
+import {MutableRefObject, useEffect, useRef} from 'react'
 
 const PdfViewer = ({
                        path,
