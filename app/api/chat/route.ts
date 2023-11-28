@@ -1,4 +1,3 @@
-import { auth } from '@/auth'
 import { appConfig } from '@/config'
 import { OpenAiService } from '@/lib/openai-service'
 import {
@@ -33,13 +32,6 @@ interface ChatResponse {
 export async function POST(req: NextRequest) {
   const json = await req.json()
   const { messages } = json
-  const userId = (await auth())?.user.id
-
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
-    })
-  }
 
   const data: ChatResponse = (await axios.post(api, { messages })).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data

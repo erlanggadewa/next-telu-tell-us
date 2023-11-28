@@ -1,8 +1,13 @@
-import {v4 as uuid} from 'uuid'
-import {Chat} from '@/components/chat'
+import React from 'react';
+import Sidebar from "@/app/components/sidebar";
 
-export default async function IndexPage() {
-    const id = uuid()
+const Page = () => {
+    return (
+        <div className="grid grid-cols-5">
+            <Sidebar/>
+            <div className="col-span-4"></div>
+        </div>
+    );
+};
 
-    return <Chat id={id}/>
-}
+export default Page;
