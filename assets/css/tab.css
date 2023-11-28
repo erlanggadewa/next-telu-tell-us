@@ -1,0 +1,3 @@
+.TabsTrigger[data-state='active'] {
+    @apply bg-[#ED1E28] text-white
+}
