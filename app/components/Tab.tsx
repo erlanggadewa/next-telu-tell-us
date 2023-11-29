@@ -1,30 +1,25 @@
 "use client"
 
 import TabComponent from '@/components/ui/tab'
+import Tab1 from "@/app/components/Tabs/Tab1";
 
 const data = [
     {
-        id: 'tab1',
+        id: 1,
         name: 'Rekomendasi Buku',
-        content: () => <>Tab 1</>,
+        content: () => <Tab1 title='Rekomendasi Untuk Anda' subTitle="Rekomendasi buku tugas akhir paling disukai"/>,
         default: true
     },
     {
-        id: 'tab2',
+        id: 2,
         name: 'Tell-US Search',
-        content: () => <>Tab 2</>,
-
+        content: () => <Tab1 title='Rekomendasi Untuk Anda' subTitle="Rekomendasi buku tugas akhir paling disukai"/>,
     },
     {
-        id: 'tab3',
+        id: 3,
         name: 'Tell-US Summary',
-        content: () => <>Tab 3</>,
+        content: () => <Tab1 title='Rekomendasi Untuk Anda' subTitle="Rekomendasi buku tugas akhir paling disukai"/>,
     },
-    {
-        id: 'tab4',
-        name: 'Tell-US Summary',
-        content: () => <>Tab 4</>,
-    }
 ]
 const Tab = () => {
     return (
