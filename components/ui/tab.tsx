@@ -2,24 +2,26 @@
 
 import {Root, Trigger, List, Content} from "@radix-ui/react-tabs";
 import {Separator} from "@/components/ui/separator";
-import '@/assets/css/tab.css'
-import {createElement} from "react";
+import TabStyle from '@/assets/css/Tab.module.css'
+import {createElement, FunctionComponent} from "react";
 import {cn} from "@/lib/utils";
 
 type TabProps = {
-    id: string,
+    id: string|number,
     name: string,
-    content: () => JSX.Element,
+    content: FunctionComponent,
     default?: boolean
 }
 const Tab = ({data}: { data: TabProps[] }) => {
+    const tabDefault = data.find(tab => tab.default)?.id
     return (
-        <Root defaultValue={data.find(tab => tab.default)?.id} className="mt-4 mx-auto text-center w-fit">
-            <List className="bg-white flex rounded-xl shadow-xl border justify-center items-center">
+        <Root defaultValue={""+tabDefault} className="mt-4 text-center w-full">
+            <List className="bg-white flex rounded-xl shadow-xl border justify-center items-center w-fit mx-auto">
                 {data.map((tab, index) => (<>
-                        <Trigger value={tab.id}
+                        <Trigger value={""+tab.id}
                                  key={index}
-                                 className={cn("TabsTrigger px-6 py-1 font-semibold",
+                                 className={cn(
+                                     TabStyle.TabsTrigger,
                                      index === 0 ? 'rounded-l-xl' : '',
                                      index === data.length - 1 ? 'rounded-r-xl' : ''
                                  )}>{tab.name}</Trigger>
@@ -28,7 +30,7 @@ const Tab = ({data}: { data: TabProps[] }) => {
                 ))}
             </List>
             {data.map((tab, index) => (
-                <Content value={tab.id} key={index}>
+                <Content className="w-full border rounded-xl mt-4 shadow-xl mb-6" value={""+tab.id} key={index}>
                     {createElement(tab.content)}
                 </Content>
             ))}

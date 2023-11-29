@@ -28,7 +28,7 @@ const Sidebar = async () => {
     const pathname = headersList.get('x-invoke-path') || ''
     return (
         <div
-            className="lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900 w-full h-screen flex flex-col justify-between">
+            className="lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900 w-full h-screen lg:flex lg:flex-col lg:justify-between hidden">
             <div>
                 <Image
                     className="m-auto my-16"
@@ -61,7 +61,8 @@ const Sidebar = async () => {
                     />
                     <div className="space-y-2">
                         <p className="text-sm text-white">{session?.user.name}</p>
-                        <Button className="rounded-full bg-white text-black hover:bg-opacity-70 hover:bg-white" full>Profile</Button>
+                        <Button className="rounded-full bg-white text-black hover:bg-opacity-70 hover:bg-white"
+                                full>Profile</Button>
                     </div>
                 </div>
             </div>
