@@ -2,6 +2,11 @@
 
 import {appConfig} from '@/config'
 import {MutableRefObject, useEffect, useRef} from 'react'
+import {HeartIcon, InfoCircledIcon, StarFilledIcon, StarIcon} from "@radix-ui/react-icons";
+import {cn} from "@/lib/utils";
+import {Separator} from "@/components/ui/separator";
+import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {DialogPortal} from "@radix-ui/react-dialog";
 
 const PdfViewer = ({
                        path,
@@ -12,6 +17,8 @@ const PdfViewer = ({
 }) => {
     const iframeRef = useRef() as MutableRefObject<HTMLIFrameElement>
     const jumlahKata = summary.split(' ').length
+    const totalRating = 5
+    const rating = 3
 
     useEffect(() => {
         fetch(`${appConfig.apiUrl}/blob-storage`, {
@@ -30,42 +37,39 @@ const PdfViewer = ({
 
     return (
         <div className="sticky top-16">
-            <iframe ref={iframeRef} title={path} className="w-full h-[70vh]"/>
-            {/*<div className="flex items-center justify-between gap-4 m-4 mx-10">*/}
-            {/*    <div className="flex items-center">*/}
-            {/*        {[...Array(totalRating)].map((_, index) => index < rating ? (*/}
-            {/*                <StarFilledIcon className='text-yellow-500' key={index}/>*/}
-            {/*            ) : <StarIcon className='text-yellow-500' key={index}/>*/}
-            {/*        )}*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="flex items-center justify-between gap-4 m-4 mx-10">*/}
-            {/*    <div className="flex items-center gap-2" onClick={() => {*/}
-            {/*    }}>*/}
-            {/*        <InfoCircledIcon className='text-gray-600'/>*/}
-            {/*        <p>Lihat Informasi</p>*/}
-            {/*    </div>*/}
-            {/*    <div className="flex gap-2">*/}
-            {/*        <div className="flex items-center gap-2">*/}
-            {/*            <HeartIcon*/}
-            {/*                className={cn('text-gray-600 cursor-pointer')}*/}
-            {/*            />*/}
-            {/*            <p>123</p>*/}
-            {/*        </div>*/}
-            {/*        <div className="flex items-center gap-2">*/}
-            {/*            <DownloadIcon/>*/}
-            {/*            <p>456</p>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<Separator/>*/}
-            <div className="container">
-                <h1 className="mt-4 font-bold text-center text-md">{path}</h1>
-                <p className="mt-2 mb-4 text-sm text-justify">
-                    {summary}
-                    <span className="font-semibold text-gray-500 text-md">({jumlahKata} kata)</span>
-                </p>
-            </div>
+            <Dialog>
+                <h1 className="text-lg text-center font-semibold my-3 mx-4 overflow-auto">{path}</h1>
+                <iframe ref={iframeRef} title={path} className="w-full h-[70vh]"/>
+                <div className="flex justify-between">
+                    <div className="flex items-center m-4">
+                        {[...Array(totalRating)].map((_, index) => index < rating ? (
+                                <StarFilledIcon className='text-yellow-500' key={index}/>
+                            ) : <StarIcon className='text-yellow-500' key={index}/>
+                        )}
+                    </div>
+                    <div className="flex gap-4 m-4">
+                        <DialogTrigger asChild>
+                            <div className="flex items-center gap-2 cursor-pointer">
+                                <InfoCircledIcon className='text-gray-600'/>
+                                <p>Lihat Informasi</p>
+                            </div>
+                        </DialogTrigger>
+                        <div className="flex items-center gap-2">
+                            <HeartIcon
+                                className={cn('text-gray-600 cursor-pointer')}
+                            />
+                            <p>Sukai</p>
+                        </div>
+                    </div>
+                </div>
+                <Separator/>
+                <DialogPortal>
+                    <DialogContent>
+                        <DialogTitle>Ringkasan</DialogTitle>
+                        <DialogDescription>{summary} ({jumlahKata} kata)</DialogDescription>
+                    </DialogContent>
+                </DialogPortal>
+            </Dialog>
         </div>
     )
 }

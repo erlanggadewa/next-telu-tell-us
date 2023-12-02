@@ -23,7 +23,7 @@ const DocumentPage = async ({params, searchParams}: DocumentPageProps) => {
     const summary = await getSummary(searchParams?.citationId)
     return (
         <div className="lg:grid lg:grid-cols-5 lg:gap-4">
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 z-50">
                 <PdfViewer
                     path={decodeURI(params.path)}
                     summary={summary}
