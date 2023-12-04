@@ -29,9 +29,15 @@ interface ChatResponse {
 
 export async function POST(req: NextRequest) {
   const json = await req.json()
-  const { messages } = json
+  const { messages, id } = json
 
-  const data: ChatResponse = (await axios.post(`${appConfig.apiUrl}/chat`, { messages })).data
+  const data: ChatResponse = (await axios.post(`${appConfig.apiUrl}/chat`, {
+    id,
+    messages,
+    context: {
+      top: 5,
+    }
+  })).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
