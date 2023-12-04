@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "focus-trap-react": "^10.2.2",
+    "framer-motion": "^10.16.12",
     "nanoid": "^4.0.2",
     "next": "13.4.7-canary.1",
     "next-auth": "^4.24.5",
