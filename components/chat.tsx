@@ -8,7 +8,7 @@ import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
 import {cn} from '@/lib/utils'
-import {ComponentProps} from 'react'
+import {ComponentProps, useState} from 'react'
 import {toast} from 'react-hot-toast'
 import {CitationSource} from "@/app/api/chat/route";
 
@@ -45,7 +45,8 @@ export function Chat({id, initialMessages, className}: ChatProps) {
             body: {id},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
-            }
+            },
+            onError: (error) => toast.error(error.message)
         })
     const citation: Citation[] = data as Citation[] || []
     return (
@@ -68,12 +69,14 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                 {messages.length ? (
                     <>
                         <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
-                            {messages.map((message, index) => <div key={index}>
+                            {messages.map((message, index) =>
+                                <div key={index}>
                                     <ChatMessage
+                                        key={message.id}
                                         setInput={setInput}
                                         message={message}
                                         citationSources={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
-                                        isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
+                                        isLoading={isLoading && messages.length - 1 === index}
                                     />
                                 </div>
                             )}

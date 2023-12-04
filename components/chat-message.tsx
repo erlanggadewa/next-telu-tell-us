@@ -61,7 +61,7 @@ export function ChatMessage({
                 {message.role === 'user' ? (
                     <IconUser/>
                 ) : (
-                    <Image src={TellUsIcon} alt="Tell Us Icone"/>
+                    <Image src={TellUsIcon} alt="Tell Us Icon"/>
                 )}
             </div>
             <div
@@ -70,87 +70,88 @@ export function ChatMessage({
                     message.role === 'user' ? 'mr-3' : 'ml-3'
                 )}
             >
-                {isLoading ? 'Menelusuri...' : ''}
-                <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
-                    {message.role === 'user'
-                        ? result
-                        : <MemoizedReactMarkdown
-                            className="prose text-justify break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
-                            remarkPlugins={[remarkGfm, remarkMath]}
-                            skipHtml={true}
-                            rehypePlugins={[rehypeRaw] as PluggableList}
-                            components={{
-                                p: ({children}) => {
-                                    return <p className="mb-2 last:mb-0">{children}</p>
-                                },
-                                code: ({node, inline, className, children, ...props}) => {
-                                    if (children.length) {
-                                        if (children[0] == '▍') return (
-                                            <span className="mt-1 cursor-default animate-pulse">▍</span>)
+                {isLoading &&  message.role !== 'user' ? 'Menelusuri...' :
+                    <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
+                        {message.role === 'user'
+                            ? result
+                            : <MemoizedReactMarkdown
+                                className="prose text-justify break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                                remarkPlugins={[remarkGfm, remarkMath]}
+                                skipHtml={true}
+                                rehypePlugins={[rehypeRaw] as PluggableList}
+                                components={{
+                                    p: ({children}) => {
+                                        return <p className="mb-2 last:mb-0">{children}</p>
+                                    },
+                                    code: ({node, inline, className, children, ...props}) => {
+                                        if (children.length) {
+                                            if (children[0] == '▍') return (
+                                                <span className="mt-1 cursor-default animate-pulse">▍</span>)
 
-                                        children[0] = (children[0] as string).replace('`▍`', '▍')
-                                    }
-
-                                    const match = /language-(\w+)/.exec(className || '')
-
-                                    if (inline) return (<code className={className} {...props}>{children}</code>)
-
-                                    return (
-                                        <CodeBlock
-                                            key={Math.random()}
-                                            language={(match && match[1]) || ''}
-                                            value={String(children).replace(/\n$/, '')}
-                                            {...props}
-                                        />
-                                    )
-                                }
-                            }}
-                        >
-                            {result}
-                        </MemoizedReactMarkdown>
-                    }
-                    {citations.length > 0 && (
-                        <div>
-                            Citations:
-                            {citations.map((x, i) => (
-                                disableClickCitation ?
-                                    <Button
-                                        key={i}
-                                        variant="red"
-                                        full
-                                        className="my-1 h-fit hover:bg-red-700"
-                                    >{`${++i}. ${x}`}</Button> :
-                                    <Link href={{
-                                        pathname: `/chat/document/${x}`,
-                                        query: {
-                                            citationId: citationSources?.[i].citationId
+                                            children[0] = (children[0] as string).replace('`▍`', '▍')
                                         }
-                                    }} key={i} target="_blank">
+
+                                        const match = /language-(\w+)/.exec(className || '')
+
+                                        if (inline) return (<code className={className} {...props}>{children}</code>)
+
+                                        return (
+                                            <CodeBlock
+                                                key={Math.random()}
+                                                language={(match && match[1]) || ''}
+                                                value={String(children).replace(/\n$/, '')}
+                                                {...props}
+                                            />
+                                        )
+                                    }
+                                }}
+                            >
+                                {result}
+                            </MemoizedReactMarkdown>
+                        }
+                        {citations.length > 0 && (
+                            <div>
+                                Citations:
+                                {citations.map((x, i) => (
+                                    disableClickCitation ?
                                         <Button
+                                            key={i}
                                             variant="red"
                                             full
                                             className="my-1 h-fit hover:bg-red-700"
-                                        >{`${++i}. ${x}`}</Button>
-                                    </Link>
-                            ))}
-                        </div>
-                    )}
+                                        >{`${++i}. ${x}`}</Button> :
+                                        <Link href={{
+                                            pathname: `/chat/document/${x}`,
+                                            query: {
+                                                citationId: citationSources?.[i].citationId
+                                            }
+                                        }} key={i} target="_blank">
+                                            <Button
+                                                variant="red"
+                                                full
+                                                className="my-1 h-fit hover:bg-red-700"
+                                            >{`${++i}. ${x}`}</Button>
+                                        </Link>
+                                ))}
+                            </div>
+                        )}
 
-                    {!disableFollowupQuestions && followupQuestions.length > 0 && (
-                        <div>
-                            Follow-up questions:
-                            {followupQuestions.map((x, i) => (
-                                <Button onClick={async (e) => {
-                                    e.preventDefault()
-                                    if (setInput) setInput(x)
-                                }} key={i} full className="my-1 bg-gray-700 h-fit">
-                                    {x}
-                                </Button>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                {!disableAction && message.role !== 'user' && (
+                        {!disableFollowupQuestions && followupQuestions.length > 0 && (
+                            <div>
+                                Follow-up questions:
+                                {followupQuestions.map((x, i) => (
+                                    <Button onClick={async (e) => {
+                                        e.preventDefault()
+                                        if (setInput) setInput(x)
+                                    }} key={i} full className="my-1 bg-gray-700 h-fit">
+                                        {x}
+                                    </Button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                }
+                {!disableAction && message.role !== 'user' && !isLoading && (
                     <ChatMessageActions message={message}/>
                 )}
             </div>

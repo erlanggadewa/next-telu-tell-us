@@ -9,8 +9,6 @@ import axios from 'axios'
 import { NextRequest } from 'next/server'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
-const api = `${appConfig.apiUrl}/chat`
-
 export type CitationSource = {
   citationId: string
   sourcePage: string
@@ -33,7 +31,7 @@ export async function POST(req: NextRequest) {
   const json = await req.json()
   const { messages } = json
 
-  const data: ChatResponse = (await axios.post(api, { messages })).data
+  const data: ChatResponse = (await axios.post(`${appConfig.apiUrl}/chat`, { messages })).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
