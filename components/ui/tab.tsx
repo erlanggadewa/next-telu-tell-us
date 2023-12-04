@@ -3,7 +3,7 @@
 import {Root, Trigger, List, Content} from "@radix-ui/react-tabs";
 import {Separator} from "@/components/ui/separator";
 import TabStyle from '@/assets/css/Tab.module.css'
-import {createElement, FunctionComponent} from "react";
+import {createElement, FunctionComponent, ReactNode} from "react";
 import {cn} from "@/lib/utils";
 
 type TabProps = {
@@ -30,7 +30,7 @@ const Tab = ({data}: { data: TabProps[] }) => {
                 ))}
             </List>
             {data.map((tab, index) => (
-                <Content className="w-full border rounded-xl mt-4 shadow-xl mb-6" value={""+tab.id} key={index}>
+                <Content className="w-full border rounded-xl mt-4 shadow-xl mb-6" value={""+tab.id} key={tab.id}>
                     {createElement(tab.content)}
                 </Content>
             ))}

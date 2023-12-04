@@ -19,6 +19,11 @@ const routes = [
         path: '/chat',
         name: 'Tell-US Search',
         icon: <MagnifyingGlassIcon width={20} height={20} className="mr-3"/>
+    },
+    {
+        path: '/chat/catalog',
+        name: 'Chat Catalog',
+        icon: <MagnifyingGlassIcon width={20} height={20} className="mr-3"/>
     }
 ]
 

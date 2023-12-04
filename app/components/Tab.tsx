@@ -2,12 +2,13 @@
 
 import TabComponent from '@/components/ui/tab'
 import Tab1 from "@/app/components/Tabs/Tab1";
+import Catalog from "@/components/catalog";
 
 const data = [
     {
-        id: 1,
+        id: 'catalog',
         name: 'Rekomendasi Buku',
-        content: () => <Tab1 title='Rekomendasi Untuk Anda' subTitle="Rekomendasi buku tugas akhir paling disukai"/>,
+        content: () => <Catalog/>,
         default: true
     },
     {
@@ -23,7 +24,7 @@ const data = [
 ]
 const Tab = () => {
     return (
-        <TabComponent data={data} />
+        <TabComponent data={data}/>
     );
 };
 
