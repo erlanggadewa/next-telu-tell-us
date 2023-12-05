@@ -2,52 +2,59 @@
 
 import {useChat, type Message} from 'ai/react'
 
-import {ChatMessage} from '@/components/chat-message'
-import {ChatPanel} from './chat-panel'
+import {ChatMessage} from './chat-message'
+import {ChatPanel} from '@/components/chat-panel'
 import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
 import {cn} from '@/lib/utils'
 import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
+import {CitationSource} from "@/app/api/chat/route";
 
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
-    citationId?: string
+    api?: string
 }
 
 const exampleMessages = [
     {
-        heading: 'Berikan saya ringkasan dari dokumen ini',
-        message: `Berikan saya ringkasan dari dokumen ini`
+        heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
+        message: `Berikan 3 contoh tugas akhir bertema teknologi`
     },
     {
-        heading: 'Apa latar belakang dokumen ini?',
-        message: 'Apa latar belakang dokumen ini?'
+        heading: 'Darimana sumber-sumber tugas akhir berasal',
+        message: 'Darimana sumber-sumber tugas akhir berasal'
     },
     {
-        heading: 'Jelaskan pendahuluan dokumen ini',
-        message: `Jelaskan pendahuluan dokumen ini`
+        heading: 'Rekomendasi tugas akhir tentang e-commerce',
+        message: `Rekomendasi tugas akhir tentang e-commerce`
     }
 ]
 
-export function Chat({id, initialMessages, citationId, className}: ChatProps) {
+type Citation = {
+    dataPoints: string[],
+    citationSource: CitationSource[]
+}
+
+export function Chat({id, initialMessages, className, api}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
-            api: '/api/chat/document',
-            body: {id, citationId},
+            api,
+            body: {id},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
             },
             onError: (error) => toast.error(error.message)
         })
+    const citation: Citation[] = data as Citation[] || []
     return (
         <>
             <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-                <div className="max-w-3xl px-4 mx-auto">
+                <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
@@ -63,18 +70,18 @@ export function Chat({id, initialMessages, citationId, className}: ChatProps) {
                 </div>
                 {messages.length ? (
                     <>
-                        <div className="relative max-w-3xl px-4 mx-auto">
-                            {messages.map((message, index) => (
+                        <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+                            {messages.map((message, index) =>
                                 <div key={index}>
                                     <ChatMessage
+                                        key={message.id}
                                         setInput={setInput}
                                         message={message}
+                                        citationSources={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
                                         isLoading={isLoading && messages.length - 1 === index || index === 0}
-                                        disableFollowupQuestions
-                                        disableClickCitation
                                     />
                                 </div>
-                            ))}
+                            )}
                         </div>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                     </>

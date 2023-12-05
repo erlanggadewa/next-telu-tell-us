@@ -8,27 +8,28 @@ import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
 import {cn} from '@/lib/utils'
-import {ComponentProps, useState} from 'react'
+import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
 import {CitationSource} from "@/app/api/chat/route";
 
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
+    api?: string
 }
 
 const exampleMessages = [
     {
-        heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
-        message: `Berikan 3 contoh tugas akhir bertema teknologi`
+        heading: 'Apa itu Igracias?',
+        message: `Apa itu Igracias?`
     },
     {
-        heading: 'Darimana sumber-sumber tugas akhir berasal',
-        message: 'Darimana sumber-sumber tugas akhir berasal'
+        heading: 'Apa itu microservice?',
+        message: 'Apa itu microservice?'
     },
     {
-        heading: 'Rekomendasi tugas akhir tentang e-commerce',
-        message: `Rekomendasi tugas akhir tentang e-commerce`
+        heading: 'Kelebihan microservice',
+        message: `Kelebihan microservice`
     }
 ]
 
@@ -37,11 +38,12 @@ type Citation = {
     citationSource: CitationSource[]
 }
 
-export function Chat({id, initialMessages, className}: ChatProps) {
+export function Chat({id, initialMessages, className, api}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
+            api,
             body: {id},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
@@ -76,7 +78,7 @@ export function Chat({id, initialMessages, className}: ChatProps) {
                                         setInput={setInput}
                                         message={message}
                                         citationSources={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
-                                        isLoading={isLoading && messages.length - 1 === index}
+                                        isLoading={isLoading && messages.length - 1 === index || index === 0}
                                     />
                                 </div>
                             )}
