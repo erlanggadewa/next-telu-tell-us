@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     messages,
     context: {
       top: 5,
+      stream: true,
     }
   })).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data
