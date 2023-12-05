@@ -14,6 +14,7 @@ import {PluggableList} from 'react-markdown/lib/react-markdown'
 import {UseChatHelpers} from "ai/react/dist";
 import Link from "next/link";
 import {CitationSource} from "@/app/api/chat/route";
+import Loading from "@/components/loading";
 
 export interface ChatMessageProps {
     message: Message
@@ -61,7 +62,7 @@ export function ChatMessage({
                     message.role === 'user' ? 'mr-3' : 'ml-3'
                 )}
             >
-                {isLoading &&  message.role !== 'user' ? 'Menelusuri...' :
+                {isLoading &&  message.role !== 'user' ? <Loading/> :
                     <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
                         {message.role === 'user'
                             ? message.content
