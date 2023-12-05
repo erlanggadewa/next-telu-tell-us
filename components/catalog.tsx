@@ -1,3 +1,5 @@
+'use client'
+
 import LogoSystem from '@/assets/svg/system.svg'
 import LoadingSectionComponent from '@/components/ui/loading'
 import { Separator } from '@/components/ui/separator'
