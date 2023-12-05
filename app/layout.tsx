@@ -40,7 +40,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <Toaster />
         <Providers attribute="class" defaultTheme="light" enableSystem>
-          <div className="relative flex flex-col min-h-screen h-auto overflow-x-hidden">{children}</div>
+          <div className="relative flex flex-col h-auto min-h-screen overflow-x-hidden">
+            {children}
+          </div>
           <TailwindIndicator />
         </Providers>
       </body>
