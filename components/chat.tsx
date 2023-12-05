@@ -78,7 +78,7 @@ export function Chat({id, initialMessages, className, api}: ChatProps) {
                                         setInput={setInput}
                                         message={message}
                                         citationSources={message.role === 'assistant' ? citation?.[Math.floor(index / 2)]?.citationSource : []}
-                                        isLoading={isLoading && messages.length - 1 === index || index === 0}
+                                        isLoading={isLoading && messages?.length - 1 === index}
                                     />
                                 </div>
                             )}
