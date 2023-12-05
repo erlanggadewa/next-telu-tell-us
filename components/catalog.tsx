@@ -2,6 +2,7 @@ import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
 import LogoSystem from "@/assets/svg/system.svg";
 import Image from "next/image";
+import LoadingSectionComponent from "@/components/ui/loading";
 
 type CatalogDataType = {
     judul: string,
@@ -46,7 +47,7 @@ const Card = ({data}: {
 
 const Catalog = ({data, isLoading}: { data: CatalogType[], isLoading: boolean }) => {
     return (
-        <div className="w-full container space-y-4 py-6">
+        !isLoading ? <div className="w-full container space-y-4 py-6">
             <h2 className="uppercase text-2xl font-bold mt-6">Rekomendasi untuk anda</h2>
             <p className="text-muted-foreground">Rekomendasi buku tugas akhir yang paling disukai</p>
             <Separator className="bg-muted-foreground w-full"/>
@@ -62,7 +63,7 @@ const Catalog = ({data, isLoading}: { data: CatalogType[], isLoading: boolean })
                     </div>
                 )}
             </div>
-        </div>
+        </div> : <LoadingSectionComponent>Loading...</LoadingSectionComponent>
     );
 };
 
