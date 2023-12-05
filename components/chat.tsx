@@ -28,8 +28,8 @@ const exampleMessages = [
     message: 'Apa itu microservice?'
   },
   {
-    heading: 'Kelebihan microservice',
-    message: `Kelebihan microservice`
+    heading: 'Kelebihan microservice?',
+    message: `Kelebihan microservice?`
   }
 ]
 
