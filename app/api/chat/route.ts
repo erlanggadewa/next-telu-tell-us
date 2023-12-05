@@ -31,14 +31,17 @@ export async function POST(req: NextRequest) {
   const json = await req.json()
   const { messages, id } = json
 
-  const data: ChatResponse = (await axios.post(`${appConfig.apiUrl}/chat`, {
-    id,
-    messages,
-    context: {
-      top: 5,
-      stream: true,
-    }
-  })).data
+  const data: ChatResponse = (
+    await axios.post(`${appConfig.apiUrl}/chat`, {
+      id,
+      messages,
+      context: {
+        top: 5,
+        stream: true,
+        suggest_followup_questions: true
+      }
+    })
+  ).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
