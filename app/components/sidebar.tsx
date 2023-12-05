@@ -1,14 +1,14 @@
+"use client"
+
 import Image from "next/image";
 import TellUs from "@/assets/images/tell-us.png";
 import Link from "next/link";
 import {HomeIcon, MagnifyingGlassIcon} from "@radix-ui/react-icons";
-import {headers} from "next/headers";
 import {cn} from "@/lib/utils";
-import {auth} from "@/auth";
-import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
-import {signOut} from "next-auth/react";
-import SignoutButton from "@/app/components/signout-button";
+import {signOut, useSession} from "next-auth/react";
+import {usePathname} from "next/navigation";
+import {Button} from "@/components/ui/button";
 
 const routes = [
     {
@@ -28,10 +28,9 @@ const routes = [
     }
 ]
 
-const Sidebar = async () => {
-    const session = await auth()
-    const headersList = headers()
-    const pathname = headersList.get('x-invoke-path') || ''
+const Sidebar = () => {
+    const {data: session} = useSession()
+    const pathname = usePathname()
     return (
         <div
             className="lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900 w-full h-screen lg:flex lg:flex-col lg:justify-between hidden">
@@ -67,7 +66,9 @@ const Sidebar = async () => {
                     />
                     <div className="space-y-2">
                         <p className="text-sm text-white">{session?.user.name}</p>
-                        <SignoutButton/>
+                        <Button onClick={() => signOut()}
+                                className="rounded-full bg-white text-black hover:bg-opacity-70 hover:bg-white"
+                                full>Keluar</Button>
                     </div>
                 </div>
             </div>
