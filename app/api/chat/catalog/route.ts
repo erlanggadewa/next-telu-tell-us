@@ -6,13 +6,12 @@ import {
 } from 'ai'
 import axios from 'axios'
 import {NextRequest} from 'next/server'
-import {ChatCompletionCreateParamsNonStreaming} from "openai/src/resources/chat/completions";
 
 export async function POST(req: NextRequest) {
     const json = await req.json()
     const {messages, id} = json
 
-    const data: ChatCompletionCreateParamsNonStreaming = (await axios.post<ChatCompletionCreateParamsNonStreaming>(`${appConfig.apiUrl}/chat/catalog`, {
+    const data = (await axios.post(`${appConfig.apiUrl}/chat/catalog`, {
         id,
         messages,
         context: {
