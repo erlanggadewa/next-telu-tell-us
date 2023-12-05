@@ -1,4 +1,3 @@
-import React from 'react';
 import Sidebar from "@/app/components/sidebar";
 import Image from "next/image";
 import Robot from "@/assets/svg/robot.svg";
