@@ -6,12 +6,14 @@ import {FormControl, FormField, FormItem, FormLabel, FormMessage, Form} from "@/
 import {useForm} from "react-hook-form";
 import {signIn} from "next-auth/react";
 import {HTMLAttributes, useState} from "react";
+import Loading from "@/components/ui/loading";
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     const [error, setError] = useState<string>();
+    const [isLoading, setIsLoading] = useState(false)
     const form = useForm({
         defaultValues: {
             email: "",
@@ -20,6 +22,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     });
 
     const onSubmit = async (data: any) => {
+        setIsLoading(true)
         const result: any = await signIn('credentials', {
             email: data.email,
             password: data.password,
@@ -27,6 +30,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
         })
         if (result.error) setError(result.error)
         else location.href = '/'
+        setIsLoading(false)
     };
 
     return (
@@ -64,7 +68,15 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
                     )}
                 />
                 <Button full capitalize type="submit" variant="red" style={{marginTop: "30px"}}>
-                    Masuk
+                    {!isLoading ? 'Masuk' :
+                        <>
+                            <div className="animate-spin mr-2">
+                                <div
+                                    className="h-full w-full rounded-[50%] border-4 border-b-red-700 border-t-red-500"/>
+                            </div>
+                            Loading...
+                        </>
+                    }
                 </Button>
                 <Button type="submit" variant="link" className="text-[#3F52FF]">
                     Lupa kata sandi? Klik disini

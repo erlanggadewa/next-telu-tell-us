@@ -35,47 +35,52 @@ const Tab = () => {
                 data: await getCatalog('Bisnis')
             }
         ])) as { data: CatalogType[], isLoading: boolean }
-    const {data: dataTab2, isLoading: isLoadingTab2} = useSWR('catalog2',
-        async () => Promise.all([
-            {
-                category: 'Akuntansi',
-                data: await getCatalog('Akuntansi')
-            },
-            {
-                category: 'Sosial',
-                data: await getCatalog('Sosial')
-            }
-        ])) as { data: CatalogType[], isLoading: boolean }
-    const {data: dataTab3, isLoading: isLoadingTab3} = useSWR('catalog3',
-        async () => Promise.all([
-            {
-                category: 'Budaya',
-                data: await getCatalog('Budaya')
-            },
-            {
-                category: 'Politik',
-                data: await getCatalog('Politik')
-            }
-        ])) as { data: CatalogType[], isLoading: boolean }
+    // const {data: dataTab2, isLoading: isLoadingTab2} = useSWR('catalog2',
+    //     async () => Promise.all([
+    //         {
+    //             category: 'Akuntansi',
+    //             data: await getCatalog('Akuntansi')
+    //         },
+    //         {
+    //             category: 'Sosial',
+    //             data: await getCatalog('Sosial')
+    //         }
+    //     ])) as { data: CatalogType[], isLoading: boolean }
+    // const {data: dataTab3, isLoading: isLoadingTab3} = useSWR('catalog3',
+    //     async () => Promise.all([
+    //         {
+    //             category: 'Budaya',
+    //             data: await getCatalog('Budaya')
+    //         },
+    //         {
+    //             category: 'Politik',
+    //             data: await getCatalog('Politik')
+    //         }
+    //     ])) as { data: CatalogType[], isLoading: boolean }
     return (
-        <TabComponent data={[
-            {
-                id: 'catalog',
-                name: 'Rekomendasi Buku',
-                content: <Catalog data={dataTab1} isLoading={isLoadingTab1}/>,
-                default: true
-            },
-            {
-                id: 2,
-                name: 'Tell-US Search',
-                content: <Catalog data={dataTab2} isLoading={isLoadingTab2}/>,
-            },
-            {
-                id: 3,
-                name: 'Tell-US Summary',
-                content: <Catalog data={dataTab3} isLoading={isLoadingTab3}/>,
-            },
-        ]}/>
+        <div className="mt-4 text-center w-full">
+            <div className="bg-white flex rounded-xl shadow-xl border justify-center items-center w-full mx-auto">
+                <Catalog data={dataTab1} isLoading={isLoadingTab1}/>
+            </div>
+        </div>
+        // <TabComponent data={[
+        //     {
+        //         id: 'catalog',
+        //         name: 'Rekomendasi Buku',
+        //         content: <Catalog data={dataTab1} isLoading={isLoadingTab1}/>,
+        //         default: true
+        //     },
+        //     {
+        //         id: 2,
+        //         name: 'Tell-US Search',
+        //         content: <Catalog data={dataTab2} isLoading={isLoadingTab2}/>,
+        //     },
+        //     {
+        //         id: 3,
+        //         name: 'Tell-US Summary',
+        //         content: <Catalog data={dataTab3} isLoading={isLoadingTab3}/>,
+        //     },
+        // ]}/>
     );
 };
 
