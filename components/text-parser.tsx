@@ -19,8 +19,9 @@ export function parseAnswer(
   const followupQuestions: string[] = []
 
   // Extract any follow-up questions that might be in the answer
-  let parsedAnswer = answer.replaceAll(/<<([^>]+)>>/g, (match, content) => {
+  let parsedAnswer = answer.replaceAll(/{([^}]*)}/g, (match, content) => {
     followupQuestions.push(content)
+
     return ''
   })
 
