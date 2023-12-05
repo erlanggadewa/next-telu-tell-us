@@ -1,10 +1,10 @@
 'use client'
 
 import LogoSystem from '@/assets/svg/system.svg'
-import LoadingSectionComponent from '@/components/ui/loading'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import Link from 'next/link'
+import LoadingSectionSpinnerComponent from './ui/loading'
 
 type CatalogDataType = {
   judul: string
@@ -55,10 +55,9 @@ const Card = ({
       <Image src={LogoSystem} alt={judul} className="p-6 rounded w-28" />
       <div className="w-full space-y-1">
         <h4 className="font-semibold uppercase tex-md">{subjek}</h4>
-        <h5 className="text-sm font-semibold">{jeniskatalog}</h5>
-        <p className="text-xs">{author}</p>
+        <p className="text-sm font-semibold ">{judul}</p>
         <p className="text-xs">
-          {publisher_name} ({tahunterbit})
+          {author} ({tahunterbit})
         </p>
       </div>
     </Link>
@@ -97,7 +96,7 @@ const Catalog = ({
       </div>
     </div>
   ) : (
-    <LoadingSectionComponent>Loading...</LoadingSectionComponent>
+    <LoadingSectionSpinnerComponent>Loading...</LoadingSectionSpinnerComponent>
   )
 }
 

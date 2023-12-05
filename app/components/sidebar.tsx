@@ -2,7 +2,6 @@
 
 import TellUs from '@/assets/images/tell-us.png'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { HomeIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { signOut, useSession } from 'next-auth/react'
@@ -42,7 +41,7 @@ const Sidebar = () => {
         />
         <div className="ml-10">
           <h2 className="pl-5 text-xl font-bold text-white uppercase">Menu</h2>
-          <ul className="mt-4 space-y-4">
+          <ul className="mt-4 space-y-4 font-semibold">
             {routes.map((route, index) => (
               <li
                 key={index}
@@ -66,10 +65,9 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="container py-10 space-y-3">
-        <Separator />
         <div className="flex items-center justify-evenly">
           <img
-            className="rounded-full"
+            className="w-12 rounded-full"
             src={`https://ui-avatars.com/api/?name=${session?.user.name}`}
             alt="avatar"
           />
@@ -77,7 +75,7 @@ const Sidebar = () => {
             <p className="text-sm text-white">{session?.user.name}</p>
             <Button
               onClick={() => signOut()}
-              className="text-black bg-white rounded-full hover:bg-opacity-70 hover:bg-white"
+              className="text-black bg-white rounded-lg hover:bg-opacity-70 hover:bg-white"
               full
             >
               Keluar
