@@ -1,11 +1,14 @@
-import SignoutButton from '@/app/components/signout-button'
+'use client'
+
 import TellUs from '@/assets/images/tell-us.png'
-import { auth } from '@/auth'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { HomeIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons'
-import { headers } from 'next/headers'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const routes = [
   {
@@ -25,10 +28,9 @@ const routes = [
   }
 ]
 
-const Sidebar = async () => {
-  const session = await auth()
-  const headersList = headers()
-  const pathname = headersList.get('x-invoke-path') || ''
+const Sidebar = () => {
+  const { data: session } = useSession()
+  const pathname = usePathname()
   return (
     <div className="lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900 w-full h-screen lg:flex lg:flex-col lg:justify-between hidden">
       <div>
@@ -48,12 +50,12 @@ const Sidebar = async () => {
                   'rounded-l-full',
                   pathname == route.path
                     ? 'bg-white'
-                    : 'text-white hover:bg-white duration-75 hover:text-black'
+                    : 'text-white hover:bg-white hover:text-black'
                 )}
               >
                 <Link
                   href={route.path}
-                  className="flex items-center w-full px-5 py-3 font-semibold"
+                  className="flex items-center w-full px-5 py-3"
                 >
                   {route.icon}
                   {route.name}
@@ -64,6 +66,7 @@ const Sidebar = async () => {
         </div>
       </div>
       <div className="container py-10 space-y-3">
+        <Separator />
         <div className="flex items-center justify-evenly">
           <img
             className="rounded-full"
@@ -72,7 +75,13 @@ const Sidebar = async () => {
           />
           <div className="space-y-2">
             <p className="text-sm text-white">{session?.user.name}</p>
-            <SignoutButton />
+            <Button
+              onClick={() => signOut()}
+              className="text-black bg-white rounded-full hover:bg-opacity-70 hover:bg-white"
+              full
+            >
+              Keluar
+            </Button>
           </div>
         </div>
       </div>
