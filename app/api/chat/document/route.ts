@@ -1,5 +1,4 @@
 import { CitationSource } from '@/app/api/chat/route'
-import { auth } from '@/auth'
 import { appConfig } from '@/config'
 import { OpenAiService } from '@/lib/openai-service'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
@@ -23,16 +22,14 @@ interface ChatResponse {
 export async function POST(req: Request) {
   const json = await req.json()
   const { messages, citationId } = json
-  const userId = (await auth())?.user.id
 
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
+  const data: ChatResponse = (
+    await axios.post(api, {
+      messages,
+      citationId,
+      context: { suggest_followup_questions: false }
     })
-  }
-
-  const data: ChatResponse = (await axios.post(api, { messages, citationId }))
-    .data
+  ).data
   const { bodyGenerateMsg } = data
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(

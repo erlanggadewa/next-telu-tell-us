@@ -3,7 +3,6 @@
 import { useChat, type Message } from 'ai/react'
 
 import { CitationSource } from '@/app/api/chat/route'
-import { ChatMessage } from '@/components/chat-message'
 import { ChatPanel } from '@/components/chat-panel'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import { Separator } from '@/components/ui/separator'
@@ -11,6 +10,7 @@ import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
 import { ComponentProps } from 'react'
 import { toast } from 'react-hot-toast'
+import { ChatMessage } from './chat-message'
 
 export interface ChatProps extends ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -20,16 +20,16 @@ export interface ChatProps extends ComponentProps<'div'> {
 
 const exampleMessages = [
   {
-    heading: 'Apa itu Igracias?',
-    message: `Apa itu Igracias?`
+    heading: 'Berikan 3 contoh tugas akhir bertema teknologi',
+    message: `Berikan 3 contoh tugas akhir bertema teknologi`
   },
   {
-    heading: 'Apa itu microservice?',
-    message: 'Apa itu microservice?'
+    heading: 'Artikel mengenai web programming',
+    message: 'Artikel mengenai web programming'
   },
   {
-    heading: 'Kelebihan microservice?',
-    message: `Kelebihan microservice?`
+    heading: 'Rekomendasi tugas akhir tentang e-commerce',
+    message: `Rekomendasi tugas akhir tentang e-commerce`
   }
 ]
 
@@ -85,7 +85,10 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
                         ? citation?.[Math.floor(index / 2)]?.citationSource
                         : []
                     }
-                    isLoading={isLoading && messages?.length - 1 === index}
+                    isLoading={
+                      (isLoading && messages.length - 1 === index) ||
+                      index === 0
+                    }
                   />
                 </div>
               ))}

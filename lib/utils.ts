@@ -1,19 +1,19 @@
-import { clsx, type ClassValue } from 'clsx'
-import { customAlphabet } from 'nanoid'
-import { twMerge } from 'tailwind-merge'
-
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+import {customAlphabet} from "nanoid";
+ 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export const nanoid = customAlphabet(
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-  7
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    7
 ) // 7-character random string
 
 export async function fetcher<JSON = any>(
-  input: RequestInfo,
-  init?: RequestInit
+    input: RequestInfo,
+    init?: RequestInit
 ): Promise<JSON> {
   const res = await fetch(input, init)
 

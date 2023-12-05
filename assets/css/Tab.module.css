@@ -1,0 +1,7 @@
+.TabsTrigger {
+    @apply px-6 py-1 font-semibold
+}
+
+.TabsTrigger[data-state='active'] {
+    @apply bg-[#ED1E28] text-white
+}
