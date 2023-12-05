@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from "next/image";
 import TellUs from "@/assets/images/tell-us.png";
 import Link from "next/link";
@@ -8,6 +7,8 @@ import {cn} from "@/lib/utils";
 import {auth} from "@/auth";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
+import {signOut} from "next-auth/react";
+import SignoutButton from "@/app/components/signout-button";
 
 const routes = [
     {
@@ -66,8 +67,7 @@ const Sidebar = async () => {
                     />
                     <div className="space-y-2">
                         <p className="text-sm text-white">{session?.user.name}</p>
-                        <Button className="rounded-full bg-white text-black hover:bg-opacity-70 hover:bg-white"
-                                full>Profile</Button>
+                        <SignoutButton/>
                     </div>
                 </div>
             </div>
