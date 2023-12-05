@@ -32,7 +32,7 @@ const Sidebar = () => {
   const { data: session } = useSession()
   const pathname = usePathname()
   return (
-    <div className="lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900 w-full h-screen lg:flex lg:flex-col lg:justify-between hidden">
+    <div className="bg-gradient-to-b from-[#ED1E28] to-red-900 w-full h-screen flex flex-col lg:justify-between">
       <div>
         <Image
           className="m-auto my-16"

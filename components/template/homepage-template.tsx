@@ -10,13 +10,12 @@ import Tab from "@/app/components/Tab";
 
 const HomepageTemplate = () => {
     const [isActive, setIsActive] = useState(true)
-    console.log(isActive)
     return (
         <>
-            <div className={cn("w-64 fixed top-0 left-0 bottom-0 block", isActive ? 'lg:block' : 'lg:hidden')}>
+            <div className={cn("z-50 w-64 fixed top-0 left-0 bottom-0 hidden h-screen", isActive ? 'lg:block' : 'lg:hidden block')}>
                 <Sidebar/>
             </div>
-            <div className={cn("px-6 mb-4 ml-0", isActive ? 'lg:ml-64 ' : 'lg:ml-0 ml-64')}>
+            <div className={cn("px-6 mb-4 ml-0 overflow-y-auto", isActive ? 'lg:ml-64' : 'lg:ml-0 translate-x-64')}>
                 <div className="w-full">
                     <button className="px-2 py-3 rounded mt-1" onClick={() => setIsActive(!isActive)}>
                         <HamburgerMenuIcon/>
