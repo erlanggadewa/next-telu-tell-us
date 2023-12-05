@@ -3,6 +3,8 @@ import {appConfig} from "@/config";
 import {Separator} from "@/components/ui/separator";
 import Link from "next/link";
 import {v4 as uuid} from "uuid";
+import LogoSystem from "@/assets/svg/system.svg";
+import Image from "next/image";
 
 const getCatalog = async (category: string) => {
     const id = uuid()
@@ -34,9 +36,9 @@ const Card = ({data}: {
 }) => {
     const {judul, author, subjek, jeniskatalog, link, publisher_city, publisher_name, tahunterbit} = data
     return <Link target="_blank" href={link}
-                 className="flex items-center justify-center lg:w-[32%] border rounded px-6 py-3 gap-3">
-        <img className="basis-1/3 w-full bg-red-800" src="/" alt={judul}/>
-        <div className="basis-2/3 space-y-1">
+                 className="flex items-center justify-center lg:w-[32%] border rounded px-4 py-3 gap-3">
+        <Image src={LogoSystem} alt={judul} className="w-28 bg-red-800 p-6 rounded" />
+        <div className="w-full space-y-1">
             <h4 className="uppercase font-semibold tex-md">{subjek}</h4>
             <h5 className="text-sm font-semibold">{jeniskatalog}</h5>
             <p className="text-xs">{author}</p>
@@ -57,8 +59,8 @@ const Catalog = async () => {
     ])
     return (
         <div className="w-full container space-y-4 py-6">
-            <h2 className="uppercase text-2xl font-bold mt-6">a</h2>
-            <p className="text-muted-foreground">b</p>
+            <h2 className="uppercase text-2xl font-bold mt-6">Rekomendasi untuk anda</h2>
+            <p className="text-muted-foreground">Rekomendasi buku tugas akhir yang paling disukai</p>
             <Separator className="bg-muted-foreground w-full"/>
             <div className="text-left">
                 {data.map((e) =>
