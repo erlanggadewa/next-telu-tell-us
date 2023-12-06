@@ -64,7 +64,7 @@ const Tab = () => {
   return (
     <div className="w-full mt-4 text-center">
       <div className="flex items-center justify-center w-full mx-auto bg-white border shadow-xl rounded-xl">
-        <Catalog data={dataTab1} isLoading={isLoadingTab1} />
+        {/*<Catalog data={dataTab1} isLoading={isLoadingTab1} />*/}
       </div>
     </div>
     // <TabComponent data={[
