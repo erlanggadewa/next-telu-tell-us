@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import SkeletonPdfComponent from '@/components/ui/skeleton-pdf'
 import { appConfig } from '@/config'
 import { DialogPortal } from '@radix-ui/react-dialog'
 import { InfoCircledIcon } from '@radix-ui/react-icons'
@@ -60,16 +61,13 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
             </DialogContent>
           </DialogPortal>
         </Dialog>
+        {isLoadingPdf && <SkeletonPdfComponent />}
         <div className="h-full">
-          {/* {isLoadingPdf ? (
-            <SkeletonPdfComponent />
-          ) : ( */}
           <iframe
             ref={iframeRef}
             title={path}
             className="w-full h-full min-h-full"
           />
-          {/* )} */}
         </div>
       </div>
     </div>
