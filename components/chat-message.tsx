@@ -12,13 +12,13 @@ import Image from 'next/image'
 
 import { CitationSource } from '@/app/api/chat/route'
 import TellUsIcon from '@/assets/svg/system.svg'
-import LoadingChatComponent from '@/components/loading-chat'
 import { parseAnswer } from '@/components/text-parser'
 import { Button } from '@/components/ui/button'
 import { UseChatHelpers } from 'ai/react/dist'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { PluggableList } from 'react-markdown/lib/react-markdown'
+import LoadingDotComponent from './loading-dot'
 
 export interface ChatMessageProps {
   message: Message
@@ -76,7 +76,7 @@ export function ChatMessage({
         )}
       >
         {isLoading && message.role !== 'user' ? (
-          <LoadingChatComponent />
+          <LoadingDotComponent />
         ) : (
           <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
             {message.role === 'user' ? (

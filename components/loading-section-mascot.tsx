@@ -1,6 +1,6 @@
-import LoadingGif from '@/assets/gif/loading.gif'
-import Maskot from '@/assets/images/mascot.webp'
+import Mascot from '@/assets/images/mascot.webp'
 import Image from 'next/image'
+import LoadingDotComponent from './loading-dot'
 
 function LoadingSectionMaskotComponent({ size = 100 }: { size?: number }) {
   return (
@@ -19,8 +19,8 @@ function LoadingSectionMaskotComponent({ size = 100 }: { size?: number }) {
         style={{ width: `${size}px`, height: `${size}px` }}
         className="flex flex-col items-center justify-center h-full gap-4 m-10 "
       >
-        <Image className="mx-auto" src={Maskot} alt="Maskot" />
-        <Image className="w-52" src={LoadingGif} alt="loading..." />
+        <Image className="w-24 mx-auto" src={Mascot} alt="Maskot" />
+        <LoadingDotComponent widthAndHeightClass="w-6 h-6" />
       </div>
     </div>
   )
