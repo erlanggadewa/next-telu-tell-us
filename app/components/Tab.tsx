@@ -1,6 +1,6 @@
 'use client'
 
-import Catalog, { CatalogType } from '@/components/catalog'
+import { CatalogType } from '@/components/catalog'
 import { appConfig } from '@/config'
 import axios from 'axios'
 import useSWR from 'swr'
@@ -14,6 +14,7 @@ const getCatalog = async (category: string) => {
         id,
         query: `artikel atau buku ${category}`,
         context: {
+          semantic_ranker: true,
           retrieval_mode: 'text',
           top: 3
         }
