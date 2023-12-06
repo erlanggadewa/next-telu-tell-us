@@ -62,6 +62,7 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
             </DialogContent>
           </DialogPortal>
         </Dialog>
+
         <div className="h-full">
           {isLoadingPdf && <SkeletonPdfComponent />}
           <iframe
