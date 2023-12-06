@@ -4,7 +4,7 @@ import LogoSystem from '@/assets/svg/system.svg'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
 import Link from 'next/link'
-import LoadingSectionSpinnerComponent from './ui/loading'
+import LoadingSectionSpinnerComponent from './loading-spinner-section'
 
 type CatalogDataType = {
   judul: string

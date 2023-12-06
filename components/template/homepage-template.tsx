@@ -2,7 +2,7 @@
 
 import Tab from '@/app/components/Tab'
 import Sidebar from '@/app/components/sidebar'
-import Robot from '@/assets/svg/robot.svg'
+import Robot from '@/assets/images/robot.webp'
 import { cn } from '@/lib/utils'
 import { useWindowSize } from '@uidotdev/usehooks'
 import Image from 'next/image'
@@ -60,7 +60,7 @@ const HomepageTemplate = () => {
           </div>
 
           <div className="w-full p-6 text-center text-white lg:mt-3 lg:p-10 rounded-xl bg-gradient-to-b from-red-600 to-red-700">
-            <Image className="mx-auto" src={Robot} alt="Maskot" />
+            <Image className="w-20 mx-auto" src={Robot} alt="Maskot" />
             <h1 className="my-3 text-2xl font-semibold">
               Mau mulai aktivitas apa hari ini?
             </h1>
