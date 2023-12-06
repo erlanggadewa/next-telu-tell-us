@@ -1,12 +1,13 @@
 'use client'
 
-import LogoSystem from '@/assets/svg/system.svg'
+import OwlImg from '@/assets/images/owl.png'
 import { Separator } from '@/components/ui/separator'
-import Image from 'next/image'
-import Link from 'next/link'
 import LoadingSectionSpinnerComponent from './loading-spinner-section'
 
-type CatalogDataType = {
+import Image from 'next/image'
+import Link from 'next/link'
+
+export type CatalogDataType = {
   judul: string
   subjek: string
   author: string
@@ -47,20 +48,40 @@ const Card = ({
     tahunterbit
   } = data
   return (
-    <Link
-      target="_blank"
-      href={link}
-      className="flex items-center justify-center w-full gap-3 px-4 py-3 border rounded"
-    >
-      <Image src={LogoSystem} alt={judul} className="p-6 rounded w-28" />
-      <div className="w-full space-y-1">
-        <h4 className="font-semibold uppercase tex-md">{subjek}</h4>
-        <p className="text-sm font-semibold ">{judul}</p>
-        <p className="text-xs">
-          {author} ({tahunterbit})
-        </p>
+    <div className="flex flex-col items-stretch justify-between h-full text-gray-700 bg-gray-100 shadow-md ring ring-gray-300 bg-clip-border rounded-xl">
+      <div>
+        <div className="relative mx-4 mt-4 overflow-hidden text-white bg-white shadow-lg bg-clip-border rounded-xl shadow-gray-500/40">
+          <Image
+            src={OwlImg}
+            alt={judul}
+            className="max-w-[9rem] m-auto p-6 rounded"
+          />
+        </div>
+        <div className="flex flex-col justify-between px-6 mt-6 ">
+          <p className="block font-sans text-base antialiased font-bold leading-snug tracking-normal capitalize ">
+            {subjek.toLowerCase()}
+          </p>
+
+          <p className="block mt-2 font-sans text-base antialiased font-semibold leading-relaxed capitalize text-inherit ">
+            {judul.toLowerCase()}
+          </p>
+          <p className="block mt-2 font-sans text-sm antialiased leading-relaxed capitalize text-inherit ">
+            {author.toLowerCase()} ({tahunterbit})
+          </p>
+        </div>
       </div>
-    </Link>
+
+      <div className="p-6 pt-0 mt-4">
+        <Link target="_blank" href={link} className="">
+          <button
+            className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-red-500 text-white shadow-md shadow-red-500/10 hover:shadow-lg hover:shadow-red-500/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+            type="button"
+          >
+            More Detail
+          </button>
+        </Link>
+      </div>
+    </div>
   )
 }
 
@@ -68,7 +89,7 @@ const Catalog = ({
   data,
   isLoading
 }: {
-  data: CatalogType[]
+  data: CatalogDataType[]
   isLoading: boolean
 }) => {
   return !isLoading ? (
@@ -78,20 +99,14 @@ const Catalog = ({
           Rekomendasi untuk anda
         </h2>
         <p className="font-semibold text-gray-600">
-          Rekomendasi buku tugas akhir yang paling disukai
+          Rekomendasi bacaan di Open Library Telkom University yang dapat anda
+          baca
         </p>
       </div>
       <Separator className="w-full bg-gray-300 " />
-      <div className="text-left">
+      <div className="grid gap-3 text-left md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
         {data?.map(e => (
-          <div key={e.category} className="mt-5">
-            <h3 className="text-xl font-bold uppercase">{e.category}</h3>
-            <div className="grid gap-4 mt-4 md:grid-cols-2 xl:grid-cols-3">
-              {e.data.map((e2: any) => (
-                <Card key={e2.category} data={e2} />
-              ))}
-            </div>
-          </div>
+          <Card data={e} key={e.judul} />
         ))}
       </div>
     </div>
