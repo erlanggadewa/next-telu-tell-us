@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import LoadingSectionSpinnerComponent from './loading-spinner-section'
 
-type CatalogDataType = {
+export type CatalogDataType = {
   judul: string
   subjek: string
   author: string
@@ -68,7 +68,7 @@ const Catalog = ({
   data,
   isLoading
 }: {
-  data: CatalogType[]
+  data: CatalogDataType[]
   isLoading: boolean
 }) => {
   return !isLoading ? (
@@ -82,15 +82,13 @@ const Catalog = ({
         </p>
       </div>
       <Separator className="w-full bg-gray-300 " />
-      <div className="text-left">
+      <div className="text-left grid grid-cols-3 gap-3">
         {data?.map(e => (
-          <div key={e.category} className="mt-5">
-            <h3 className="text-xl font-bold uppercase">{e.category}</h3>
-            <div className="grid gap-4 mt-4 md:grid-cols-2 xl:grid-cols-3">
-              {e.data.map((e2: any) => (
-                <Card key={e2.category} data={e2} />
-              ))}
-            </div>
+          <div key={e.judul} className="mt-5">
+            {/*<h3 className="text-xl font-bold uppercase">{e.category}</h3>*/}
+            {/*<div className="grid gap-4 mt-4 md:grid-cols-2 xl:grid-cols-3">*/}
+              <Card data={e}/>
+            {/*</div>*/}
           </div>
         ))}
       </div>
