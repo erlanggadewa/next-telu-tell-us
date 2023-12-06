@@ -1,8 +1,7 @@
-import LoadingGif from '@/assets/gif/loading.gif'
-import Image from 'next/image'
+import LoadingDotComponent from './loading-dot'
 
 const LoadingChatComponent = () => {
-  return <Image className="w-44" src={LoadingGif} alt="loading..." />
+  return <LoadingDotComponent />
 }
 
 export default LoadingChatComponent

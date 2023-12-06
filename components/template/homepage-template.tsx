@@ -2,7 +2,7 @@
 
 import Tab from '@/app/components/Tab'
 import Sidebar from '@/app/components/sidebar'
-import Robot from '@/assets/svg/robot.svg'
+import Robot from '@/assets/images/robot.webp'
 import { cn } from '@/lib/utils'
 import { useWindowSize } from '@uidotdev/usehooks'
 import Image from 'next/image'
@@ -26,38 +26,41 @@ const HomepageTemplate = () => {
       </div>
       <div
         className={cn(
-          'px-6 mb-4 ml-0 overflow-y-auto',
-          isActive ? 'lg:ml-64' : 'lg:ml-0 translate-x-64'
+          'px-6 my-4 ml-0 overflow-y-auto',
+          isActive ? 'lg:ml-64' : 'lg:ml-0'
         )}
       >
         <div className="w-full">
-          <button
-            onClick={() => setIsActive(!isActive)}
-            data-collapse-toggle="navbar-default"
-            type="button"
-            className="inline-flex items-center justify-center w-10 h-10 p-2 my-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 lg:hidden"
-            aria-controls="navbar-default"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+          <div className="fixed z-[9999] top-7 right-10">
+            <button
+              onClick={() => setIsActive(!isActive)}
+              data-collapse-toggle="navbar-default"
+              type="button"
+              className="inline-flex items-center justify-center w-10 h-10 p-2 my-3 text-sm text-gray-500 bg-gray-100 border-2 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none ring-gray-400 ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 lg:hidden"
+              aria-controls="navbar-default"
+              aria-expanded="false"
             >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
+              <span className="sr-only">Open main menu</span>
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
+          </div>
+
           <div className="w-full p-6 text-center text-white lg:mt-3 lg:p-10 rounded-xl bg-gradient-to-b from-red-600 to-red-700">
-            <Image className="mx-auto" src={Robot} alt="Maskot" />
+            <Image className="w-20 mx-auto" src={Robot} alt="Maskot" />
             <h1 className="my-3 text-2xl font-semibold">
               Mau mulai aktivitas apa hari ini?
             </h1>

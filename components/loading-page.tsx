@@ -1,6 +1,7 @@
-import LoadingGif from '@/assets/gif/loading.gif'
-import Maskot from '@/assets/svg/mascot.svg'
+import Mascot from '@/assets/images/mascot.webp'
+
 import Image from 'next/image'
+import LoadingDotComponent from './loading-dot'
 
 function LoadingFullComponent({ size = 100 }: { size?: number }) {
   return (
@@ -16,8 +17,8 @@ function LoadingFullComponent({ size = 100 }: { size?: number }) {
     // </div>
     <div className="fixed bottom-0 left-0 right-0 top-0 z-[9999999] h-screen w-screen bg-white">
       <div className="flex flex-col items-center justify-center h-full">
-        <Image className="mx-auto" src={Maskot} alt="Maskot" />
-        <Image className="w-52" src={LoadingGif} alt="loading..." />
+        <Image className="w-24 mx-auto " src={Mascot} alt="Maskot" />
+        <LoadingDotComponent widthAndHeightClass="w-6 h-6" />
       </div>
     </div>
   )
