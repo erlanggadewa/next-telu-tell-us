@@ -31,58 +31,63 @@ const Sidebar = () => {
   const { data: session } = useSession()
   const pathname = usePathname()
   return (
-    <div className="bg-gradient-to-b from-[#ED1E28] to-red-900 w-full h-screen flex flex-col lg:justify-between overflow-auto">
-      <div>
-        <Image
-          className="m-auto my-16"
-          src={TellUs}
-          alt="logo tell-us"
-          width={200}
-        />
-        <div className="ml-10">
-          <h2 className="pl-5 text-xl font-bold text-white uppercase">Menu</h2>
-          <ul className="mt-4 space-y-4 font-semibold">
-            {routes.map((route, index) => (
-              <li
-                key={index}
-                className={cn(
-                  'rounded-l-full',
-                  pathname == route.path
-                    ? 'bg-white'
-                    : 'text-white hover:bg-white hover:text-black'
-                )}
-              >
-                <Link
-                  href={route.path}
-                  className="flex items-center w-full px-5 py-3"
-                >
-                  {route.icon}
-                  {route.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="container py-10 space-y-3">
-        <div className="flex items-center justify-evenly">
-          <img
-            className="w-12 rounded-full"
-            src={`https://ui-avatars.com/api/?name=${session?.user.name}`}
-            alt="avatar"
+    <div className="fixed inset-0 grid w-full grid-cols-2 lg:relative lg:block lg:grid-cols-none">
+      <div className="flex flex-col justify-between w-full h-screen overflow-auto shadow-md bg-gradient-to-r from-red-600 to-red-700">
+        <div>
+          <Image
+            className="m-auto my-16"
+            src={TellUs}
+            alt="logo tell-us"
+            width={200}
           />
-          <div className="space-y-2">
-            <p className="text-sm text-white">{session?.user.name}</p>
-            <Button
-              onClick={() => signOut()}
-              className="text-black bg-white rounded-lg hover:bg-opacity-70 hover:bg-white"
-              full
-            >
-              Keluar
-            </Button>
+          <div className="ml-10">
+            <h2 className="pl-5 text-xl font-bold text-white uppercase">
+              Menu
+            </h2>
+            <ul className="mt-4 space-y-4 font-semibold">
+              {routes.map((route, index) => (
+                <li
+                  key={index}
+                  className={cn(
+                    'rounded-l-full',
+                    pathname == route.path
+                      ? 'bg-white'
+                      : 'text-white hover:bg-white hover:text-black delay-75 '
+                  )}
+                >
+                  <Link
+                    href={route.path}
+                    className="flex items-center w-full px-5 py-3"
+                  >
+                    {route.icon}
+                    {route.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="container py-10 space-y-3">
+          <div className="flex items-center">
+            <img
+              className="w-12 rounded-full"
+              src={`https://ui-avatars.com/api/?name=${session?.user.name}`}
+              alt="avatar"
+            />
+            <div className="ml-6 space-y-2">
+              <p className="text-sm text-white">{session?.user.name}</p>
+              <Button
+                onClick={() => signOut()}
+                className="text-black bg-white rounded-lg hover:bg-opacity-70 hover:bg-white"
+                full
+              >
+                Keluar
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+      <div className="w-full h-full bg-gray-400 rounded-md lg:hidden bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 "></div>
     </div>
   )
 }
