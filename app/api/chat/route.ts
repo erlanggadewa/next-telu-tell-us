@@ -10,9 +10,9 @@ import { NextRequest } from 'next/server'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
 export type CitationSource = {
-  citationId: string
-  sourcePage: string
-  sourceFile: string
+    citationId: string
+    sourcePage: string
+    sourceFile: string
 }
 
 interface ChatResponse {
