@@ -1,6 +1,6 @@
 'use client'
 
-import Catalog, { CatalogType } from '@/components/catalog'
+import { CatalogType } from '@/components/catalog'
 import { appConfig } from '@/config'
 import axios from 'axios'
 import useSWR from 'swr'
@@ -14,6 +14,7 @@ const getCatalog = async (category: string) => {
         id,
         query: `artikel atau buku ${category}`,
         context: {
+          semantic_ranker: true,
           retrieval_mode: 'text',
           top: 3
         }
@@ -64,7 +65,7 @@ const Tab = () => {
   return (
     <div className="w-full mt-4 text-center">
       <div className="flex items-center justify-center w-full mx-auto bg-white border shadow-xl rounded-xl">
-        <Catalog data={dataTab1} isLoading={isLoadingTab1} />
+        {/*<Catalog data={dataTab1} isLoading={isLoadingTab1} />*/}
       </div>
     </div>
     // <TabComponent data={[

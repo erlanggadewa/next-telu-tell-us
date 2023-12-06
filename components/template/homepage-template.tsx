@@ -1,19 +1,59 @@
 'use client'
 
-import Tab from '@/app/components/Tab'
 import Sidebar from '@/app/components/sidebar'
 import Robot from '@/assets/images/robot.webp'
+import Catalog from '@/components/catalog'
+import { appConfig } from '@/config'
 import { cn } from '@/lib/utils'
 import { useWindowSize } from '@uidotdev/usehooks'
+import axios from 'axios'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import useSWR from 'swr'
+import { v4 as uuid } from 'uuid'
+
+const getCatalog = async ([search, limit]: [string, number]) => {
+  const id = uuid()
+  try {
+    return (
+      await axios.post(`${appConfig.apiUrl}/catalog/homepage`, {
+        id,
+        query: `artikel atau buku ${search}`,
+        context: {
+          semantic_ranker: true,
+          retrieval_mode: 'text',
+          top: limit
+        }
+      })
+    ).data
+  } catch (error: any) {
+    throw new Error(error.message)
+  }
+}
 
 const HomepageTemplate = () => {
   const [isActive, setIsActive] = useState(true)
+  const [search, setSearch] = useState(
+    'Karya Ilmiah - Skripsi (S1) - Reference'
+  )
+  const [tempSearch, setTempSearch] = useState('')
+  const [limit, setLimit] = useState(6)
+  const [limitInputUser, setLimitInputuser] = useState(limit)
   const size = useWindowSize()
+
   useEffect(() => {
     if (size.width ?? 0 > 1024) setIsActive(true)
   }, [size])
+
+  const { data: dataTab1, isLoading: isLoadingTab1 } = useSWR(
+    [search, limit],
+    getCatalog
+  )
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTempSearch(event.target.value)
+  }
+
   return (
     <>
       <div
@@ -26,7 +66,7 @@ const HomepageTemplate = () => {
       </div>
       <div
         className={cn(
-          'px-6 my-4 ml-0 overflow-y-auto',
+          'px-6 py-6 ml-0 overflow-y-auto h-screen ',
           isActive ? 'lg:ml-64' : 'lg:ml-0'
         )}
       >
@@ -59,7 +99,7 @@ const HomepageTemplate = () => {
             </button>
           </div>
 
-          <div className="w-full p-6 text-center text-white lg:mt-3 lg:p-10 rounded-xl bg-gradient-to-b from-red-600 to-red-700">
+          <div className="w-full p-6 text-center text-white lg:p-10 rounded-xl bg-gradient-to-b from-red-600 to-red-700">
             <Image className="w-20 mx-auto" src={Robot} alt="Maskot" />
             <h1 className="my-3 text-2xl font-semibold">
               Mau mulai aktivitas apa hari ini?
@@ -68,18 +108,67 @@ const HomepageTemplate = () => {
               Bergabunglah dengan ratusan mahasiswa, dosen dan peneliti untuk
               segera menjawab pertanyaan dan memahami penelitian dengan AI.
             </p>
-            {/*<div className="relative flex mx-auto text-black shadow-xl bg-background rounded-xl lg:w-4/5">*/}
-            {/*    <select className="px-3 py-2 border-r-2 rounded-l-xl basis-1/5 ">*/}
-            {/*        <option selected disabled>Pencarian Ai anda</option>*/}
-            {/*    </select>*/}
-            {/*    <input className="w-full px-3 py-2 rounded-r-xl basis-4/5"*/}
-            {/*           placeholder="Cari aktivitas atau konten yang anda inginkan"/>*/}
-            {/*    <div className="absolute right-3 top-1">*/}
-            {/*        <MagnifyingGlassIcon width={30} height={30}/>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+
+            <div className="relative flex mx-auto text-black shadow-xl bg-background rounded-xl lg:w-4/5">
+              <select
+                className="px-3 py-2 font-sans font-semibold border-r-2 rounded-l-xl basis-1/5 outline-0"
+                onChange={event =>
+                  setLimitInputuser(+event.currentTarget.value)
+                }
+              >
+                <option selected disabled>
+                  Total Pencarian Ai
+                </option>
+                {[3, 6, 9, 12, 15].map(e => (
+                  <option key={e} value={e}>
+                    {e} Pencarian
+                  </option>
+                ))}
+              </select>
+              <div className="relative w-full">
+                <input
+                  onChange={handleChange}
+                  onKeyDown={event => {
+                    if (event.key === 'Enter') {
+                      setSearch(tempSearch)
+                      setLimit(limitInputUser)
+                    }
+                  }}
+                  className="w-full px-3 py-2 focus:outline-0 rounded-r-xl basis-4/5 "
+                  placeholder="Cari aktivitas atau konten yang anda inginkan"
+                />
+                <button
+                  onClick={() => {
+                    setSearch(tempSearch)
+                    setLimit(limitInputUser)
+                  }}
+                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-600 rounded-e-lg border-2 border-white focus:bg-red-600 "
+                >
+                  <svg
+                    className="w-4 h-4 "
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                  <span className="sr-only">Search</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <Tab />
+          <div className="w-full mt-4 text-center">
+            <div className="flex items-center justify-center w-full mx-auto bg-white border shadow-xl rounded-xl">
+              <Catalog data={dataTab1} isLoading={isLoadingTab1} />
+            </div>
+          </div>
         </div>
       </div>
     </>
