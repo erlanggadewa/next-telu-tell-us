@@ -16,12 +16,10 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react'
 const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
   const iframeRef = useRef() as MutableRefObject<HTMLIFrameElement>
   const jumlahKata = summary.split(' ').length
-  const [isLoadingPdf, setLoadingPdf] = useState(true)
-
-  const totalRating = 5
-  const rating = 3
+  const [isLoadingPdf, setLoadingPdf] = useState(false)
 
   useEffect(() => {
+    setLoadingPdf(true)
     fetch(`${appConfig.apiUrl}/blob-storage`, {
       method: 'POST',
       headers: {
@@ -32,10 +30,8 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
       })
     })
       .then(r => r.blob())
-      .then(b => {
-        setLoadingPdf(false)
-        return (iframeRef.current.src = URL.createObjectURL(b))
-      })
+      .then(b => (iframeRef.current.src = URL.createObjectURL(b)))
+      .finally(() => setLoadingPdf(false))
       .catch(e => console.error(e))
   }, [path])
 
