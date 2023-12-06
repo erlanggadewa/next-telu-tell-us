@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import SkeletonPdfComponent from '@/components/ui/skeleton-pdf'
 import { appConfig } from '@/config'
+import { cn } from '@/lib/utils'
 import { DialogPortal } from '@radix-ui/react-dialog'
 import { InfoCircledIcon } from '@radix-ui/react-icons'
 import { MutableRefObject, useEffect, useRef, useState } from 'react'
@@ -16,12 +17,10 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react'
 const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
   const iframeRef = useRef() as MutableRefObject<HTMLIFrameElement>
   const jumlahKata = summary.split(' ').length
-  const [isLoadingPdf, setLoadingPdf] = useState(true)
-
-  const totalRating = 5
-  const rating = 3
+  const [isLoadingPdf, setLoadingPdf] = useState(false)
 
   useEffect(() => {
+    setLoadingPdf(true)
     fetch(`${appConfig.apiUrl}/blob-storage`, {
       method: 'POST',
       headers: {
@@ -32,10 +31,8 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
       })
     })
       .then(r => r.blob())
-      .then(b => {
-        setLoadingPdf(false)
-        return (iframeRef.current.src = URL.createObjectURL(b))
-      })
+      .then(b => (iframeRef.current.src = URL.createObjectURL(b)))
+      .finally(() => setLoadingPdf(false))
       .catch(e => console.error(e))
   }, [path])
 
@@ -65,16 +62,14 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
             </DialogContent>
           </DialogPortal>
         </Dialog>
+
         <div className="h-full">
-          {isLoadingPdf ? (
-            <SkeletonPdfComponent />
-          ) : (
-            <iframe
-              ref={iframeRef}
-              title={path}
-              className="w-full h-full min-h-full"
-            />
-          )}
+          {isLoadingPdf && <SkeletonPdfComponent />}
+          <iframe
+            ref={iframeRef}
+            title={path}
+            className={cn('w-full h-full min-h-full', isLoadingPdf && 'hidden')}
+          />
         </div>
       </div>
     </div>
