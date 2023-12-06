@@ -10,9 +10,9 @@ import { NextRequest } from 'next/server'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
 export type CitationSource = {
-    citationId: string
-    sourcePage: string
-    sourceFile: string
+  citationId: string
+  sourcePage: string
+  sourceFile: string
 }
 
 interface ChatResponse {
@@ -36,8 +36,11 @@ export async function POST(req: NextRequest) {
       id,
       messages,
       context: {
+        retrieval_mode: 'hybrid',
+        semantic_ranker: true,
         top: 5,
         stream: true,
+        semantic_captions: true,
         suggest_followup_questions: true
       }
     })
