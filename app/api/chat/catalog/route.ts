@@ -15,7 +15,6 @@ export async function POST(req: NextRequest) {
       context: {
         context: {
           semantic_ranker: true,
-          semantic_captions: true,
           stream: false,
           top: 5
         }
