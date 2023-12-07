@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
       context: {
         retrieval_mode: 'hybrid',
         semantic_ranker: true,
+        semantic_captions: false,
         top: 5,
         stream: true,
         suggest_followup_questions: true
