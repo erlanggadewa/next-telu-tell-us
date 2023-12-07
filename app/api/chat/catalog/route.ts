@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
       }
     })
   ).data
-  console.log('🚀 ~ file: route.ts:25 ~ POST ~ data:', data)
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
     data
