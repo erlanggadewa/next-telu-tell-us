@@ -71,7 +71,7 @@ const HomepageTemplate = () => {
         )}
       >
         <div className="w-full">
-          <div className="fixed z-[9999] top-7 right-10">
+          <div className="fixed z-[9999] top-7 right-14">
             <button
               onClick={() => setIsActive(!isActive)}
               data-collapse-toggle="navbar-default"
@@ -90,9 +90,9 @@ const HomepageTemplate = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 />
               </svg>
@@ -116,7 +116,7 @@ const HomepageTemplate = () => {
                   setLimitInputuser(+event.currentTarget.value)
                 }
               >
-                <option selected disabled>
+                <option defaultChecked disabled>
                   Total Pencarian Ai
                 </option>
                 {[3, 6, 9, 12, 15].map(e => (
@@ -153,9 +153,9 @@ const HomepageTemplate = () => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
                   </svg>

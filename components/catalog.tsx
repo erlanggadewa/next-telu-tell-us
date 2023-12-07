@@ -1,11 +1,10 @@
 'use client'
 
 import OwlImg from '@/assets/images/owl.png'
-import { Separator } from '@/components/ui/separator'
-import LoadingSectionSpinnerComponent from './loading-spinner-section'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import SkeletonCardComponent from './skeleton-card'
 
 export type CatalogDataType = {
   judul: string
@@ -92,7 +91,7 @@ const Catalog = ({
   data: CatalogDataType[]
   isLoading: boolean
 }) => {
-  return !isLoading ? (
+  return (
     <div className="container w-full py-6 space-y-4">
       <div className="mt-4 mb-8">
         <h2 className="text-2xl font-bold uppercase ">
@@ -103,15 +102,15 @@ const Catalog = ({
           baca
         </p>
       </div>
-      <Separator className="w-full bg-gray-300 " />
+      {/* <Separator className="w-full bg-gray-300 " /> */}
       <div className="grid gap-3 text-left md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
-        {data?.map(e => (
-          <Card data={e} key={e.judul} />
-        ))}
+        {!isLoading
+          ? data?.map(e => <Card data={e} key={e.judul} />)
+          : new Array(3)
+              .fill(null)
+              .map((e, i) => <SkeletonCardComponent key={i} />)}
       </div>
     </div>
-  ) : (
-    <LoadingSectionSpinnerComponent>Loading...</LoadingSectionSpinnerComponent>
   )
 }
 

@@ -24,6 +24,13 @@ export const metadata: Metadata = {
     icon: '/system.png',
     shortcut: '/system.png',
     apple: '/system.png'
+  },
+  openGraph: {
+    title: 'Telkom University Tell us',
+    description: 'Robot AI Tell-US Search',
+    siteName: 'Telu Tell Us',
+    locale: 'id_ID',
+    type: 'website'
   }
 }
 
