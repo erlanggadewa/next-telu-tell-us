@@ -115,8 +115,9 @@ const HomepageTemplate = () => {
                 onChange={event =>
                   setLimitInputuser(+event.currentTarget.value)
                 }
+                defaultValue="disabledOption"
               >
-                <option defaultChecked disabled>
+                <option value="disabledOption" defaultChecked={true} disabled>
                   Total Pencarian Ai
                 </option>
                 {[3, 6, 9, 12, 15].map(e => (
