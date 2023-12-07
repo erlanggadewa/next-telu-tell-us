@@ -40,7 +40,6 @@ export async function POST(req: NextRequest) {
         semantic_ranker: true,
         top: 5,
         stream: true,
-        semantic_captions: true,
         suggest_followup_questions: true
       }
     })
