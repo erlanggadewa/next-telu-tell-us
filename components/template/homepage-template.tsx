@@ -109,9 +109,9 @@ const HomepageTemplate = () => {
               segera menjawab pertanyaan dan memahami penelitian dengan AI.
             </p>
 
-            <div className="relative flex mx-auto text-black shadow-xl bg-background rounded-xl lg:w-4/5">
+            <div className="relative flex flex-col mx-auto text-black shadow-xl md:flex-row bg-background rounded-xl lg:w-4/5">
               <select
-                className="px-3 py-2 font-sans font-semibold border-r-2 rounded-l-xl basis-1/5 outline-0"
+                className="px-3 py-2 font-sans font-semibold border-r-2 rounded-t-xl md:rounded-tr-none rounded-l-xl basis-1/5 outline-0"
                 onChange={event =>
                   setLimitInputuser(+event.currentTarget.value)
                 }
@@ -134,7 +134,7 @@ const HomepageTemplate = () => {
                       setLimit(limitInputUser)
                     }
                   }}
-                  className="w-full px-3 py-2 focus:outline-0 rounded-r-xl basis-4/5 "
+                  className="w-full px-3 py-2 focus:outline-0 rounded-b-xl md:rounded-r-xl basis-4/5 "
                   placeholder="Cari aktivitas atau konten yang anda inginkan"
                 />
                 <button
@@ -142,7 +142,7 @@ const HomepageTemplate = () => {
                     setSearch(tempSearch)
                     setLimit(limitInputUser)
                   }}
-                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-600 rounded-e-lg border-2 border-white focus:bg-red-600 "
+                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-600 rounded-lg md:rounded-e-lg border-2 border-white focus:bg-red-600 "
                 >
                   <svg
                     className="w-4 h-4 "
