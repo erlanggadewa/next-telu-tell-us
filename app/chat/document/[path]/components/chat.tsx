@@ -14,7 +14,7 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
-    citationId?: string
+    citationId?: string[]
 }
 
 const exampleMessages = [
