@@ -142,7 +142,7 @@ export function ChatMessage({
                       href={{
                         pathname: `/chat/document/${x}`,
                         query: {
-                          citationId: citationSources?.[i].citationId
+                          citationId: citationSources?.find(e => e.sourcePage === x)?.citationId || ''
                         }
                       }}
                       key={i}
