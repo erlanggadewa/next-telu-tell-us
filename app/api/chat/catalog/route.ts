@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
           semantic_ranker: true,
           semantic_captions: false,
           stream: false,
-          top: 5
+          top: 10
         }
       }
     })
