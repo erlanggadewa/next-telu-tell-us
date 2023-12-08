@@ -139,6 +139,7 @@ export function ChatMessage({
                                             className="my-1 h-fit hover:bg-red-700"
                                         >{`${++i}. ${x}`}</Button>
                                     ) : (
+                                        citationSources?.filter(e => e.sourcePage === x).length  &&
                                         <Link
                                             href={{
                                                 pathname: `/chat/document/${x}`,

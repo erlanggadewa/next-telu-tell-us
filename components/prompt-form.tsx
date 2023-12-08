@@ -53,7 +53,6 @@ export function PromptForm({
                             onClick={e => {
                                 e.preventDefault()
                                 router.refresh()
-                                router.push('/')
                             }}
                             className={cn(
                                 buttonVariants({size: 'sm', variant: 'outline'}),
