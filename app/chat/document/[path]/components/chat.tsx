@@ -2,13 +2,11 @@
 
 import {useChat, type Message} from 'ai/react'
 
-import {ChatList} from '@/components/chat-list'
 import {ChatMessage} from '@/components/chat-message'
-import {ChatPanel} from '@/components/chat-panel'
+import {ChatPanel} from './chat-panel'
 import {ChatScrollAnchor} from '@/components/chat-scroll-anchor'
 import {Separator} from '@/components/ui/separator'
 import {WelcomeComponent} from '@/components/welcome'
-import {appConfig} from '@/config'
 import {cn} from '@/lib/utils'
 import {ComponentProps} from 'react'
 import {toast} from 'react-hot-toast'
@@ -16,6 +14,7 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
+    citationId?: string[]
 }
 
 const exampleMessages = [
@@ -33,15 +32,17 @@ const exampleMessages = [
     }
 ]
 
-export function ChatDocument({id, initialMessages, className}: ChatProps) {
+export function Chat({id, initialMessages, citationId, className}: ChatProps) {
     const {messages, append, reload, stop, isLoading, input, setInput, data} =
         useChat({
             initialMessages,
             id,
-            body: {id},
+            api: '/api/chat/document',
+            body: {id, citationId},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
-            }
+            },
+            onError: (error) => toast.error(error.message)
         })
     return (
         <>
@@ -50,7 +51,7 @@ export function ChatDocument({id, initialMessages, className}: ChatProps) {
                     <WelcomeComponent setInput={setInput} exampleMessages={exampleMessages}/>
                     <Separator className="my-4 md:my-4"/>
                     <ChatMessage
-                        noAction
+                        disableAction
                         message={{
                             role: 'system',
                             content:
@@ -62,29 +63,35 @@ export function ChatDocument({id, initialMessages, className}: ChatProps) {
                 </div>
                 {messages.length ? (
                     <>
-                        <ChatList
-                            messages={messages}
-                            id={id}
-                            isLoading={isLoading}
-                            setInput={setInput}
-                            type="document"
-                        />
+                        <div className="relative max-w-3xl px-4 mx-auto">
+                            {messages.map((message, index) => (
+                                <div key={index}>
+                                    <ChatMessage
+                                        setInput={setInput}
+                                        message={message}
+                                        isLoading={isLoading && messages.length - 1 === index || index === 0}
+                                        disableFollowupQuestions
+                                        disableClickCitation
+                                    />
+                                </div>
+                            ))}
+                        </div>
                         <ChatScrollAnchor trackVisibility={isLoading}/>
                     </>
                 ) : (
                     ''
                 )}
             </div>
-            {/*<ChatPanel*/}
-            {/*    id={id}*/}
-            {/*    isLoading={isLoading}*/}
-            {/*    stop={stop}*/}
-            {/*    append={append}*/}
-            {/*    reload={reload}*/}
-            {/*    messages={messages}*/}
-            {/*    input={input}*/}
-            {/*    setInput={setInput}*/}
-            {/*/>*/}
+            <ChatPanel
+                id={id}
+                isLoading={isLoading}
+                stop={stop}
+                append={append}
+                reload={reload}
+                messages={messages}
+                input={input}
+                setInput={setInput}
+            />
         </>
     )
 }
