@@ -1,5 +1,6 @@
 'use client'
 
+import SkeletonPdfComponent from '@/components/skeleton-pdf'
 import {
   Dialog,
   DialogContent,
@@ -7,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import SkeletonPdfComponent from '@/components/ui/skeleton-pdf'
 import { appConfig } from '@/config'
 import { cn } from '@/lib/utils'
 import { DialogPortal } from '@radix-ui/react-dialog'
@@ -37,10 +37,10 @@ const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
   }, [path])
 
   return (
-    <div className="h-[calc(100dvh-64px)] sticky top-[64px]">
+    <div className="h-[calc(100dvh-64px)] z-1 sticky top-[64px]">
       <div className="flex flex-col h-full">
         <Dialog>
-          <div className="flex justify-between">
+          <div className="flex flex-col justify-between">
             <div className="flex gap-4 m-4">
               <h1 className="mx-3 overflow-auto text-base font-semibold text-center">
                 {path}
