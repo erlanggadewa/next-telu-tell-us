@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <Toaster />
         <Providers attribute="class" defaultTheme="light" enableSystem>
-          <div className="relative flex flex-col h-auto min-h-screen ">
+          <div className="relative flex flex-col h-auto min-100dvh ">
             {children}
           </div>
           <TailwindIndicator />

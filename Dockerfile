@@ -12,7 +12,6 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 ARG YARN_VERSION=1.22.19
-
 RUN npm install -g yarn@$YARN_VERSION --force
 
 
