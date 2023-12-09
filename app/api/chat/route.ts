@@ -1,4 +1,3 @@
-import { auth } from '@/auth'
 import { appConfig } from '@/config'
 import { OpenAiService } from '@/lib/openai-service'
 import {
@@ -10,12 +9,10 @@ import axios from 'axios'
 import { NextRequest } from 'next/server'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
-const api = `${appConfig.apiUrl}/chat`
-
 export type CitationSource = {
-    citationId: string
-    sourcePage: string
-    sourceFile: string
+  citationId: string
+  sourcePage: string
+  sourceFile: string
 }
 
 interface ChatResponse {
@@ -32,16 +29,22 @@ interface ChatResponse {
 
 export async function POST(req: NextRequest) {
   const json = await req.json()
-  const { messages } = json
-  const userId = (await auth())?.user.id
+  const { messages, id } = json
 
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
+  const data: ChatResponse = (
+    await axios.post(`${appConfig.apiUrl}/chat`, {
+      id,
+      messages,
+      context: {
+        retrieval_mode: 'hybrid',
+        semantic_ranker: true,
+        semantic_captions: false,
+        top: 3,
+        stream: true,
+        suggest_followup_questions: true
+      }
     })
-  }
-
-  const data: ChatResponse = (await axios.post(api, { messages })).data
+  ).data
   const { bodyGenerateMsg, dataPoints, citationSource } = data
 
   const finalMsg = await new OpenAiService().chatClient.chat.completions.create(

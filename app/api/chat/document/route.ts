@@ -1,26 +1,23 @@
-import {auth} from '@/auth'
-import {appConfig} from '@/config'
-import {
-    OpenAIStream,
-    StreamingTextResponse,
-} from 'ai'
+import { CitationSource } from '@/app/api/chat/route'
+import { auth } from '@/auth'
+import { appConfig } from '@/config'
+import { OpenAiService } from '@/lib/openai-service'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 import axios from 'axios'
-import {ChatCompletionMessageParam} from 'openai/resources'
-import {OpenAiService} from '@/lib/openai-service'
-import {CitationSource} from "@/app/api/chat/route";
+import { ChatCompletionMessageParam } from 'openai/resources'
 
 const api = `${appConfig.apiUrl}/chat/citation`
 
 interface ChatResponse {
-    dataPoints: string[]
-    citationSource: CitationSource[]
-    bodyGenerateMsg: {
-        model: string
-        messages: ChatCompletionMessageParam[]
-        temperature: number
-        n: number
-        stream: boolean
-    }
+  dataPoints: string[]
+  citationSource: CitationSource[]
+  bodyGenerateMsg: {
+    model: string
+    messages: ChatCompletionMessageParam[]
+    temperature: number
+    n: number
+    stream: boolean
+  }
 }
 
 export async function POST(req: Request) {

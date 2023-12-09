@@ -14,7 +14,7 @@ import {toast} from 'react-hot-toast'
 export interface ChatProps extends ComponentProps<'div'> {
     initialMessages?: Message[]
     id?: string,
-    citationId?: string
+    citationId?: string[]
 }
 
 const exampleMessages = [
@@ -41,7 +41,8 @@ export function Chat({id, initialMessages, citationId, className}: ChatProps) {
             body: {id, citationId},
             onResponse: response => {
                 if (response.status !== 200) toast.error(response.statusText)
-            }
+            },
+            onError: (error) => toast.error(error.message)
         })
     return (
         <>
@@ -68,7 +69,7 @@ export function Chat({id, initialMessages, citationId, className}: ChatProps) {
                                     <ChatMessage
                                         setInput={setInput}
                                         message={message}
-                                        isLoading={isLoading && messages.length - 1 === index && message.role !== 'user'}
+                                        isLoading={isLoading && messages.length - 1 === index || index === 0}
                                         disableFollowupQuestions
                                         disableClickCitation
                                     />

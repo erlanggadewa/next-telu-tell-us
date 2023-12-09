@@ -1,73 +1,79 @@
 'use client'
 
-import {appConfig} from '@/config'
-import axios from 'axios'
-import {MutableRefObject, useEffect, useRef, useState} from 'react'
-import {bl} from "@upstash/redis/zmscore-10fd3773";
+import SkeletonPdfComponent from '@/components/skeleton-pdf'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { appConfig } from '@/config'
+import { cn } from '@/lib/utils'
+import { DialogPortal } from '@radix-ui/react-dialog'
+import { InfoCircledIcon } from '@radix-ui/react-icons'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 
-const PdfViewer = ({
-                       path,
-                       summary,
-                   }: {
-    path: string
-    summary: string,
-}) => {
-    const iframeRef = useRef() as MutableRefObject<HTMLIFrameElement>
-    const jumlahKata = summary.split(' ').length
+const PdfViewer = ({ path, summary }: { path: string; summary: string }) => {
+  const iframeRef = useRef() as MutableRefObject<HTMLIFrameElement>
+  const jumlahKata = summary.split(' ').length
+  const [isLoadingPdf, setLoadingPdf] = useState(false)
 
-    useEffect(() => {
-        fetch(`${appConfig.apiUrl}/blob-storage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                filename: path
-            })
-        })
-            .then(r => r.blob())
-            .then(b => (iframeRef.current.src = URL.createObjectURL(b)))
-            .catch(e => console.error(e))
-    }, [path])
+  useEffect(() => {
+    setLoadingPdf(true)
+    fetch(`${appConfig.apiUrl}/blob-storage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        filename: path
+      })
+    })
+      .then(r => r.blob())
+      .then(b => (iframeRef.current.src = URL.createObjectURL(b)))
+      .finally(() => setLoadingPdf(false))
+      .catch(e => console.error(e))
+  }, [path])
 
-    return (
-        <div className="sticky top-16">
-            <iframe ref={iframeRef} title={path} className="w-full h-[70vh]"/>
-            {/*<div className="flex items-center justify-between gap-4 m-4 mx-10">*/}
-            {/*    <div className="flex items-center">*/}
-            {/*        {[...Array(totalRating)].map((_, index) => index < rating ? (*/}
-            {/*                <StarFilledIcon className='text-yellow-500' key={index}/>*/}
-            {/*            ) : <StarIcon className='text-yellow-500' key={index}/>*/}
-            {/*        )}*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<div className="flex items-center justify-between gap-4 m-4 mx-10">*/}
-            {/*    <div className="flex items-center gap-2" onClick={() => {*/}
-            {/*    }}>*/}
-            {/*        <InfoCircledIcon className='text-gray-600'/>*/}
-            {/*        <p>Lihat Informasi</p>*/}
-            {/*    </div>*/}
-            {/*    <div className="flex gap-2">*/}
-            {/*        <div className="flex items-center gap-2">*/}
-            {/*            <HeartIcon*/}
-            {/*                className={cn('text-gray-600 cursor-pointer')}*/}
-            {/*            />*/}
-            {/*            <p>123</p>*/}
-            {/*        </div>*/}
-            {/*        <div className="flex items-center gap-2">*/}
-            {/*            <DownloadIcon/>*/}
-            {/*            <p>456</p>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-            {/*<Separator/>*/}
-            <h1 className="mx-12 mt-4 font-bold text-center text-md">{path}</h1>
-            <p className="mt-2 mb-4 text-sm text-justify mx-14">
-                {summary}
-                <span className="font-semibold text-gray-500 text-md">({jumlahKata} kata)</span>
-            </p>
+  return (
+    <div className="h-[calc(100dvh-64px)] z-1 sticky top-[64px]">
+      <div className="flex flex-col h-full">
+        <Dialog>
+          <div className="flex flex-col justify-between">
+            <div className="flex gap-4 m-4">
+              <h1 className="mx-3 overflow-auto text-base font-semibold text-center">
+                {path}
+              </h1>
+              <DialogTrigger asChild>
+                <div className="flex items-center gap-2 cursor-pointer ">
+                  <InfoCircledIcon className="w-8 h-8 text-gray-600" />
+                </div>
+              </DialogTrigger>
+            </div>
+          </div>
+
+          <DialogPortal>
+            <DialogContent>
+              <DialogTitle>Ringkasan</DialogTitle>
+              <DialogDescription className="text-justify">
+                {summary} ({jumlahKata} Kata)
+              </DialogDescription>
+            </DialogContent>
+          </DialogPortal>
+        </Dialog>
+
+        <div className="h-full">
+          {isLoadingPdf && <SkeletonPdfComponent />}
+          <iframe
+            ref={iframeRef}
+            title={path}
+            className={cn('w-full h-full min-h-full', isLoadingPdf && 'hidden')}
+          />
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
 export default PdfViewer

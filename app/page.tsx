@@ -1,8 +1,7 @@
-import {v4 as uuid} from 'uuid'
-import {Chat} from '@/components/chat'
+import HomepageTemplate from '@/components/template/homepage-template'
 
-export default async function IndexPage() {
-    const id = uuid()
-
-    return <Chat id={id}/>
+const Page = () => {
+  return <HomepageTemplate />
 }
+
+export default Page
