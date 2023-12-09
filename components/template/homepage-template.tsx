@@ -71,7 +71,7 @@ const HomepageTemplate = () => {
         )}
       >
         <div className="w-full">
-          <div className="fixed z-[9999] top-7 right-10">
+          <div className="fixed z-[9999] top-7 right-14">
             <button
               onClick={() => setIsActive(!isActive)}
               data-collapse-toggle="navbar-default"
@@ -90,9 +90,9 @@ const HomepageTemplate = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 />
               </svg>
@@ -109,14 +109,15 @@ const HomepageTemplate = () => {
               segera menjawab pertanyaan dan memahami penelitian dengan AI.
             </p>
 
-            <div className="relative flex mx-auto text-black shadow-xl bg-background rounded-xl lg:w-4/5">
+            <div className="relative flex flex-col mx-auto text-black shadow-xl md:flex-row bg-background rounded-xl lg:w-4/5">
               <select
-                className="px-3 py-2 font-sans font-semibold border-r-2 rounded-l-xl basis-1/5 outline-0"
+                className="px-3 py-2 font-sans font-semibold border-r-2 rounded-t-xl md:rounded-tr-none rounded-l-xl basis-1/5 outline-0"
                 onChange={event =>
                   setLimitInputuser(+event.currentTarget.value)
                 }
+                defaultValue="disabledOption"
               >
-                <option selected disabled>
+                <option value="disabledOption" defaultChecked={true} disabled>
                   Total Pencarian Ai
                 </option>
                 {[3, 6, 9, 12, 15].map(e => (
@@ -134,7 +135,7 @@ const HomepageTemplate = () => {
                       setLimit(limitInputUser)
                     }
                   }}
-                  className="w-full px-3 py-2 focus:outline-0 rounded-r-xl basis-4/5 "
+                  className="w-full px-3 py-2 focus:outline-0 rounded-b-xl md:rounded-r-xl basis-4/5 "
                   placeholder="Cari aktivitas atau konten yang anda inginkan"
                 />
                 <button
@@ -142,7 +143,7 @@ const HomepageTemplate = () => {
                     setSearch(tempSearch)
                     setLimit(limitInputUser)
                   }}
-                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-600 rounded-e-lg border-2 border-white focus:bg-red-600 "
+                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-red-600 rounded-lg md:rounded-e-lg border-2 border-white focus:bg-red-600 "
                 >
                   <svg
                     className="w-4 h-4 "
@@ -153,9 +154,9 @@ const HomepageTemplate = () => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
                   </svg>
