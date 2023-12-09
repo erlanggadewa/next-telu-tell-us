@@ -27,10 +27,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Telkom University Tell us',
-    description: 'Robot AI Tell-US Search',
+    description:
+      'Robot AI Tell-US Search membantu menemukan e-book referensi proyek akhir, skripsi, tesis, maupun disertasi para alumni Telkom University dengan Teknologi Personalisasi Kecerdasan Buatan (AI) yang siap membantu kebutuhan sivitas Telkom University. Sumber informasi terafiliasi dengan Open Library Telkom University.',
     siteName: 'Telu Tell Us',
     locale: 'id_ID',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/opengraph.png'
+      }
+    ]
   }
 }
 
