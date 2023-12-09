@@ -1,10 +1,7 @@
-import { nanoid } from '@/lib/utils'
-import { Chat } from '@/components/chat'
+import HomepageTemplate from '@/components/template/homepage-template'
 
-export const runtime = 'edge'
-
-export default function IndexPage() {
-  const id = nanoid()
-
-  return <Chat id={id} />
+const Page = () => {
+  return <HomepageTemplate />
 }
+
+export default Page

@@ -21,6 +21,7 @@ export function parseAnswer(
   // Extract any follow-up questions that might be in the answer
   let parsedAnswer = answer.replaceAll(/<<([^>]+)>>/g, (match, content) => {
     followupQuestions.push(content)
+
     return ''
   })
 
@@ -47,7 +48,7 @@ export function parseAnswer(
         <button
           className={ChatStyle.supContainer + ' my-0'}
           title={part}
-          // onClick={() => onCitationClicked(path)}
+          onClick={() => onCitationClicked(part)}
         >
           <sup>{citationIndex}</sup>
         </button>

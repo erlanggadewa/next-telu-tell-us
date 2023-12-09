@@ -1,69 +1,63 @@
-import { auth } from '@/auth'
+import { appConfig } from '@/config'
+import { OpenAiService } from '@/lib/openai-service'
 import {
   OpenAIStream,
   StreamingTextResponse,
   experimental_StreamData
 } from 'ai'
-import { ChatApproach } from './lib/chat-read-retrieve-read'
+import axios from 'axios'
+import { NextRequest } from 'next/server'
+import { ChatCompletionMessageParam } from 'openai/resources'
 
-export const runtime = 'edge'
+export type CitationSource = {
+  citationId: string
+  sourcePage: string
+  sourceFile: string
+}
 
-export async function POST(req: Request) {
-  const json = await req.json()
-  const { messages } = json
-  const userId = (await auth())?.user.id
-
-  if (!userId) {
-    return new Response('Unauthorized', {
-      status: 401
-    })
+interface ChatResponse {
+  dataPoints: string[]
+  citationSource: CitationSource[]
+  bodyGenerateMsg: {
+    model: string
+    messages: ChatCompletionMessageParam[]
+    temperature: number
+    n: number
+    stream: boolean
   }
+}
 
-  const chatApproach = new ChatApproach()
-  const { finalMsg, results: dataPoitns } = await chatApproach.baseRun(
-    messages,
-    {
-      suggest_followup_questions: true,
-      retrieval_mode: 'text'
-    }
+export async function POST(req: NextRequest) {
+  const json = await req.json()
+  const { messages, id } = json
+
+  const data: ChatResponse = (
+    await axios.post(`${appConfig.apiUrl}/chat`, {
+      id,
+      messages,
+      context: {
+        retrieval_mode: 'hybrid',
+        semantic_ranker: true,
+        semantic_captions: false,
+        top: 3,
+        stream: true,
+        suggest_followup_questions: true
+      }
+    })
+  ).data
+  const { bodyGenerateMsg, dataPoints, citationSource } = data
+
+  const finalMsg = await new OpenAiService().chatClient.chat.completions.create(
+    bodyGenerateMsg
   )
 
-  // Instantiate the StreamData. It works with all API providers.
-  const data = new experimental_StreamData()
-  data.append(dataPoitns)
-  const stream = OpenAIStream(finalMsg, {
-    // IMPORTANT! until this is stable, you must explicitly opt in to supporting streamData.
+  const appendData = new experimental_StreamData()
+  appendData.append({ dataPoints, citationSource })
+
+  const stream = OpenAIStream(finalMsg as any, {
     experimental_streamData: true,
-    onFinal(completion) {
-      // IMPORTANT! you must close StreamData manually or the response will never finish.
-      data.close()
-    },
-    onCompletion: completion => {
-      //     const title = json.messages[0].content.substring(0, 100)
-      //     const id = json.id ?? nanoid()
-      //     const createdAt = Date.now()
-      //     const path = `/chat/${id}`
-      //     const payload = {
-      //       id,
-      //       title,
-      //       userId,
-      //       createdAt,
-      //       path,
-      //       messages: [
-      //         ...messages,
-      //         {
-      //           content: completion,
-      //           role: 'assistant'
-      //         }
-      //       ]
-      //     }
-      //     await kv.hmset(`chat:${id}`, payload)
-      //     await kv.zadd(`user:chat:${userId}`, {
-      //       score: createdAt,
-      //       member: `chat:${id}`
-      //     })
-    }
+    onFinal: () => appendData.close()
   })
 
-  return new StreamingTextResponse(stream, {}, data)
+  return new StreamingTextResponse(stream, {}, appendData)
 }
