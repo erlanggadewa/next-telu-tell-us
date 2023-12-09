@@ -32,7 +32,7 @@ const Sidebar = () => {
   const pathname = usePathname()
   return (
     <div className="fixed inset-0 grid w-full grid-cols-3 lg:relative lg:block lg:grid-cols-none">
-      <div className="flex flex-col justify-between w-full 100dvh col-span-2 overflow-auto shadow-md bg-gradient-to-r from-red-600 to-red-700">
+      <div className="flex flex-col justify-between w-full h-[100dvh] col-span-2 overflow-auto shadow-md bg-gradient-to-r from-red-600 to-red-700">
         <div>
           <Image
             className="m-auto my-16"

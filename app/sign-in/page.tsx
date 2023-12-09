@@ -19,7 +19,7 @@ export default async function AuthenticationPage() {
   const session = await auth()
   if (session?.user) redirect('/')
   return (
-    <div className="container 100dvh md:grid lg:max-w-none lg:grid-cols-5 lg:px-0 lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900">
+    <div className="container h-[100dvh] md:grid lg:max-w-none lg:grid-cols-5 lg:px-0 lg:bg-gradient-to-b lg:from-[#ED1E28] lg:to-red-900">
       <div
         className="absolute inset-0 hidden w-full h-full bg-no-repeat bg-cover lg:block opacity-10"
         style={{
@@ -27,7 +27,7 @@ export default async function AuthenticationPage() {
         }}
       />
 
-      <div className="100dvh flex justify-between items-center flex-col col-span-2 lg:bg-white lg:rounded-tr-[45px] lg:drop-shadow-2xl">
+      <div className="h-[100dvh] flex justify-between items-center flex-col col-span-2 lg:bg-white lg:rounded-tr-[45px] lg:drop-shadow-2xl">
         <div />
         <div className="mx-auto flex flex-col sm:w-[500px] lg:w-[400px] space-y-6">
           <div className="flex flex-col space-y-10 ">

@@ -58,7 +58,7 @@ const HomepageTemplate = () => {
     <>
       <div
         className={cn(
-          'z-50 w-64 fixed top-0 left-0 bottom-0 hidden 100dvh',
+          'z-50 w-64 fixed top-0 left-0 bottom-0 hidden h-[100dvh]',
           isActive ? 'lg:block' : 'lg:hidden block'
         )}
       >
@@ -66,7 +66,7 @@ const HomepageTemplate = () => {
       </div>
       <div
         className={cn(
-          'px-6 py-6 ml-0 overflow-y-auto 100dvh ',
+          'px-6 py-6 ml-0 overflow-y-auto h-[100dvh] ',
           isActive ? 'lg:ml-64' : 'lg:ml-0'
         )}
       >

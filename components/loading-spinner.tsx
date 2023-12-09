@@ -1,6 +1,6 @@
 const LoadingSpinner = ({ size = 100 }: { size?: number }) => {
   return (
-    <div className="absolute bottom-0 left-0 right-0 top-0 z-[9999999] 100dvh w-screen bg-white">
+    <div className="absolute bottom-0 left-0 right-0 top-0 z-[9999999] h-[100dvh] w-screen bg-white">
       <div className="flex items-center justify-center h-full">
         <div
           style={{ width: `${size}px`, height: `${size}px` }}
