@@ -143,7 +143,12 @@ export function ChatMessage({
                         pathname: `/chat/document/${x}`,
                         query: {
                           citationId: citationSources
-                            ?.filter(e => e.sourcePage === x)
+                            ?.filter(async e => {
+                              return (
+                                (await e.sourcePage.trim().toLowerCase()) ===
+                                x.trim().toLowerCase()
+                              )
+                            })
                             .map(e => e.citationId)
                             .join(',')
                         }
