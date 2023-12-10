@@ -2,7 +2,7 @@
 
 import { useChat, type Message } from 'ai/react'
 
-import { ChatMessage } from '@/components/chat-message'
+import { ChatMessage } from '@/app/chat/components/chat-message'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import WelcomeModalChat from '@/components/modal-welcome-chat'
 import { Separator } from '@/components/ui/separator'

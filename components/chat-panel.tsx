@@ -28,8 +28,9 @@ export function ChatPanel({
   reload,
   input,
   setInput,
-  messages
-}: ChatPanelProps) {
+  messages,
+  setIsFetching
+}: ChatPanelProps & { setIsFetching: (isFetching: boolean) => void }) {
   return (
     <div className="fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%">
       <ButtonScrollToBottom />
@@ -38,7 +39,10 @@ export function ChatPanel({
           {isLoading ? (
             <Button
               variant="outline"
-              onClick={() => stop()}
+              onClick={() => {
+                setIsFetching(false)
+                return stop()
+              }}
               className="bg-background"
             >
               <IconStop className="mr-2" />
@@ -48,7 +52,10 @@ export function ChatPanel({
             messages?.length > 0 && (
               <Button
                 variant="outline"
-                onClick={() => reload()}
+                onClick={() => {
+                  setIsFetching(true)
+                  return reload()
+                }}
                 className="bg-background"
               >
                 <IconRefresh className="mr-2" />
@@ -60,6 +67,7 @@ export function ChatPanel({
         <div className="px-4 py-2 space-y-4 border-t shadow-lg bg-background sm:rounded-t-xl sm:border md:py-4">
           <PromptForm
             onSubmit={async value => {
+              setIsFetching(true)
               await append({
                 id,
                 content: value,

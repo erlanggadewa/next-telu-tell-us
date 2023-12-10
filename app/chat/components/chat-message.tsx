@@ -12,13 +12,13 @@ import Image from 'next/image'
 
 import { CitationSource } from '@/app/api/chat/route'
 import TellUsIcon from '@/assets/svg/system.svg'
+import LoadingChatComponent from '@/components/loading-chat'
 import { parseAnswer } from '@/components/text-parser'
 import { Button } from '@/components/ui/button'
 import { UseChatHelpers } from 'ai/react/dist'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { PluggableList } from 'react-markdown/lib/react-markdown'
-import LoadingDotComponent from './loading-dot'
 
 export interface ChatMessageProps {
   message: Message
@@ -71,12 +71,19 @@ export function ChatMessage({
       </div>
       <div
         className={cn(
-          'flex-1 px-1 space-y-2 overflow-hidden',
+          'flex flex-col px-1 space-y-2 overflow-hidden',
           message.role === 'user' ? 'mr-3' : 'ml-3'
         )}
       >
         {isLoading && message.role !== 'user' ? (
-          <LoadingDotComponent />
+          <>
+            <p className="font-semibold text-gray-700 animate-fade animate-infinite animate-ease-out animate-alternate-reverse">
+              <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
+                <span className="text-center">Memproses Informasi</span>
+              </div>
+            </p>
+            <LoadingChatComponent />
+          </>
         ) : (
           <div className="rounded-lg text-justify border bg-[#F6F6F6] px-4 py-3 shadow  animate-flip-down animate-duration-300">
             {message.role === 'user' ? (
