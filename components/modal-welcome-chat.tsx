@@ -20,7 +20,7 @@ export default function WelcomeModalChat({
         as="div"
         className="relative z-[999]"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={() => {}}
       >
         <Transition.Child
           as={Fragment}
