@@ -10,6 +10,7 @@ import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
 import { ComponentProps } from 'react'
 import { toast } from 'react-hot-toast'
+import WelcomeModalChat from '../../../../components/modal-welcome-chat'
 import { ChatMessage } from './chat-message'
 
 export interface ChatProps extends ComponentProps<'div'> {
@@ -53,6 +54,12 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
   const citation: Citation[] = (data as Citation[]) || []
   return (
     <>
+      <WelcomeModalChat
+        title={'Search Catalog'}
+        description={
+          'Fitur obrolan dengan robot Tell-Us di Open Library Telkom University membantu memandu Anda dalam mencari referensi katalog sumber literatur yang sesuai dengan kebutuhan Anda, memberikan bantuan dalam menemukan sumber-sumber yang relevan untuk riset atau pembelajaran Anda.'
+        }
+      />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
           <WelcomeComponent
@@ -65,7 +72,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Search Catalog!** Saya akan membantu kamu mencarikan referensi katalog literatur apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
