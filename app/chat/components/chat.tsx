@@ -3,14 +3,16 @@
 import { useChat, type Message } from 'ai/react'
 
 import { CitationSource } from '@/app/api/chat/route'
-import { ChatMessage } from '@/components/chat-message'
+import { ChatMessage } from '@/app/chat/components/chat-message'
 import { ChatPanel } from '@/components/chat-panel'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
 import { Separator } from '@/components/ui/separator'
 import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import FetchingChatComponent from '../../../components/fetching-chat'
+import WelcomeModalChat from '../../../components/modal-welcome-chat'
 
 export interface ChatProps extends ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -39,6 +41,8 @@ type Citation = {
 }
 
 export function Chat({ id, initialMessages, className, api }: ChatProps) {
+  const [isFetching, setIsFetching] = useState(false)
+
   const { messages, append, reload, stop, isLoading, input, setInput, data } =
     useChat({
       initialMessages,
@@ -46,13 +50,24 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
       api,
       body: { id },
       onResponse: response => {
+        setIsFetching(false)
         if (response.status !== 200) toast.error(response.statusText)
       },
-      onError: error => toast.error(error.message)
+      onError: error => {
+        setIsFetching(false)
+        toast.error(error.message)
+      }
     })
   const citation: Citation[] = (data as Citation[]) || []
+
   return (
     <>
+      <WelcomeModalChat
+        title={'Tell-Us Chat'}
+        description={
+          'Fitur obrolan dengan robot Tell-Us memungkinkan pengguna untuk mengajukan pertanyaan dan menerima jawaban dari sumber dataset yang tersedia di OpenLibrary Telkom University. Tak hanya memberikan jawaban, tapi juga menyertakan kutipan atau referensi dalam responsnya. Selain itu, chatbot ini mampu memberikan rekomendasi pertanyaan terkait berdasarkan topik yang sedang dibahas.'
+        }
+      />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
           <WelcomeComponent
@@ -65,15 +80,15 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Search!** Saya siap membantu menjawab pertanyaan dengan pengetahuan yang saya peroleh dari Open Library Telkom University. Apa yang ingin kamu tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
           />
         </div>
-        {messages.length ? (
-          <>
-            <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+        <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+          {messages.length ? (
+            <>
               {messages.map((message, index) => (
                 <div key={index}>
                   <ChatMessage
@@ -89,12 +104,11 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
                   />
                 </div>
               ))}
-            </div>
-            <ChatScrollAnchor trackVisibility={isLoading} />
-          </>
-        ) : (
-          ''
-        )}
+              <ChatScrollAnchor trackVisibility={isLoading} />
+            </>
+          ) : null}
+          {isFetching && <FetchingChatComponent isFetching={isFetching} />}
+        </div>
       </div>
       <ChatPanel
         id={id}
@@ -104,6 +118,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
         reload={reload}
         messages={messages}
         input={input}
+        setIsFetching={setIsFetching}
         setInput={setInput}
       />
     </>

@@ -5,11 +5,13 @@ import { useChat, type Message } from 'ai/react'
 import { CitationSource } from '@/app/api/chat/route'
 import { ChatPanel } from '@/components/chat-panel'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
+import FetchingChatComponent from '@/components/fetching-chat'
 import { Separator } from '@/components/ui/separator'
 import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import WelcomeModalChat from '../../../../components/modal-welcome-chat'
 import { ChatMessage } from './chat-message'
 
 export interface ChatProps extends ComponentProps<'div'> {
@@ -39,6 +41,8 @@ type Citation = {
 }
 
 export function Chat({ id, initialMessages, className, api }: ChatProps) {
+  const [isFetching, setIsFetching] = useState(false)
+
   const { messages, append, reload, stop, isLoading, input, setInput, data } =
     useChat({
       initialMessages,
@@ -46,13 +50,23 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
       api,
       body: { id },
       onResponse: response => {
+        setIsFetching(false)
         if (response.status !== 200) toast.error(response.statusText)
       },
-      onError: error => toast.error(error.message)
+      onError: error => {
+        setIsFetching(false)
+        toast.error(error.message)
+      }
     })
   const citation: Citation[] = (data as Citation[]) || []
   return (
     <>
+      <WelcomeModalChat
+        title={'Search Catalog'}
+        description={
+          'Fitur obrolan dengan robot Tell-Us di Open Library Telkom University membantu memandu Anda dalam mencari referensi katalog sumber literatur yang sesuai dengan kebutuhan Anda, memberikan bantuan dalam menemukan sumber-sumber yang relevan untuk riset atau pembelajaran Anda.'
+        }
+      />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
           <WelcomeComponent
@@ -65,15 +79,15 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Search Catalog!** Saya akan membantu kamu mencarikan referensi katalog literatur apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
           />
         </div>
-        {messages.length ? (
-          <>
-            <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+        <div className="relative max-w-3xl px-4 mx-auto xl:max-w-4xl">
+          {messages.length ? (
+            <>
               {messages.map((message, index) => (
                 <div key={index}>
                   <ChatMessage
@@ -92,12 +106,11 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
                   />
                 </div>
               ))}
-            </div>
-            <ChatScrollAnchor trackVisibility={isLoading} />
-          </>
-        ) : (
-          ''
-        )}
+              <ChatScrollAnchor trackVisibility={isLoading} />
+            </>
+          ) : null}
+          {isFetching && <FetchingChatComponent isFetching={isFetching} />}
+        </div>
       </div>
       <ChatPanel
         id={id}
@@ -108,6 +121,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
         messages={messages}
         input={input}
         setInput={setInput}
+        setIsFetching={setIsFetching}
       />
     </>
   )

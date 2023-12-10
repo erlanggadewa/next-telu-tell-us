@@ -19,9 +19,9 @@ function LoadingDotComponent({
       <div
         className={cn('w-full h-full dot', widthAndHeightClass ?? 'w-4 h-4')}
       ></div>
-      <div
+      {/* <div
         className={cn('w-full h-full dot', widthAndHeightClass ?? `w-4 h-4`)}
-      ></div>
+      ></div> */}
     </div>
   )
 }

@@ -60,14 +60,21 @@ export function ChatMessage({
       </div>
       <div
         className={cn(
-          'flex-1 px-1 space-y-2 overflow-hidden',
+          'flex flex-col px-1 space-y-2 overflow-hidden',
           message.role === 'user' ? 'mr-3' : 'ml-3'
         )}
       >
         {isLoading && message.role !== 'user' ? (
-          <LoadingChatComponent />
+          <>
+            <p className="font-semibold text-gray-700 animate-fade animate-infinite animate-ease-out animate-alternate-reverse">
+              <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
+                <span className="text-center">Memproses Informasi</span>
+              </div>
+            </p>
+            <LoadingChatComponent />
+          </>
         ) : (
-          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
+          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow animate-flip-down animate-duration-300">
             {message.role === 'user' ? (
               message.content
             ) : (
@@ -91,8 +98,13 @@ export function ChatMessage({
                   },
                   ol: ({ children }) => {
                     return (
-                      <ol className="flex flex-col gap-4 my-2">{children}</ol>
+                      <ol className="flex flex-col gap-4 pl-5 my-2 mb-2 list-decimal list-outside">
+                        {children}
+                      </ol>
                     )
+                  },
+                  li: ({ children }) => {
+                    return <li className="pl-1 mt-1">{children}</li>
                   },
                   p: ({ children }) => {
                     return (

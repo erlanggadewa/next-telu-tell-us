@@ -12,13 +12,13 @@ import Image from 'next/image'
 
 import { CitationSource } from '@/app/api/chat/route'
 import TellUsIcon from '@/assets/svg/system.svg'
+import LoadingChatComponent from '@/components/loading-chat'
 import { parseAnswer } from '@/components/text-parser'
 import { Button } from '@/components/ui/button'
 import { UseChatHelpers } from 'ai/react/dist'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import { PluggableList } from 'react-markdown/lib/react-markdown'
-import LoadingDotComponent from './loading-dot'
 
 export interface ChatMessageProps {
   message: Message
@@ -71,25 +71,42 @@ export function ChatMessage({
       </div>
       <div
         className={cn(
-          'flex-1 px-1 space-y-2 overflow-hidden',
+          'flex flex-col px-1 space-y-2 overflow-hidden',
           message.role === 'user' ? 'mr-3' : 'ml-3'
         )}
       >
         {isLoading && message.role !== 'user' ? (
-          <LoadingDotComponent />
+          <>
+            <p className="font-semibold text-gray-700 animate-fade animate-infinite animate-ease-out animate-alternate-reverse">
+              <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
+                <span className="text-center">Memproses Informasi</span>
+              </div>
+            </p>
+            <LoadingChatComponent />
+          </>
         ) : (
-          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
+          <div className="rounded-lg text-justify border bg-[#F6F6F6] px-4 py-3 shadow  animate-flip-down animate-duration-300">
             {message.role === 'user' ? (
               result
             ) : (
               <MemoizedReactMarkdown
-                className="prose text-justify break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                 remarkPlugins={[remarkGfm, remarkMath]}
                 skipHtml={true}
                 rehypePlugins={[rehypeRaw] as PluggableList}
                 components={{
                   p: ({ children }) => {
-                    return <p className="mb-2 last:mb-0">{children}</p>
+                    return <p className="mb-2 text-justify ">{children}</p>
+                  },
+                  ol: ({ children }) => {
+                    return (
+                      <ol className="gap-4 pl-5 mb-2 list-decimal list-outside">
+                        {children}
+                      </ol>
+                    )
+                  },
+                  li: ({ children }) => {
+                    return <li className="pl-1 mt-1">{children}</li>
                   },
                   code: ({ node, inline, className, children, ...props }) => {
                     if (children.length) {
@@ -128,7 +145,7 @@ export function ChatMessage({
             )}
             {citations.length > 0 && (
               <div className="mt-4">
-                <p className="mb-1 font-semibold">Citations</p>
+                <p className="mb-1 font-semibold">Sumber Kutipan</p>
                 {citations.map((x, i) =>
                   disableClickCitation ? (
                     <Button
@@ -169,7 +186,7 @@ export function ChatMessage({
 
             {!disableFollowupQuestions && followupQuestions.length > 0 && (
               <div className="mt-3">
-                <p className="mb-1 font-semibold">Follow-up questions</p>
+                <p className="mb-1 font-semibold">Saran Pertanyaan</p>
                 {followupQuestions.map((x, i) => (
                   <Button
                     onClick={async e => {
