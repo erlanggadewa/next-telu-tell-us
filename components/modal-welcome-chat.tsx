@@ -2,7 +2,6 @@ import RobotCatalog from '@/assets/images/robot-catalog.png'
 import { Dialog, Transition } from '@headlessui/react'
 import Image from 'next/image'
 import { Fragment, useRef, useState } from 'react'
-import { BsInfoCircle } from 'react-icons/bs'
 export default function WelcomeModalChat({
   title,
   description
@@ -54,12 +53,6 @@ export default function WelcomeModalChat({
                 />
                 <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-green-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-                      <BsInfoCircle
-                        className="w-6 h-6 text-green-600"
-                        aria-hidden="true"
-                      />
-                    </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title
                         as="h3"
@@ -68,7 +61,7 @@ export default function WelcomeModalChat({
                         {title}
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-sm text-justify text-gray-600">
+                        <p className="text-base text-justify text-gray-600">
                           {description}
                         </p>
                       </div>
