@@ -11,6 +11,7 @@ import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
 import { ComponentProps } from 'react'
 import { toast } from 'react-hot-toast'
+import WelcomeModalChat from './modal-welcome-chat'
 
 export interface ChatProps extends ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -53,6 +54,12 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
   const citation: Citation[] = (data as Citation[]) || []
   return (
     <>
+      <WelcomeModalChat
+        title={'Tell-Us Chat'}
+        description={
+          'Fitur obrolan dengan robot Tell-Us memungkinkan pengguna untuk mengajukan pertanyaan dan menerima jawaban dari sumber dataset yang tersedia di OpenLibrary Telkom University. Tak hanya memberikan jawaban, tapi juga menyertakan kutipan atau referensi dalam responsnya. Selain itu, chatbot ini mampu memberikan rekomendasi pertanyaan terkait berdasarkan topik yang sedang dibahas.'
+        }
+      />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         <div className="max-w-3xl px-4 mx-auto xl:max-w-4xl">
           <WelcomeComponent
