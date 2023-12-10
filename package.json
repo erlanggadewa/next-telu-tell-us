@@ -61,6 +61,7 @@
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "sharp": "^0.32.6",
+    "tailwindcss-animated": "^1.0.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -67,7 +67,7 @@ export function ChatMessage({
         {isLoading && message.role !== 'user' ? (
           <LoadingChatComponent />
         ) : (
-          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
+          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow animate-flip-down animate-duration-300">
             {message.role === 'user' ? (
               message.content
             ) : (
@@ -91,8 +91,13 @@ export function ChatMessage({
                   },
                   ol: ({ children }) => {
                     return (
-                      <ol className="flex flex-col gap-4 my-2">{children}</ol>
+                      <ol className="flex flex-col gap-4 pl-5 my-2 mb-2 list-decimal list-outside">
+                        {children}
+                      </ol>
                     )
+                  },
+                  li: ({ children }) => {
+                    return <li className="pl-1 mt-1">{children}</li>
                   },
                   p: ({ children }) => {
                     return (

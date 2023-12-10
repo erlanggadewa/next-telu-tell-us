@@ -72,7 +72,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Search!** Saya siap membantu menjawab pertanyaan dengan pengetahuan yang saya peroleh dari Open Library Telkom University. Apa yang ingin kamu tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}

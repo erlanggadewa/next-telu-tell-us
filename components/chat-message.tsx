@@ -78,18 +78,28 @@ export function ChatMessage({
         {isLoading && message.role !== 'user' ? (
           <LoadingDotComponent />
         ) : (
-          <div className="rounded-lg border bg-[#F6F6F6] px-4 py-3 shadow">
+          <div className="rounded-lg text-justify border bg-[#F6F6F6] px-4 py-3 shadow  animate-flip-down animate-duration-300">
             {message.role === 'user' ? (
               result
             ) : (
               <MemoizedReactMarkdown
-                className="prose text-justify break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
+                className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
                 remarkPlugins={[remarkGfm, remarkMath]}
                 skipHtml={true}
                 rehypePlugins={[rehypeRaw] as PluggableList}
                 components={{
                   p: ({ children }) => {
-                    return <p className="mb-2 last:mb-0">{children}</p>
+                    return <p className="mb-2 text-justify ">{children}</p>
+                  },
+                  ol: ({ children }) => {
+                    return (
+                      <ol className="gap-4 pl-5 mb-2 list-decimal list-outside">
+                        {children}
+                      </ol>
+                    )
+                  },
+                  li: ({ children }) => {
+                    return <li className="pl-1 mt-1">{children}</li>
                   },
                   code: ({ node, inline, className, children, ...props }) => {
                     if (children.length) {
@@ -128,7 +138,7 @@ export function ChatMessage({
             )}
             {citations.length > 0 && (
               <div className="mt-4">
-                <p className="mb-1 font-semibold">Citations</p>
+                <p className="mb-1 font-semibold">Sumber Kutipan</p>
                 {citations.map((x, i) =>
                   disableClickCitation ? (
                     <Button
@@ -169,7 +179,7 @@ export function ChatMessage({
 
             {!disableFollowupQuestions && followupQuestions.length > 0 && (
               <div className="mt-3">
-                <p className="mb-1 font-semibold">Follow-up questions</p>
+                <p className="mb-1 font-semibold">Saran Pertanyaan</p>
                 {followupQuestions.map((x, i) => (
                   <Button
                     onClick={async e => {
