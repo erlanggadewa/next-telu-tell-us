@@ -62,9 +62,9 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
   return (
     <>
       <WelcomeModalChat
-        title={'Search Catalog'}
+        title={'Tell-US Search Catalog'}
         description={
-          'Fitur obrolan dengan robot Tell-Us di Open Library Telkom University membantu memandu Anda dalam mencari referensi katalog sumber literatur yang sesuai dengan kebutuhan Anda, memberikan bantuan dalam menemukan sumber-sumber yang relevan untuk riset atau pembelajaran Anda.'
+          'Fitur obrolan dengan robot Tell-Us di Open Library Telkom University membantu memandu anda dalam mencari referensi katalog sumber literatur yang sesuai dengan kebutuhan anda, memberikan bantuan dalam menemukan sumber-sumber yang relevan untuk riset atau pembelajaran anda.'
         }
       />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -72,6 +72,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
           <WelcomeComponent
             setInput={setInput}
             exampleMessages={exampleMessages}
+            title={'Tell-US Search Catalog'}
           />
           <Separator className="my-4 md:my-4" />
           <ChatMessage

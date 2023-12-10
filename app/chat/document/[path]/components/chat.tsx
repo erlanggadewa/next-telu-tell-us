@@ -64,12 +64,13 @@ export function Chat({
           <WelcomeModalChat
             title={'Tell-Us Chat Document'}
             description={
-              'Fitur obrolan dengan robot Tell-Us memungkinkan Anda untuk mengajukan pertanyaan dan menerima jawaban berdasarkan sumber dokumen yang telah Anda pilih sebelumnya. Dengan memanfaatkan dokumen yang sudah ditentukan, chatbot ini bisa memberikan jawaban yang relevan sesuai dengan konteks dokumen yang telah dipilih sebelumnya.'
+              'Fitur obrolan dengan robot Tell-Us memungkinkan anda untuk mengajukan pertanyaan dan menerima jawaban berdasarkan sumber dokumen yang telah anda pilih sebelumnya. Dengan memanfaatkan dokumen yang sudah ditentukan, chatbot ini bisa memberikan jawaban yang relevan sesuai dengan konteks dokumen yang telah dipilih sebelumnya.'
             }
           />
           <WelcomeComponent
             setInput={setInput}
             exampleMessages={exampleMessages}
+            title={'Tell-Us Chat Document'}
           />
           <Separator className="my-4 md:my-4" />
           <ChatMessage
@@ -77,7 +78,7 @@ export function Chat({
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Chat Document!** Saya siap membantu menjawab pertanyaan yang anda ajukan berdasarkan dokumen yang telah anda pilih. Apa yang ingin anda tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
