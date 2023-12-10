@@ -93,7 +93,7 @@
   height: 100%;
   background: inherit;
   border-radius: inherit;
-  animation: anime 1.5s ease-out infinite;
+  animation: anime 2s ease-out infinite;
 }
 @keyframes anime {
   50%,

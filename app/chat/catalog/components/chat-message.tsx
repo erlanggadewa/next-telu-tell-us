@@ -14,6 +14,7 @@ import TellUsIcon from '@/assets/svg/system.svg'
 import LoadingChatComponent from '@/components/loading-chat'
 import { UseChatHelpers } from 'ai/react/dist'
 import Link from 'next/link'
+import { VscCheckAll } from 'react-icons/vsc'
 import { PluggableList } from 'react-markdown/lib/react-markdown'
 
 export interface ChatMessageProps {
@@ -67,7 +68,8 @@ export function ChatMessage({
         {isLoading && message.role !== 'user' ? (
           <>
             <p className="font-semibold text-gray-700 animate-fade animate-infinite animate-ease-out animate-alternate-reverse">
-              <div className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
+              <div className="flex items-center justify-center gap-1 px-2 py-1 font-sans text-sm font-semibold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
+                <VscCheckAll className="w-5 h-5" />
                 <span className="text-center">Memproses Informasi</span>
               </div>
             </p>
@@ -104,7 +106,7 @@ export function ChatMessage({
                     )
                   },
                   li: ({ children }) => {
-                    return <li className="pl-1 mt-1">{children}</li>
+                    return <li className="mt-1">{children}</li>
                   },
                   p: ({ children }) => {
                     return (
