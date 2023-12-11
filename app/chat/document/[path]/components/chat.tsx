@@ -4,11 +4,12 @@ import { useChat, type Message } from 'ai/react'
 
 import { ChatMessage } from '@/app/chat/components/chat-message'
 import { ChatScrollAnchor } from '@/components/chat-scroll-anchor'
+import FetchingChatComponent from '@/components/fetching-chat'
 import WelcomeModalChat from '@/components/modal-welcome-chat'
 import { Separator } from '@/components/ui/separator'
 import { WelcomeComponent } from '@/components/welcome'
 import { cn } from '@/lib/utils'
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { ChatPanel } from './chat-panel'
 
@@ -39,6 +40,8 @@ export function Chat({
   citationId,
   className
 }: ChatProps) {
+  const [isFetching, setIsFetching] = useState(false)
+
   const { messages, append, reload, stop, isLoading, input, setInput, data } =
     useChat({
       initialMessages,
@@ -46,9 +49,13 @@ export function Chat({
       api: '/api/chat/document',
       body: { id, citationId },
       onResponse: response => {
+        setIsFetching(false)
         if (response.status !== 200) toast.error(response.statusText)
       },
-      onError: error => toast.error(error.message)
+      onError: error => {
+        setIsFetching(false)
+        toast.error(error.message)
+      }
     })
   return (
     <>
@@ -57,12 +64,13 @@ export function Chat({
           <WelcomeModalChat
             title={'Tell-Us Chat Document'}
             description={
-              'Fitur obrolan dengan robot Tell-Us memungkinkan Anda untuk mengajukan pertanyaan dan menerima jawaban berdasarkan sumber dokumen yang telah Anda pilih sebelumnya. Dengan memanfaatkan dokumen yang sudah ditentukan, chatbot ini bisa memberikan jawaban yang relevan sesuai dengan konteks dokumen yang telah dipilih sebelumnya.'
+              'Fitur obrolan dengan robot Tell-Us memungkinkan anda untuk mengajukan pertanyaan dan menerima jawaban berdasarkan sumber dokumen yang telah anda pilih sebelumnya. Dengan memanfaatkan dokumen yang sudah ditentukan, chatbot ini bisa memberikan jawaban yang relevan sesuai dengan konteks dokumen yang telah dipilih sebelumnya.'
             }
           />
           <WelcomeComponent
             setInput={setInput}
             exampleMessages={exampleMessages}
+            title={'Tell-Us Chat Document'}
           />
           <Separator className="my-4 md:my-4" />
           <ChatMessage
@@ -70,15 +78,15 @@ export function Chat({
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya akan membantu kamu menjawab pertanyaan apa pun yang kamu tanyakan. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Chat Document!** Saya siap membantu menjawab pertanyaan yang anda ajukan berdasarkan dokumen yang telah anda pilih. Apa yang ingin anda tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
           />
         </div>
-        {messages.length ? (
-          <>
-            <div className="relative max-w-3xl px-4 mx-auto">
+        <div className="relative max-w-3xl px-4 mx-auto">
+          {messages.length ? (
+            <>
               {messages.map((message, index) => (
                 <div key={index}>
                   <ChatMessage
@@ -93,12 +101,11 @@ export function Chat({
                   />
                 </div>
               ))}
-            </div>
-            <ChatScrollAnchor trackVisibility={isLoading} />
-          </>
-        ) : (
-          ''
-        )}
+              <ChatScrollAnchor trackVisibility={isLoading} />
+            </>
+          ) : null}
+          {isFetching && <FetchingChatComponent isFetching={isFetching} />}
+        </div>
       </div>
       <ChatPanel
         id={id}
@@ -109,6 +116,7 @@ export function Chat({
         messages={messages}
         input={input}
         setInput={setInput}
+        setIsFetching={setIsFetching}
       />
     </>
   )

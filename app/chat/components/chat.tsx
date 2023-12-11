@@ -65,7 +65,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
       <WelcomeModalChat
         title={'Tell-Us Chat'}
         description={
-          'Fitur obrolan dengan robot Tell-Us memungkinkan pengguna untuk mengajukan pertanyaan dan menerima jawaban dari sumber dataset yang tersedia di OpenLibrary Telkom University. Tak hanya memberikan jawaban, tapi juga menyertakan kutipan atau referensi dalam responsnya. Selain itu, chatbot ini mampu memberikan rekomendasi pertanyaan terkait berdasarkan topik yang sedang dibahas.'
+          'Fitur obrolan dengan robot Tell-Us memungkinkan pengguna untuk mengajukan pertanyaan dan menerima jawaban dari sumber dataset yang tersedia di Open Library Telkom University. Tak hanya memberikan jawaban, tapi juga menyertakan kutipan atau referensi dalam responsnya. Selain itu, chatbot ini mampu memberikan rekomendasi pertanyaan terkait berdasarkan topik yang sedang dibahas.'
         }
       />
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -73,6 +73,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
           <WelcomeComponent
             setInput={setInput}
             exampleMessages={exampleMessages}
+            title={'Tell-Us Chat'}
           />
           <Separator className="my-4 md:my-4" />
           <ChatMessage
@@ -80,7 +81,7 @@ export function Chat({ id, initialMessages, className, api }: ChatProps) {
             message={{
               role: 'system',
               content:
-                'Selamat datang di **Tell-US Search!** Saya siap membantu menjawab pertanyaan dengan pengetahuan yang saya peroleh dari Open Library Telkom University. Apa yang ingin kamu tanyakan hari ini?',
+                'Selamat datang di **Tell-US Chat!** Saya siap membantu menjawab pertanyaan dengan pengetahuan yang saya peroleh dari Open Library Telkom University. Apa yang ingin kamu tanyakan hari ini?',
               id: '1'
             }}
             setInput={setInput}
