@@ -8,33 +8,14 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog'
-import {appConfig} from '@/config'
 import {cn} from '@/lib/utils'
 import {DialogPortal} from '@radix-ui/react-dialog'
 import {InfoCircledIcon} from '@radix-ui/react-icons'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 
 const PdfViewer = ({path, summary}: { path: string; summary: string }) => {
     const jumlahKata = summary.split(' ').length
     const [isLoadingPdf, setLoadingPdf] = useState(false)
-    const [blob, setBlob] = useState('')
-
-    useEffect(() => {
-        setLoadingPdf(true)
-        fetch(`${appConfig.apiUrl}/blob-storage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                filename: path
-            })
-        })
-            .then(r => r.blob())
-            .then(b => setBlob(URL.createObjectURL(b)))
-            .finally(() => setLoadingPdf(false))
-            .catch(e => console.error(e))
-    }, [path])
 
     return (
         <div className="h-[calc(100dvh-64px)] z-1 sticky top-[64px]">
@@ -66,7 +47,7 @@ const PdfViewer = ({path, summary}: { path: string; summary: string }) => {
                 <div className="h-full">
                     {isLoadingPdf && <SkeletonPdfComponent/>}
                     <iframe
-                        src={blob}
+                        src={'/api/document/' + path}
                         title={path}
                         className={cn('w-full h-full min-h-full', isLoadingPdf && 'hidden')}
                     />
