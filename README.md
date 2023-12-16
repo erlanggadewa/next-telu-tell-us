@@ -1,3 +1,10 @@
+
+**Front end for Telu Tell Us APP**
+
+Telu Tell Us is a chatbot application that utilizes assistance from OpenAI, with its dataset sourced from the resources available at the Open Library of Telkom University.
+
+demo : https://youtu.be/hyQijyaI1Hw
+
 <a href="https://chat.vercel.ai/">
   <img alt="Next.js 13 and app template Router-ready AI chatbot." src="https://chat.vercel.ai/opengraph-image.png">
   <h1 align="center">Next.js AI Chatbot</h1>
